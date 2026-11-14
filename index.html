@@ -256,8 +256,9 @@
 
                     <!-- Auth / User Profile Button -->
                     <button onclick="handleAuthHeaderClick(); playSound('modal')" id="header-auth-btn" class="btn-epic px-4 sm:px-5 py-2.5 rounded-xl font-bold text-sm text-white flex items-center gap-2 shadow-lg">
-                        <i class="fa-solid fa-user-astronaut"></i>
+                        <i id="header-auth-icon" class="fa-solid fa-user-astronaut"></i>
                         <span id="header-auth-text">تسجيل الدخول</span>
+                        <span id="header-admin-badge" class="hidden px-2 py-0.5 rounded-md bg-cyber-gold text-cyber-dark text-[10px] font-black tracking-wider uppercase shadow">ADMIN</span>
                     </button>
 
                     <!-- Mobile Menu Toggle -->
@@ -366,10 +367,17 @@
                             <p class="text-slate-400 text-sm">كل ما هو جديد حول السيرفر والقناة</p>
                         </div>
                     </div>
-                    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 text-xs font-bold w-fit">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        تحديثات حصرية ومباشرة
-                    </span>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <!-- ADMIN EXCLUSIVE: ADD NEWS BUTTON -->
+                        <button id="admin-add-news-btn" onclick="openNewsEditorModal(); playSound('modal')" class="hidden px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyber-gold via-amber-500 to-cyber-crimson text-cyber-dark font-black text-sm shadow-lg shadow-cyber-gold/30 hover:scale-105 transition-all flex items-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-plus-circle text-base"></i>
+                            <span>إضافة خبر جديد (Admin)</span>
+                        </button>
+                        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 text-xs font-bold w-fit">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            تحديثات حصرية ومباشرة
+                        </span>
+                    </div>
                 </div>
 
                 <!-- FEATURED BREAKING NEWS: OMAREX NETWORK LAUNCH -->
@@ -429,36 +437,8 @@
                     </div>
                 </div>
 
-                <!-- Secondary News Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- News Card 2 -->
-                    <div class="cyber-glass cyber-glass-hover rounded-2xl p-6 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="px-3 py-1 rounded-lg bg-cyber-purple/20 text-cyber-purple border border-cyber-purple/40 text-xs font-bold">
-                                <i class="fa-solid fa-film ml-1"></i> كواليس السلسلة
-                            </span>
-                            <span class="text-xs text-slate-400">ZenithSMP S6</span>
-                        </div>
-                        <h4 class="font-changa font-bold text-xl text-white">تجهيزات خارقة للموسم السادس في ZenithSMP</h4>
-                        <p class="text-slate-400 text-sm leading-relaxed">
-                            بعد الأحداث الغامضة في المواسم السابقة، "الغريب" يعود بقوة لم يسبق لها مثيل. ترقبوا الحلقة الأولى قريباً على القناة!
-                        </p>
-                    </div>
-
-                    <!-- News Card 3 -->
-                    <div class="cyber-glass cyber-glass-hover rounded-2xl p-6 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="px-3 py-1 rounded-lg bg-cyber-gold/20 text-cyber-gold border border-cyber-gold/40 text-xs font-bold">
-                                <i class="fa-solid fa-shield-halved ml-1"></i> نظام العضويات
-                            </span>
-                            <span class="text-xs text-slate-400">OMAREX Hub</span>
-                        </div>
-                        <h4 class="font-changa font-bold text-xl text-white">سجل حسابك الآن في المنصة واحصل على بطاقة العضو</h4>
-                        <p class="text-slate-400 text-sm leading-relaxed">
-                            أنشئ حسابك مجاناً في OMAREX Hub عبر نظام التحقق الفوري بالبريد الإلكتروني لتكون جاهزاً للفعاليات والبطولات القادمة.
-                        </p>
-                    </div>
-                </div>
+                <!-- Dynamic News Grid (Managed by Admin & Persisted in localStorage) -->
+                <div id="dynamic-news-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
             </div>
         </section>
 
@@ -532,43 +512,28 @@
                     <!-- GAME 1: SKY PVP -->
                     <div class="cyber-glass cyber-glass-hover rounded-3xl overflow-hidden flex flex-col justify-between border border-cyber-cyan/40">
                         <div>
-                            <!-- Custom SVG Banner -->
-                            <div class="h-48 bg-gradient-to-br from-sky-900/60 via-cyber-dark to-cyber-cyan/20 relative flex items-center justify-center p-6 border-b border-white/10 overflow-hidden">
-                                <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/50 text-emerald-400 text-xs font-extrabold flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> متاح الآن
+                            <div class="h-44 bg-gradient-to-br from-sky-600/40 via-cyber-dark to-cyber-cyan/30 p-6 flex flex-col items-center justify-center relative border-b border-white/10">
+                                <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-extrabold">
+                                    متاح الآن • LIVE
+                                </span>
+                                <div class="w-16 h-16 rounded-2xl bg-cyber-dark/80 border border-cyber-cyan flex items-center justify-center text-3xl text-cyber-cyan shadow-lg mb-2">
+                                    <i class="fa-solid fa-khanda"></i>
                                 </div>
-                                <!-- Crossed Swords SVG -->
-                                <svg class="w-24 h-24 text-cyber-cyan drop-shadow-[0_0_15px_rgba(0,245,212,0.6)] animate-float" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                    <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"></polyline>
-                                    <line x1="13" y1="19" x2="19" y2="13"></line>
-                                    <line x1="16" y1="16" x2="20" y2="20"></line>
-                                    <line x1="19" y1="21" x2="21" y2="19"></line>
-                                    <polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"></polyline>
-                                    <line x1="5" y1="14" x2="9" y2="18"></line>
-                                    <line x1="7" y1="17" x2="4" y2="20"></line>
-                                    <line x1="3" y1="19" x2="5" y2="21"></line>
-                                </svg>
+                                <h3 class="font-changa font-black text-2xl text-white">Sky PVP</h3>
                             </div>
-
-                            <div class="p-6 space-y-4">
-                                <h3 class="font-changa font-black text-2xl sm:text-3xl text-white flex items-center justify-between">
-                                    <span>Sky PVP</span>
-                                    <i class="fa-solid fa-cloud-bolt text-cyber-cyan text-xl"></i>
-                                </h3>
+                            <div class="p-6 space-y-3">
                                 <p class="text-slate-300 text-sm leading-relaxed">
-                                    معارك حماسية فوق الجزر الطائرة! اجمع الصناديق السرية، طور أسلحتك، وأسقط خصومك في الهاوية لتتصدر قائمة الأقوى.
+                                    قتال جوي حماسـي فوق الجزر المعلقة! اجمع الموارد، طور أسلحتك ودروعك، وأسقط خصومك في الفراغ لتتصدر قائمة الأقوياء.
                                 </p>
-                                <ul class="space-y-2 text-xs text-slate-300 font-semibold pt-2">
-                                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyber-cyan"></i> جزر متنوعة وصناديق لوت نادرة</li>
-                                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyber-cyan"></i> نظام قتال سلس وسريع الاستجابة</li>
-                                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyber-cyan"></i> متجر تطوير الدروع والسيوف</li>
-                                </ul>
+                                <div class="flex flex-wrap gap-2 pt-2">
+                                    <span class="px-2.5 py-1 rounded-lg bg-white/5 text-xs text-cyber-cyan font-bold">كيتات متوازنة</span>
+                                    <span class="px-2.5 py-1 rounded-lg bg-white/5 text-xs text-cyber-cyan font-bold">ساحات احترافية</span>
+                                </div>
                             </div>
                         </div>
-
                         <div class="p-6 pt-0">
-                            <button onclick="copyServerIP()" class="w-full py-3 rounded-xl bg-cyber-cyan/15 hover:bg-cyber-cyan hover:text-cyber-dark border border-cyber-cyan/50 text-cyber-cyan font-bold text-sm transition-all">
-                                انسخ الـ IP والعب Sky PVP
+                            <button onclick="copyServerIP()" class="w-full py-3 rounded-xl bg-cyber-cyan/15 hover:bg-cyber-cyan text-cyber-cyan hover:text-cyber-dark border border-cyber-cyan/40 font-extrabold text-sm transition-all cursor-pointer">
+                                انسخ الـ IP وادخل القتال ⚔️
                             </button>
                         </div>
                     </div>
@@ -576,84 +541,57 @@
                     <!-- GAME 2: SURVIVAL SMP -->
                     <div class="cyber-glass cyber-glass-hover rounded-3xl overflow-hidden flex flex-col justify-between border border-emerald-500/40">
                         <div>
-                            <!-- Custom SVG Banner -->
-                            <div class="h-48 bg-gradient-to-br from-emerald-900/60 via-cyber-dark to-cyber-gold/20 relative flex items-center justify-center p-6 border-b border-white/10 overflow-hidden">
-                                <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/50 text-emerald-400 text-xs font-extrabold flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> متاح الآن
+                            <div class="h-44 bg-gradient-to-br from-emerald-600/40 via-cyber-dark to-cyber-gold/25 p-6 flex flex-col items-center justify-center relative border-b border-white/10">
+                                <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-extrabold">
+                                    متاح الآن • LIVE
+                                </span>
+                                <div class="w-16 h-16 rounded-2xl bg-cyber-dark/80 border border-emerald-400 flex items-center justify-center text-3xl text-emerald-400 shadow-lg mb-2">
+                                    <i class="fa-solid fa-tree"></i>
                                 </div>
-                                <!-- Mountain / Survival Compass SVG -->
-                                <svg class="w-24 h-24 text-emerald-400 drop-shadow-[0_0_15px_rgba(52,211,153,0.6)] animate-float" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                    <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
-                                </svg>
+                                <h3 class="font-changa font-black text-2xl text-white">Survival SMP</h3>
                             </div>
-
-                            <div class="p-6 space-y-4">
-                                <h3 class="font-changa font-black text-2xl sm:text-3xl text-white flex items-center justify-between">
-                                    <span>Survival SMP</span>
-                                    <i class="fa-solid fa-tree text-emerald-400 text-xl"></i>
-                                </h3>
+                            <div class="p-6 space-y-3">
                                 <p class="text-slate-300 text-sm leading-relaxed">
-                                    عالم مفتوح للبقاء والإبداع بأسلوب ZenithSMP! ابنِ قاعدتك، احمِ ممتلكاتك، كوّن تحالفات مع أصدقائك، واجمع موارد النذرايت.
+                                    عالم سرفايفل متكامل بنظام حماية الأراضي (Claims)، اقتصاد متوازن، متاجر اللاعبين، وتحالفات لبناء إمبراطوريتك الخاصة.
                                 </p>
-                                <ul class="space-y-2 text-xs text-slate-300 font-semibold pt-2">
-                                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> نظام حماية الأراضي (Claims) ضد التخريب</li>
-                                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> اقتصاد متكامل ومتاجر للاعبين</li>
-                                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> فعاليات وتحديات أسبوعية مستمرة</li>
-                                </ul>
+                                <div class="flex flex-wrap gap-2 pt-2">
+                                    <span class="px-2.5 py-1 rounded-lg bg-white/5 text-xs text-emerald-400 font-bold">حماية كاملة</span>
+                                    <span class="px-2.5 py-1 rounded-lg bg-white/5 text-xs text-emerald-400 font-bold">اقتصاد ومتاجر</span>
+                                </div>
                             </div>
                         </div>
-
                         <div class="p-6 pt-0">
-                            <button onclick="copyServerIP()" class="w-full py-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-400 hover:text-cyber-dark border border-emerald-500/50 text-emerald-400 font-bold text-sm transition-all">
-                                انسخ الـ IP والعب Survival SMP
+                            <button onclick="copyServerIP()" class="w-full py-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500 text-emerald-400 hover:text-cyber-dark border border-emerald-500/40 font-extrabold text-sm transition-all cursor-pointer">
+                                ابدأ رحلة البقاء الآن 🌲
                             </button>
                         </div>
                     </div>
 
-                    <!-- GAME 3: BEDWARS (COMING SOON) -->
-                    <div class="cyber-glass rounded-3xl overflow-hidden flex flex-col justify-between border-2 border-cyber-crimson/60 relative group">
-                        <!-- Diagonal Locked Overlay Ribbon -->
-                        <div class="absolute inset-0 locked-pattern pointer-events-none z-10 opacity-40"></div>
-
-                        <div class="relative z-20">
-                            <!-- Custom SVG Banner -->
-                            <div class="h-48 bg-gradient-to-br from-cyber-crimson/40 via-cyber-dark to-cyber-purple/30 relative flex items-center justify-center p-6 border-b border-white/10">
-                                <div class="absolute top-4 right-4 px-3.5 py-1 rounded-full bg-cyber-crimson text-white text-xs font-black tracking-wider animate-pulse shadow-lg">
-                                    COMING SOON
+                    <!-- GAME 3: BEDWARS COMING SOON -->
+                    <div class="cyber-glass rounded-3xl overflow-hidden flex flex-col justify-between border-2 border-cyber-crimson/50 relative">
+                        <div class="locked-pattern">
+                            <div class="h-44 bg-gradient-to-br from-cyber-crimson/35 via-cyber-dark to-cyber-purple/30 p-6 flex flex-col items-center justify-center relative border-b border-white/10">
+                                <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-cyber-crimson text-white text-xs font-black tracking-wider animate-pulse">
+                                    COMING SOON 🔒
+                                </span>
+                                <div class="w-16 h-16 rounded-2xl bg-cyber-dark/90 border border-cyber-crimson flex items-center justify-center text-3xl text-cyber-crimson shadow-lg mb-2">
+                                    <i class="fa-solid fa-bed"></i>
                                 </div>
-                                <!-- Bed / Shield SVG -->
-                                <svg class="w-24 h-24 text-cyber-crimson drop-shadow-[0_0_20px_rgba(255,0,85,0.8)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                    <path d="M2 4v16"></path>
-                                    <path d="M2 8h18a2 2 0 0 1 2 2v10"></path>
-                                    <path d="M2 17h20"></path>
-                                    <path d="M6 8v9"></path>
-                                </svg>
+                                <h3 class="font-changa font-black text-2xl text-white">BedWars</h3>
                             </div>
-
-                            <div class="p-6 space-y-4">
-                                <div class="flex items-center justify-between">
-                                    <h3 class="font-changa font-black text-2xl sm:text-3xl text-white">BedWars</h3>
-                                    <span class="px-3 py-1 rounded-lg bg-cyber-gold/20 border border-cyber-gold/50 text-cyber-gold font-extrabold text-xs">
-                                        قريباً جداً 🔥
-                                    </span>
-                                </div>
+                            <div class="p-6 space-y-3">
                                 <p class="text-slate-300 text-sm leading-relaxed">
-                                    حرب الأسِرّة الأسطورية قادمة إلى <strong class="text-white">OMAREX NETWORK</strong>! دافع عن سريرك، اجمع الموارد من الجزر، ودمّر أسِرّة الفرق المنافسة.
+                                    احمِ سريرك ودمر أسرّة الفرق المنافسة! نعمل حالياً على تطوير خرائط حصرية ونظام متجر سريع لتجربة حرب الأسرّة الأسطورية.
                                 </p>
-                                <div class="p-3.5 rounded-2xl bg-cyber-crimson/15 border border-cyber-crimson/40 text-center">
-                                    <p class="font-changa font-black text-lg text-cyber-gold tracking-widest">
-                                        BEDWARS COMING SOON
-                                    </p>
-                                    <p class="text-xs text-slate-300 mt-0.5">يتم حالياً بناء المابات وتجهيز المتجر الخاص</p>
+                                <div class="flex flex-wrap gap-2 pt-2">
+                                    <span class="px-2.5 py-1 rounded-lg bg-cyber-crimson/20 text-xs text-cyber-crimson font-bold">قيد التطوير المكثف</span>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="p-6 pt-0 relative z-20">
-                            <button disabled class="w-full py-3 rounded-xl bg-white/5 border border-white/15 text-slate-400 font-bold text-sm cursor-not-allowed flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-lock text-cyber-crimson"></i>
-                                <span>قيد التطوير - ترقبوا الافتتاح</span>
-                            </button>
+                        <div class="p-6 pt-0">
+                            <div class="w-full py-3 rounded-xl bg-cyber-crimson/20 border border-cyber-crimson/40 text-center text-cyber-gold font-black text-sm tracking-widest uppercase">
+                                BEDWARS COMING SOON
+                            </div>
                         </div>
                     </div>
 
@@ -665,86 +603,62 @@
         <!-- PAGE 3: SOCIALS (مواقع التواصل الاجتماعي)                 -->
         <!-- ========================================================= -->
         <section id="page-socials" class="page-section space-y-12">
-            
-            <div class="text-center max-w-3xl mx-auto space-y-4">
-                <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyber-purple/20 border border-cyber-purple/40 text-cyber-cyan text-xs font-extrabold">
-                    <i class="fa-solid fa-users"></i> مجتمع OMAREX الرسمي
+            <div class="text-center max-w-2xl mx-auto space-y-3">
+                <span class="px-4 py-1.5 rounded-full bg-cyber-purple/20 border border-cyber-purple/50 text-cyber-cyan text-xs font-extrabold">
+                    تواصل مع المجتمع الرسمي
                 </span>
-                <h1 class="font-changa font-black text-4xl sm:text-6xl text-white">
-                    مواقع <span class="text-cyber-purple text-glow-purple">التواصل الاجتماعي</span>
+                <h1 class="font-changa font-black text-4xl sm:text-5xl text-white">
+                    مواقع التواصل <span class="text-cyber-purple text-glow-purple">الاجتماعي</span>
                 </h1>
-                <p class="text-slate-300 text-base sm:text-lg">
-                    انضم إلى عائلتنا على اليوتيوب وسيرفر الديسكورد الرسمي لتكون جزءاً من الفعاليات، التصوير، والأخبار الحصرية!
+                <p class="text-slate-300 text-base">
+                    اشترك في القناة الرسمية وانضم إلى سيرفر الديسكورد الخاص بنا لتكون جزءاً من العائلة!
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                 
-                <!-- YOUTUBE CHANNEL CARD: OMAREXCUB -->
-                <div class="cyber-glass cyber-glass-hover rounded-3xl p-8 border-2 border-red-500/40 relative overflow-hidden flex flex-col justify-between space-y-8">
-                    <div class="absolute -top-20 -left-20 w-64 h-64 bg-red-600/20 rounded-full blur-[80px] pointer-events-none"></div>
-                    
-                    <div class="relative z-10 space-y-6">
-                        <div class="flex items-center justify-between">
-                            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-600 to-rose-700 flex items-center justify-center text-white text-3xl shadow-lg shadow-red-600/40">
-                                <i class="fa-brands fa-youtube"></i>
-                            </div>
-                            <span class="px-4 py-1.5 rounded-full bg-red-500/15 border border-red-500/40 text-red-400 text-xs font-extrabold">
-                                القناة الرسمية على YouTube
-                            </span>
+                <!-- YOUTUBE CHANNEL CARD -->
+                <div class="cyber-glass cyber-glass-hover rounded-3xl p-8 border-2 border-red-500/40 flex flex-col justify-between space-y-6 relative overflow-hidden">
+                    <div class="absolute -top-16 -left-16 w-48 h-48 bg-red-600/20 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="space-y-4 relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-red-600/20 border border-red-500/50 flex items-center justify-center text-red-500 text-3xl shadow-lg">
+                            <i class="fa-brands fa-youtube"></i>
                         </div>
-
                         <div>
-                            <h2 class="font-changa font-black text-3xl sm:text-4xl text-white tracking-wide">OMAREXCUB</h2>
-                            <p class="text-cyber-gold font-bold text-sm mt-1">صانع محتوى ماين كرافت & سلسلة ZenithSMP</p>
+                            <span class="text-xs font-extrabold text-red-400 uppercase tracking-wider">القناة الرسمية على يوتيوب</span>
+                            <h2 class="font-changa font-black text-3xl text-white mt-1">OMAREXCUB</h2>
                         </div>
-
-                        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                            شاهد أحدث حلقات سلسلة <strong class="text-white">ZenithSMP</strong>، المغامرات الأسطورية، التحديات، ومقاطع السيرفر الحصرية. لا تنسَ الاشتراك وتفعيل جرس التنبيهات!
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            تابع حلقات سلسلة <strong class="text-cyber-gold">ZenithSMP</strong>، التحديات الأسطورية، ومغامرات ماين كرافت الحماسية بأعلى جودة ومونتاج خرافي!
                         </p>
                     </div>
-
-                    <div class="relative z-10 pt-2">
-                        <a href="https://www.youtube.com/@OMAR_EXCUB" target="_blank" rel="noopener noreferrer" onclick="playSound('click')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-black text-base sm:text-lg flex items-center justify-center gap-3 shadow-lg shadow-red-600/40 transition-all hover:-translate-y-1">
-                            <i class="fa-brands fa-youtube text-2xl"></i>
-                            <span>زيارة قناة OMAREXCUB</span>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
-                        </a>
-                    </div>
+                    <a href="https://www.youtube.com/@OMAR_EXCUB" target="_blank" rel="noopener noreferrer" onclick="playSound('click')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-black text-base flex items-center justify-center gap-3 shadow-lg shadow-red-600/30 transition-all">
+                        <i class="fa-brands fa-youtube text-xl"></i>
+                        <span>زيارة قناة OMAREXCUB والاشتراك</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+                    </a>
                 </div>
 
                 <!-- DISCORD SERVER CARD: DZ Freinds -->
-                <div class="cyber-glass cyber-glass-hover rounded-3xl p-8 border-2 border-indigo-500/50 relative overflow-hidden flex flex-col justify-between space-y-8">
-                    <div class="absolute -top-20 -left-20 w-64 h-64 bg-indigo-600/25 rounded-full blur-[80px] pointer-events-none"></div>
-                    
-                    <div class="relative z-10 space-y-6">
-                        <div class="flex items-center justify-between">
-                            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-3xl shadow-lg shadow-indigo-600/40">
-                                <i class="fa-brands fa-discord"></i>
-                            </div>
-                            <span class="px-4 py-1.5 rounded-full bg-indigo-500/20 border border-indigo-400/40 text-indigo-300 text-xs font-extrabold flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                                مجتمع نشط 24/7
-                            </span>
+                <div class="cyber-glass cyber-glass-hover rounded-3xl p-8 border-2 border-indigo-500/40 flex flex-col justify-between space-y-6 relative overflow-hidden">
+                    <div class="absolute -top-16 -left-16 w-48 h-48 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="space-y-4 relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-indigo-600/20 border border-indigo-500/50 flex items-center justify-center text-indigo-400 text-3xl shadow-lg">
+                            <i class="fa-brands fa-discord"></i>
                         </div>
-
                         <div>
-                            <h2 class="font-changa font-black text-3xl sm:text-4xl text-white tracking-wide" dir="ltr">DZ Freinds</h2>
-                            <p class="text-cyber-cyan font-bold text-sm mt-1">سيرفر الديسكورد الرسمي للمجتمع والأصدقاء</p>
+                            <span class="text-xs font-extrabold text-indigo-400 uppercase tracking-wider">سيرفر الديسكورد الرسمي</span>
+                            <h2 class="font-changa font-black text-3xl text-white mt-1">DZ Freinds</h2>
                         </div>
-
-                        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                            تواصل مباشرة مع <strong class="text-white">OMAREXCUB</strong> واللاعبين، شارك في الرومات الصوتية أثناء اللعب في <strong class="text-cyber-gold">OMAREX NETWORK</strong>، واحصل على الدعم الفني الفوري!
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            انضم إلى مجتمع <strong class="text-indigo-300">DZ Freinds</strong> للدردشة الصوتية، المشاركة في الفعاليات، التواصل مع الإدارة، ومعرفة مواعيد الحلقات والتحديثات أولاً بأول!
                         </p>
                     </div>
-
-                    <div class="relative z-10 pt-2">
-                        <a href="https://discord.gg/HtuKtqjhM" target="_blank" rel="noopener noreferrer" onclick="playSound('click')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-black text-base sm:text-lg flex items-center justify-center gap-3 shadow-lg shadow-indigo-600/40 transition-all hover:-translate-y-1">
-                            <i class="fa-brands fa-discord text-2xl"></i>
-                            <span>انضم إلى سيرفر DZ Freinds</span>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
-                        </a>
-                    </div>
+                    <a href="https://discord.gg/HtuKtqjhM" target="_blank" rel="noopener noreferrer" onclick="playSound('click')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-black text-base flex items-center justify-center gap-3 shadow-lg shadow-indigo-600/30 transition-all">
+                        <i class="fa-brands fa-discord text-xl"></i>
+                        <span>انضم إلى سيرفر DZ Freinds</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+                    </a>
                 </div>
 
             </div>
@@ -754,154 +668,120 @@
 
     <!-- ================= FOOTER ================= -->
     <footer class="relative z-10 cyber-glass border-t border-white/10 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-right">
             <div class="flex items-center gap-3">
-                <span class="font-changa font-extrabold text-xl text-white">OMAREX <span class="text-cyber-gold">Hub</span></span>
+                <span class="font-changa font-black text-xl text-white">OMAREX <span class="text-cyber-gold">Hub</span></span>
                 <span class="text-slate-500">|</span>
-                <span class="text-xs text-slate-400">جميع الحقوق محفوظة © 2026 لـ OMAREXCUB</span>
+                <span class="text-xs text-slate-400">جميع الحقوق محفوظة لـ OMAREXCUB © 2026</span>
             </div>
-            <div class="flex items-center gap-4 text-sm text-slate-400">
-                <button onclick="copyServerIP()" class="hover:text-cyber-cyan transition-colors font-mono">
-                    omarexnetwork.play-mc.fun
-                </button>
-                <a href="https://www.youtube.com/@OMAR_EXCUB" target="_blank" rel="noopener noreferrer" title="قناة اليوتيوب OMAREXCUB" class="hover:text-red-500 transition-colors">
-                    <i class="fa-brands fa-youtube text-lg"></i>
+            <div class="flex items-center gap-4 text-sm">
+                <a href="https://www.youtube.com/@OMAR_EXCUB" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1.5 font-bold">
+                    <i class="fa-brands fa-youtube"></i> YouTube
                 </a>
-                <a href="https://discord.gg/HtuKtqjhM" target="_blank" rel="noopener noreferrer" title="سيرفر الديسكورد DZ Freinds" class="hover:text-indigo-400 transition-colors">
-                    <i class="fa-brands fa-discord text-lg"></i>
+                <a href="https://discord.gg/HtuKtqjhM" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-indigo-400 transition-colors flex items-center gap-1.5 font-bold">
+                    <i class="fa-brands fa-discord"></i> DZ Freinds
                 </a>
             </div>
         </div>
     </footer>
 
     <!-- ========================================================= -->
-    <!-- MODAL 1: AUTHENTICATION & USER PROFILE MODAL              -->
+    <!-- MODAL 1: AUTHENTICATION (LOGIN / REGISTER / PROFILE)      -->
     <!-- ========================================================= -->
     <div id="auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-        <div class="cyber-glass w-full max-w-md rounded-3xl border-2 border-cyber-purple/60 shadow-2xl overflow-hidden relative animate-[pageFadeIn_0.3s_ease]">
+        <div class="cyber-glass w-full max-w-md rounded-3xl border-2 border-cyber-purple/50 shadow-2xl overflow-hidden animate-[pageFadeIn_0.3s_ease]">
             
-            <!-- Close Button -->
-            <button onclick="closeAuthModal(); playSound('click')" class="absolute top-4 left-4 w-9 h-9 rounded-xl bg-white/5 hover:bg-cyber-crimson/20 hover:text-cyber-crimson text-slate-400 flex items-center justify-center transition-all z-20">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-
-            <!-- VIEW A: LOGIN / REGISTER / VERIFY TABS (When Logged Out) -->
-            <div id="auth-guest-view" class="p-6 sm:p-8 space-y-6">
-                <div class="text-center space-y-1">
-                    <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-cyber-purple to-cyber-cyan flex items-center justify-center text-cyber-dark text-2xl font-black shadow-lg mb-3">
-                        <i class="fa-solid fa-user-shield"></i>
-                    </div>
-                    <h3 class="font-changa font-black text-2xl text-white">بوابة أعضاء OMAREX Hub</h3>
-                    <p class="text-xs text-slate-400">سجل دخولك أو أنشئ حساباً جديداً مع التحقق الفوري</p>
+            <!-- Modal Header -->
+            <div class="p-5 bg-gradient-to-l from-cyber-purple/25 via-cyber-dark to-cyber-cyan/20 border-b border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-shield-halved text-cyber-cyan text-xl"></i>
+                    <h3 class="font-changa font-black text-xl text-white">حساب OMAREX Hub</h3>
                 </div>
+                <button onclick="closeAuthModal(); playSound('click')" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-cyber-crimson/20 hover:text-cyber-crimson text-slate-400 flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
 
-                <!-- Switch Tabs: Login vs Register -->
-                <div id="auth-tabs" class="grid grid-cols-2 gap-2 p-1 rounded-xl bg-cyber-dark border border-white/10">
-                    <button onclick="switchAuthTab('login'); playSound('click')" id="tab-login-btn" class="py-2.5 rounded-lg font-bold text-sm bg-cyber-purple text-white shadow transition-all">
+            <!-- GUEST VIEW (Login / Register / Verify Code) -->
+            <div id="auth-guest-view" class="p-6 space-y-5">
+                
+                <!-- Switch Tabs -->
+                <div id="auth-tabs" class="grid grid-cols-2 gap-2 p-1.5 rounded-xl bg-cyber-dark/80 border border-white/10">
+                    <button type="button" id="tab-login-btn" onclick="switchAuthTab('login'); playSound('click')" class="py-2.5 rounded-lg font-bold text-sm bg-cyber-purple text-white shadow transition-all">
                         تسجيل الدخول
                     </button>
-                    <button onclick="switchAuthTab('register'); playSound('click')" id="tab-register-btn" class="py-2.5 rounded-lg font-bold text-sm text-slate-400 hover:text-white transition-all">
+                    <button type="button" id="tab-register-btn" onclick="switchAuthTab('register'); playSound('click')" class="py-2.5 rounded-lg font-bold text-sm text-slate-400 hover:text-white transition-all">
                         إنشاء حساب جديد
                     </button>
                 </div>
 
-                <!-- FORM 1: LOGIN FORM -->
+                <!-- LOGIN FORM -->
                 <form id="login-form" onsubmit="handleLoginSubmit(event)" class="space-y-4">
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1.5">البريد الإلكتروني (Email)</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-envelope absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                            <input type="email" id="login-email" required placeholder="player@omarex.com" dir="ltr" class="w-full pr-10 pl-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm text-left">
-                        </div>
+                        <input type="email" id="login-email" required dir="ltr" placeholder="name@example.com" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm">
                     </div>
-
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1.5">كلمة المرور (Password)</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-lock absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                            <input type="password" id="login-password" required placeholder="••••••••" dir="ltr" class="w-full pr-10 pl-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm text-left">
-                        </div>
+                        <input type="password" id="login-password" required dir="ltr" placeholder="••••••••" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm">
                     </div>
-
-                    <button type="submit" class="btn-epic w-full py-3.5 rounded-xl font-black text-white text-base shadow-lg mt-2">
-                        دخول إلى الحساب <i class="fa-solid fa-right-to-bracket mr-1"></i>
+                    <button type="submit" class="btn-epic w-full py-3.5 rounded-xl font-black text-white text-sm shadow-lg">
+                        دخول إلى المنصة 🚀
                     </button>
                 </form>
 
-                <!-- FORM 2: REGISTER FORM -->
+                <!-- REGISTER FORM -->
                 <form id="register-form" onsubmit="handleRegisterSubmit(event)" class="hidden space-y-4">
                     <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1.5">اسم اللاعب / المستخدم (Username)</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-gamepad absolute right-3.5 top-1/2 -translate-y-1/2 text-cyber-cyan"></i>
-                            <input type="text" id="reg-username" required minlength="3" placeholder="مثال: OMAREX_Fan" class="w-full pr-10 pl-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm">
-                        </div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">اسم المستخدم (Username)</label>
+                        <input type="text" id="reg-username" required minlength="3" placeholder="مثال: OMAR_GAMER" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm">
                     </div>
-
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1.5">البريد الإلكتروني (Email)</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-envelope absolute right-3.5 top-1/2 -translate-y-1/2 text-cyber-purple"></i>
-                            <input type="email" id="reg-email" required placeholder="you@example.com" dir="ltr" class="w-full pr-10 pl-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm text-left">
-                        </div>
+                        <input type="email" id="reg-email" required dir="ltr" placeholder="name@example.com" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm">
                     </div>
-
                     <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1.5">إنشاء كلمة مرور (Password)</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-key absolute right-3.5 top-1/2 -translate-y-1/2 text-cyber-gold"></i>
-                            <input type="password" id="reg-password" required minlength="4" placeholder="اختر كلمة مرور قوية" dir="ltr" class="w-full pr-10 pl-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm text-left">
-                        </div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">كلمة المرور (Password)</label>
+                        <input type="password" id="reg-password" required minlength="4" dir="ltr" placeholder="اختر كلمة مرور قوية" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm">
                     </div>
-
-                    <button type="submit" class="btn-cyan w-full py-3.5 rounded-xl font-black text-base shadow-lg mt-2">
-                        إرسال كود التحقق إلى البريد <i class="fa-solid fa-paper-plane mr-1"></i>
+                    <button type="submit" class="btn-cyan w-full py-3.5 rounded-xl font-black text-sm shadow-lg">
+                        إرسال كود التحقق إلى الـ Inbox 📩
                     </button>
                 </form>
 
-                <!-- STEP 3: VERIFICATION CODE ENTRY -->
-                <div id="verify-step-box" class="hidden space-y-5">
-                    <div class="p-4 rounded-2xl bg-cyber-cyan/10 border border-cyber-cyan/40 text-center space-y-2">
-                        <p class="text-xs text-cyber-cyan font-bold">
-                            <i class="fa-solid fa-envelope-circle-check ml-1"></i> تم إرسال رسالة تحتوي على Verify Code إلى بريدك!
+                <!-- VERIFY CODE STEP -->
+                <form id="verify-step-box" onsubmit="handleVerifyCodeSubmit(event)" class="hidden space-y-4 text-center">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-cyber-gold/20 border border-cyber-gold flex items-center justify-center text-cyber-gold text-2xl animate-bounce">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-changa font-bold text-lg text-white">أدخل كود التحقق (Verify Code)</h4>
+                        <p class="text-xs text-slate-300 mt-1">
+                            تم إرسال الكود إلى <span id="verify-target-email" class="text-cyber-cyan font-mono"></span> داخل صندوق الوارد!
                         </p>
-                        <p id="verify-target-email" class="font-mono text-sm text-white font-bold" dir="ltr"></p>
-                        <button type="button" onclick="openInboxModal(); playSound('modal')" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-cyber-gold text-cyber-dark font-extrabold text-xs hover:scale-105 transition-transform shadow-md">
-                            <i class="fa-solid fa-inbox"></i> افتح صندوق الوارد (Inbox) لنسخ الكود
+                    </div>
+                    <input type="text" id="verify-code-input" required maxlength="6" dir="ltr" placeholder="000000" class="w-full text-center font-mono font-black text-2xl tracking-[0.4em] px-4 py-3.5 rounded-xl bg-cyber-dark border-2 border-cyber-gold focus:outline-none text-cyber-gold">
+                    <div class="flex gap-2">
+                        <button type="submit" class="btn-epic flex-grow py-3 rounded-xl font-black text-white text-sm">
+                            تأكيد وتفعيل الحساب ✅
+                        </button>
+                        <button type="button" onclick="openInboxModal()" class="px-4 py-3 rounded-xl cyber-glass border border-cyber-gold/50 text-cyber-gold font-bold text-xs">
+                            فتح Inbox
                         </button>
                     </div>
-
-                    <form onsubmit="handleVerifyCodeSubmit(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-300 mb-2 text-center">أدخل كود التحقق المكون من 6 أرقام</label>
-                            <input type="text" id="verify-code-input" required maxlength="6" placeholder="------" dir="ltr" class="w-full py-3.5 px-4 rounded-2xl bg-cyber-dark border-2 border-cyber-purple focus:border-cyber-cyan focus:outline-none text-center font-mono font-black text-2xl tracking-[0.5em] text-cyber-gold">
-                        </div>
-
-                        <button type="submit" class="btn-epic w-full py-3.5 rounded-xl font-black text-white text-base">
-                            تأكيد الكود وتفعيل الحساب <i class="fa-solid fa-circle-check mr-1"></i>
-                        </button>
-
-                        <button type="button" onclick="switchAuthTab('register')" class="w-full text-xs text-slate-400 hover:text-white text-center">
-                            العودة وتعديل البيانات
-                        </button>
-                    </form>
-                </div>
+                </form>
             </div>
 
-            <!-- VIEW B: LOGGED-IN USER PROFILE CARD -->
-            <div id="auth-profile-view" class="hidden p-6 sm:p-8 space-y-6 text-center">
-                <div class="relative w-24 h-24 mx-auto">
-                    <div class="absolute inset-0 bg-gradient-to-tr from-cyber-gold via-cyber-crimson to-cyber-cyan rounded-3xl animate-spin opacity-75 blur-sm"></div>
-                    <div class="relative w-full h-full bg-cyber-dark rounded-3xl border-2 border-cyber-cyan flex items-center justify-center text-4xl font-changa font-black text-white" id="profile-avatar-initials">
+            <!-- LOGGED-IN USER PROFILE VIEW -->
+            <div id="auth-profile-view" class="hidden p-6 text-center space-y-5">
+                <div class="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-br from-cyber-purple via-cyber-crimson to-cyber-gold p-[2px] shadow-xl">
+                    <div class="w-full h-full bg-cyber-dark rounded-[22px] flex items-center justify-center font-changa font-black text-3xl text-cyber-cyan" id="profile-avatar-initials">
                         OX
                     </div>
-                    <span class="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-emerald-500 border-4 border-cyber-dark flex items-center justify-center text-white text-xs" title="حساب موثق">
-                        <i class="fa-solid fa-check"></i>
-                    </span>
                 </div>
 
                 <div>
-                    <span class="px-3 py-1 rounded-full bg-cyber-gold/20 border border-cyber-gold/40 text-cyber-gold text-xs font-extrabold">
+                    <span id="profile-role-badge" class="px-3 py-1 rounded-full bg-cyber-gold/20 border border-cyber-gold/40 text-cyber-gold text-xs font-extrabold">
                         عضو موثق في OMAREX Hub ⭐
                     </span>
                     <h3 id="profile-username" class="font-changa font-black text-3xl text-white mt-2">Username</h3>
@@ -914,10 +794,15 @@
                         <p class="text-sm font-bold text-emerald-400">مُفعّل وموثق ✅</p>
                     </div>
                     <div>
-                        <p class="text-[11px] text-slate-400">السيرفر المفضل</p>
-                        <p class="text-sm font-bold text-cyber-cyan">OMAREX NETWORK</p>
+                        <p class="text-[11px] text-slate-400">صلاحية الجلسة (24 ساعة)</p>
+                        <p id="profile-session-remaining" class="text-sm font-bold text-cyber-cyan">24 ساعة متبقية</p>
                     </div>
                 </div>
+
+                <!-- Admin Quick Action inside Profile -->
+                <button id="profile-admin-panel-btn" onclick="closeAuthModal(); openNewsEditorModal(); playSound('modal')" class="hidden w-full py-3 rounded-xl bg-gradient-to-r from-cyber-gold to-amber-500 text-cyber-dark font-black text-sm flex items-center justify-center gap-2 shadow-lg">
+                    <i class="fa-solid fa-pen-to-square"></i> إدارة ونشر الأخبار (لوحة الأدمن)
+                </button>
 
                 <div class="flex flex-col gap-3 pt-2">
                     <button onclick="openInboxModal(); playSound('modal')" class="w-full py-3 rounded-xl cyber-glass hover:border-cyber-gold text-cyber-gold font-bold text-sm flex items-center justify-center gap-2">
@@ -933,22 +818,19 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- MODAL 2: SIMULATED EMAIL INBOX (صندوق الوارد الأسطوري)     -->
+    <!-- MODAL 2: SIMULATED OMAREX MAIL INBOX (VERIFY CODE)        -->
     <!-- ========================================================= -->
     <div id="inbox-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-        <div class="cyber-glass w-full max-w-2xl rounded-3xl border-2 border-cyber-gold/60 shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-[pageFadeIn_0.3s_ease]">
+        <div class="cyber-glass w-full max-w-lg rounded-3xl border-2 border-cyber-gold/50 shadow-2xl overflow-hidden animate-[pageFadeIn_0.3s_ease]">
             
-            <!-- Inbox Top Bar -->
-            <div class="p-5 bg-gradient-to-l from-cyber-purple/30 via-cyber-dark to-cyber-gold/20 border-b border-white/10 flex items-center justify-between">
+            <div class="p-5 bg-gradient-to-l from-cyber-gold/20 via-cyber-dark to-cyber-purple/20 border-b border-white/10 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-2xl bg-cyber-gold/20 border border-cyber-gold/50 flex items-center justify-center text-cyber-gold text-xl">
+                    <div class="w-10 h-10 rounded-xl bg-cyber-gold/20 border border-cyber-gold flex items-center justify-center text-cyber-gold">
                         <i class="fa-solid fa-inbox"></i>
                     </div>
                     <div>
-                        <h3 class="font-changa font-black text-xl text-white flex items-center gap-2">
-                            <span>صندوق الوارد (OMAREX Mail Inbox)</span>
-                        </h3>
-                        <p class="text-xs text-slate-400">نظام البريد الفوري لاستلام أكواد التحقق (Verify Code)</p>
+                        <h3 class="font-changa font-black text-lg text-white">صندوق الوارد (OMAREX Inbox)</h3>
+                        <p class="text-xs text-slate-400">نظام رسائل التحقق الفوري</p>
                     </div>
                 </div>
                 <button onclick="closeInboxModal(); playSound('click')" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-cyber-crimson/20 hover:text-cyber-crimson text-slate-400 flex items-center justify-center transition-all">
@@ -956,82 +838,146 @@
                 </button>
             </div>
 
-            <!-- Inbox Messages Area -->
-            <div id="inbox-content" class="p-6 overflow-y-auto space-y-4 flex-grow">
-                <!-- Empty State (Shown if no verification email generated yet) -->
-                <div id="inbox-empty-state" class="text-center py-12 space-y-3">
-                    <i class="fa-regular fa-envelope-open text-5xl text-slate-600"></i>
-                    <p class="font-bold text-slate-300 text-lg">صندوق الوارد فارغ حالياً</p>
-                    <p class="text-xs text-slate-400 max-w-sm mx-auto">
-                        عند قيامك بإنشاء حساب جديد وإدخال بريدك الإلكتروني، ستصلك رسالة التحقق الأسطورية هنا فوراً!
-                    </p>
+            <div class="p-6">
+                <!-- Empty Inbox State -->
+                <div id="inbox-empty-state" class="text-center py-8 space-y-3">
+                    <i class="fa-regular fa-envelope-open text-4xl text-slate-500"></i>
+                    <p class="text-slate-300 font-bold text-sm">لا توجد رسائل تحقق جديدة حالياً</p>
+                    <p class="text-xs text-slate-400">عند إنشاء حساب جديد، سيصلك كود التحقق هنا فوراً!</p>
                 </div>
 
-                <!-- Epic Verification Email Card (Populated dynamically) -->
-                <div id="inbox-email-card" class="hidden rounded-2xl bg-cyber-dark/95 border border-cyber-cyan/40 overflow-hidden shadow-xl">
-                    <!-- Email Metadata Header -->
-                    <div class="p-4 bg-white/5 border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cyber-purple to-cyber-crimson flex items-center justify-center font-black text-white text-sm">
-                                OX
-                            </div>
+                <!-- Verification Email Card -->
+                <div id="inbox-email-card" class="hidden rounded-2xl bg-cyber-dark/90 border border-cyber-cyan/40 p-5 space-y-4">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-full bg-cyber-purple/30 flex items-center justify-center text-cyber-cyan font-black text-xs">OX</div>
                             <div>
-                                <p class="text-sm font-bold text-white">OMAREX Hub Security <span class="text-xs text-cyber-cyan font-normal">&lt;verify@omarexhub.gg&gt;</span></p>
-                                <p class="text-xs text-slate-400">إلى: <span id="email-to-display" class="text-white font-mono" dir="ltr"></span></p>
+                                <p class="text-xs font-extrabold text-white">OMAREX Hub Security</p>
+                                <p class="text-[11px] text-slate-400 font-mono" dir="ltr">noreply@omarexcub.com</p>
                             </div>
                         </div>
-                        <span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-400 text-[11px] font-bold">
-                            وصلت الآن • Now
-                        </span>
+                        <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">الآن</span>
                     </div>
 
-                    <!-- Epic HTML Email Body -->
-                    <div class="p-6 sm:p-8 text-center space-y-6 bg-gradient-to-b from-cyber-purple/10 to-transparent">
-                        <div class="inline-block px-4 py-1 rounded-full bg-cyber-gold/20 border border-cyber-gold/40 text-cyber-gold text-xs font-extrabold">
-                            🔐 رمز التحقق السري لحسابك
-                        </div>
-
-                        <h4 class="font-changa font-black text-2xl sm:text-3xl text-white">
-                            مرحباً بك يا <span id="email-user-display" class="text-cyber-cyan"></span> في OMAREX Hub!
-                        </h4>
-
-                        <p class="text-slate-300 text-sm max-w-md mx-auto leading-relaxed">
-                            لقد طلبت إنشاء حساب جديد في المنصة الرسمية لقناة <strong class="text-white">OMAREXCUB</strong>. استخدم كود التحقق بالأسفل لتفعيل حسابك فوراً:
+                    <div class="space-y-2 text-sm">
+                        <p class="text-xs text-slate-400">إلى: <span id="email-to-display" class="text-cyber-cyan font-mono"></span></p>
+                        <p class="text-white font-bold">مرحباً <span id="email-user-display" class="text-cyber-gold"></span>! 👋</p>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            شكراً لتسجيلك في منصة <strong class="text-white">OMAREX Hub</strong>. استخدم كود التحقق التالي لتفعيل حسابك:
                         </p>
+                    </div>
 
-                        <!-- THE VERIFY CODE BOX WITH ONE-CLICK COPY -->
-                        <div class="max-w-xs mx-auto p-4 rounded-2xl bg-black/70 border-2 border-dashed border-cyber-gold shadow-inner space-y-3">
-                            <p class="text-[11px] text-slate-400 uppercase tracking-widest">Your Verify Code</p>
-                            <div id="email-code-display" dir="ltr" class="font-mono font-black text-4xl tracking-[0.25em] text-cyber-gold text-glow-gold select-all">
-                                000000
-                            </div>
-                            <button onclick="copyVerifyCodeFromInbox()" class="btn-cyan w-full py-2.5 rounded-xl font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer">
-                                <i class="fa-solid fa-copy"></i>
-                                <span>نسخ الكود وإلصاقه تلقائياً</span>
-                            </button>
+                    <!-- Highlighted Verify Code Box -->
+                    <div class="p-4 rounded-xl bg-gradient-to-r from-cyber-purple/20 via-cyber-dark to-cyber-cyan/20 border-2 border-dashed border-cyber-gold text-center space-y-3">
+                        <span class="text-[11px] text-slate-400 uppercase tracking-widest block">Verify Code</span>
+                        <div id="email-code-display" dir="ltr" class="font-mono font-black text-3xl sm:text-4xl tracking-[0.35em] text-cyber-gold text-glow-gold select-all">
+                            123456
                         </div>
-
-                        <p class="text-[11px] text-slate-500">
-                            إذا لم تقم بطلب هذا الكود، يمكنك تجاهل هذه الرسالة بأمان.
-                        </p>
+                        <button type="button" onclick="copyVerifyCodeFromInbox()" class="btn-cyan w-full py-2.5 rounded-xl font-black text-xs flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-copy"></i>
+                            <span>نسخ الكود وإلصاقه تلقائياً</span>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- ========================================================= -->
+    <!-- MODAL 3: ADMIN EXCLUSIVE NEWS EDITOR (ADD / EDIT + IMAGE) -->
+    <!-- ========================================================= -->
+    <div id="news-editor-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+        <div class="cyber-glass w-full max-w-lg rounded-3xl border-2 border-cyber-gold/60 shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-[pageFadeIn_0.3s_ease]">
+            
+            <!-- Modal Header -->
+            <div class="p-5 bg-gradient-to-l from-cyber-gold/25 via-cyber-dark to-cyber-crimson/25 border-b border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-cyber-gold text-cyber-dark flex items-center justify-center text-lg font-black shadow">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div>
+                        <h3 id="news-editor-title" class="font-changa font-black text-xl text-white">إضافة خبر جديد</h3>
+                        <p class="text-xs text-cyber-gold font-bold">لوحة تحكم الأدمن الحصرية - OMAREXCUB</p>
+                    </div>
+                </div>
+                <button onclick="closeNewsEditorModal(); playSound('click')" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-cyber-crimson/20 hover:text-cyber-crimson text-slate-400 flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- News Editor Form -->
+            <form onsubmit="handleSaveNewsSubmit(event)" class="p-6 overflow-y-auto space-y-4">
+                <input type="hidden" id="edit-news-id" value="">
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">عنوان الخبر *</label>
+                    <input type="text" id="news-input-title" required placeholder="مثال: موعد نزول الحلقة الأولى من ZenithSMP S6!" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-gold focus:outline-none text-white text-sm">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">تصنيف الخبر (Tag)</label>
+                        <select id="news-input-tag" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-gold focus:outline-none text-white text-sm">
+                            <option value="خبر عاجل 🔥">خبر عاجل 🔥</option>
+                            <option value="سلسلة ZenithSMP ⚔️">سلسلة ZenithSMP ⚔️</option>
+                            <option value="تحديث السيرفر 🚀">تحديث السيرفر 🚀</option>
+                            <option value="فعالية وبطولة 🏆">فعالية وبطولة 🏆</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">تاريخ / شارة النشر</label>
+                        <input type="text" id="news-input-badge" value="جديد • حصري" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-gold focus:outline-none text-white text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">تفاصيل ومحتوى الخبر *</label>
+                    <textarea id="news-input-content" required rows="4" placeholder="اكتب تفاصيل الخبر الأسطوري هنا..." class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-gold focus:outline-none text-white text-sm leading-relaxed"></textarea>
+                </div>
+
+                <!-- Image Upload Section -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-300">صورة الخبر (رفع من جهازك)</label>
+                    <label for="news-image-file" class="flex flex-col items-center justify-center w-full p-4 rounded-2xl border-2 border-dashed border-cyber-cyan/50 bg-cyber-dark/70 hover:bg-cyber-cyan/10 cursor-pointer transition-all text-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up text-2xl text-cyber-cyan"></i>
+                        <span class="text-xs font-bold text-white">اضغط هنا لاختيار صورة من جهازك (PNG, JPG, WEBP)</span>
+                        <span class="text-[11px] text-slate-400">يتم ضغط الصورة وحفظها تلقائياً في الموقع</span>
+                        <input type="file" id="news-image-file" accept="image/*" onchange="handleNewsImageUpload(event)" class="hidden">
+                    </label>
+
+                    <!-- Live Image Preview -->
+                    <div id="news-image-preview-box" class="hidden relative rounded-2xl overflow-hidden border border-cyber-gold/50 mt-2">
+                        <img id="news-image-preview" src="" alt="معاينة الصورة" class="w-full h-44 object-cover">
+                        <button type="button" onclick="clearNewsImagePreview()" class="absolute top-2 left-2 px-3 py-1 rounded-lg bg-cyber-crimson text-white text-xs font-bold shadow">
+                            <i class="fa-solid fa-trash ml-1"></i> إزالة الصورة
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 pt-3 border-t border-white/10">
+                    <button type="submit" class="btn-epic flex-grow py-3.5 rounded-xl font-black text-white text-sm shadow-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span id="news-save-btn-text">نشر الخبر الآن</span>
+                    </button>
+                    <button type="button" onclick="closeNewsEditorModal()" class="px-5 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-bold text-sm">
+                        إلغاء
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
         /* =========================================================
-           1. WEB AUDIO API SOUND SYNTHESIZER (NO EXTERNAL FILES)
+           1. WEB AUDIO SOUND EFFECTS SYNTHESIZER (NO EXTERNAL URLS)
            ========================================================= */
-        let isMuted = false;
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
         let audioCtx = null;
+        let isMuted = false;
 
         function initAudio() {
             if (!audioCtx) {
-                audioCtx = new AudioCtx();
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
@@ -1059,8 +1005,8 @@
                     osc.stop(now + 0.08);
                 } else if (type === 'copy') {
                     osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(587.33, now); // D5
-                    osc.frequency.setValueAtTime(880, now + 0.09); // A5
+                    osc.frequency.setValueAtTime(587.33, now);
+                    osc.frequency.setValueAtTime(880, now + 0.09);
                     gain.gain.setValueAtTime(0.12, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
                     osc.start(now);
@@ -1074,21 +1020,20 @@
                     osc.start(now);
                     osc.stop(now + 0.14);
                 } else if (type === 'email') {
-                    // Epic futuristic notification chime
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(659.25, now); // E5
-                    osc.frequency.setValueAtTime(830.61, now + 0.1); // G#5
-                    osc.frequency.setValueAtTime(987.77, now + 0.2); // B5
+                    osc.frequency.setValueAtTime(659.25, now);
+                    osc.frequency.setValueAtTime(830.61, now + 0.1);
+                    osc.frequency.setValueAtTime(987.77, now + 0.2);
                     gain.gain.setValueAtTime(0.14, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
                     osc.start(now);
                     osc.stop(now + 0.45);
                 } else if (type === 'success') {
                     osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(523.25, now); // C5
-                    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
-                    osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
-                    osc.frequency.setValueAtTime(1046.50, now + 0.3); // C6
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.1);
+                    osc.frequency.setValueAtTime(783.99, now + 0.2);
+                    osc.frequency.setValueAtTime(1046.50, now + 0.3);
                     gain.gain.setValueAtTime(0.15, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
                     osc.start(now);
@@ -1113,7 +1058,7 @@
         }
 
         /* =========================================================
-           2. TOAST NOTIFICATION SYSTEM (NO ALERT() USED)
+           2. TOAST NOTIFICATION SYSTEM
            ========================================================= */
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -1152,18 +1097,15 @@
            3. MULTI-PAGE NAVIGATION LOGIC
            ========================================================= */
         function navigateTo(pageId) {
-            // Hide all sections
             document.querySelectorAll('.page-section').forEach(sec => {
                 sec.classList.remove('active');
             });
 
-            // Show target section
             const target = document.getElementById(`page-${pageId}`);
             if (target) {
                 target.classList.add('active');
             }
 
-            // Update Desktop Nav Active State
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.className = 'nav-btn px-5 py-2.5 rounded-xl font-bold text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all flex items-center gap-2';
             });
@@ -1186,7 +1128,6 @@
         function copyServerIP() {
             const ipText = 'omarexnetwork.play-mc.fun';
             
-            // Modern Clipboard API + Fallback for iframe environments
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(ipText).then(() => {
                     triggerCopySuccessFeedback();
@@ -1237,19 +1178,37 @@
         }
 
         /* =========================================================
-           5. AUTHENTICATION & SIMULATED INBOX VERIFICATION SYSTEM
+           5. AUTHENTICATION, 24H SESSION & EXCLUSIVE ADMIN SYSTEM
            ========================================================= */
         const STORAGE_USERS_KEY = 'omarex_hub_users_db';
-        const STORAGE_SESSION_KEY = 'omarex_hub_active_user';
+        const STORAGE_SESSION_KEY = 'omarex_hub_active_session';
+        const STORAGE_NEWS_KEY = 'omarex_hub_custom_news';
+        const SESSION_DURATION_MS = 24 * 60 * 60 * 1000;
 
-        let pendingRegistration = null; // Stores { username, email, password, code }
+        const ADMIN_ACCOUNT = {
+            username: 'OMAREXCUB',
+            email: 'admin@omarexcub.com',
+            password: 'OMAR_ADMIN_2026',
+            role: 'admin',
+            verified: true
+        };
+
+        let pendingRegistration = null;
+        let currentUploadedImageBase64 = '';
 
         function getUsersDB() {
+            let users = [];
             try {
-                return JSON.parse(localStorage.getItem(STORAGE_USERS_KEY)) || [];
+                users = JSON.parse(localStorage.getItem(STORAGE_USERS_KEY)) || [];
             } catch {
-                return [];
+                users = [];
             }
+            const adminIdx = users.findIndex(u => u.email.toLowerCase() === ADMIN_ACCOUNT.email);
+            if (adminIdx === -1) {
+                users.unshift(ADMIN_ACCOUNT);
+                saveUsersDB(users);
+            }
+            return users;
         }
 
         function saveUsersDB(users) {
@@ -1258,26 +1217,70 @@
 
         function getActiveUser() {
             try {
-                return JSON.parse(localStorage.getItem(STORAGE_SESSION_KEY));
+                const session = JSON.parse(localStorage.getItem(STORAGE_SESSION_KEY));
+                if (!session || !session.user || !session.expiresAt) {
+                    return null;
+                }
+                if (Date.now() > session.expiresAt) {
+                    localStorage.removeItem(STORAGE_SESSION_KEY);
+                    setTimeout(() => {
+                        showToast('انتهت مدة الجلسة (24 ساعة)! يرجى تسجيل الدخول بحسابك مجدداً 🔒', 'gold');
+                    }, 500);
+                    return null;
+                }
+                return session.user;
             } catch {
                 return null;
             }
         }
 
+        function getSessionRemainingText() {
+            try {
+                const session = JSON.parse(localStorage.getItem(STORAGE_SESSION_KEY));
+                if (!session || !session.expiresAt) return '24 ساعة';
+                const diffMs = Math.max(0, session.expiresAt - Date.now());
+                const hours = Math.floor(diffMs / (1000 * 60 * 60));
+                const mins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                return `${hours} ساعة و ${mins} دقيقة`;
+            } catch {
+                return '24 ساعة';
+            }
+        }
+
         function setActiveUser(user) {
             if (user) {
-                localStorage.setItem(STORAGE_SESSION_KEY, JSON.stringify(user));
+                const sessionPayload = {
+                    user: user,
+                    loginAt: Date.now(),
+                    expiresAt: Date.now() + SESSION_DURATION_MS
+                };
+                localStorage.setItem(STORAGE_SESSION_KEY, JSON.stringify(sessionPayload));
             } else {
                 localStorage.removeItem(STORAGE_SESSION_KEY);
             }
             updateAuthUI();
+            renderDynamicNews();
+        }
+
+        function isCurrentUserAdmin() {
+            const user = getActiveUser();
+            return user && user.role === 'admin' && user.email.toLowerCase() === ADMIN_ACCOUNT.email;
         }
 
         function updateAuthUI() {
             const user = getActiveUser();
+            const isAdmin = isCurrentUserAdmin();
+
             const headerBtnText = document.getElementById('header-auth-text');
+            const headerAdminBadge = document.getElementById('header-admin-badge');
+            const headerAuthIcon = document.getElementById('header-auth-icon');
+
             const guestView = document.getElementById('auth-guest-view');
             const profileView = document.getElementById('auth-profile-view');
+
+            const adminAddNewsBtn = document.getElementById('admin-add-news-btn');
+            const profileAdminPanelBtn = document.getElementById('profile-admin-panel-btn');
+            const profileRoleBadge = document.getElementById('profile-role-badge');
 
             if (user) {
                 headerBtnText.textContent = user.username;
@@ -1287,10 +1290,31 @@
                 document.getElementById('profile-username').textContent = user.username;
                 document.getElementById('profile-email').textContent = user.email;
                 document.getElementById('profile-avatar-initials').textContent = user.username.slice(0, 2).toUpperCase();
+                document.getElementById('profile-session-remaining').textContent = getSessionRemainingText();
+
+                if (isAdmin) {
+                    headerAdminBadge.classList.remove('hidden');
+                    headerAuthIcon.className = 'fa-solid fa-crown text-cyber-gold';
+                    adminAddNewsBtn.classList.remove('hidden');
+                    profileAdminPanelBtn.classList.remove('hidden');
+                    profileRoleBadge.textContent = 'المالك والأدمن الرسمي (ADMIN) 👑';
+                    profileRoleBadge.className = 'px-3 py-1 rounded-full bg-cyber-crimson/25 border border-cyber-gold text-cyber-gold text-xs font-black';
+                } else {
+                    headerAdminBadge.classList.add('hidden');
+                    headerAuthIcon.className = 'fa-solid fa-user-astronaut';
+                    adminAddNewsBtn.classList.add('hidden');
+                    profileAdminPanelBtn.classList.add('hidden');
+                    profileRoleBadge.textContent = 'عضو موثق في OMAREX Hub ⭐';
+                    profileRoleBadge.className = 'px-3 py-1 rounded-full bg-cyber-gold/20 border border-cyber-gold/40 text-cyber-gold text-xs font-extrabold';
+                }
             } else {
                 headerBtnText.textContent = 'تسجيل الدخول';
+                headerAdminBadge.classList.add('hidden');
+                headerAuthIcon.className = 'fa-solid fa-user-astronaut';
                 guestView.classList.remove('hidden');
                 profileView.classList.add('hidden');
+                adminAddNewsBtn.classList.add('hidden');
+                profileAdminPanelBtn.classList.add('hidden');
             }
         }
 
@@ -1332,15 +1356,20 @@
             }
         }
 
-        // STEP 1: Handle Registration & Send Code to Simulated Inbox
         function handleRegisterSubmit(e) {
             e.preventDefault();
             const username = document.getElementById('reg-username').value.trim();
             const email = document.getElementById('reg-email').value.trim().toLowerCase();
             const password = document.getElementById('reg-password').value;
 
+            if (email === ADMIN_ACCOUNT.email) {
+                playSound('click');
+                showToast('هذا البريد محجوز لإدارة الموقع فقط!', 'error');
+                return;
+            }
+
             const users = getUsersDB();
-            if (users.some(u => u.email === email)) {
+            if (users.some(u => u.email.toLowerCase() === email)) {
                 playSound('click');
                 showToast('هذا البريد الإلكتروني مسجل مسبقاً! قم بتسجيل الدخول.', 'error');
                 switchAuthTab('login');
@@ -1348,22 +1377,18 @@
                 return;
             }
 
-            // Generate 6-digit random Verify Code
             const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
             pendingRegistration = { username, email, password, code: verifyCode };
 
-            // Populate Simulated Inbox
             document.getElementById('inbox-empty-state').classList.add('hidden');
             document.getElementById('inbox-email-card').classList.remove('hidden');
             document.getElementById('email-to-display').textContent = email;
             document.getElementById('email-user-display').textContent = username;
             document.getElementById('email-code-display').textContent = verifyCode;
 
-            // Show Badge on Header Inbox Icon
             const badge = document.getElementById('inbox-badge');
             badge.classList.remove('hidden');
 
-            // Switch Auth Modal to Verification Code Input
             document.getElementById('register-form').classList.add('hidden');
             document.getElementById('auth-tabs').classList.add('hidden');
             document.getElementById('verify-step-box').classList.remove('hidden');
@@ -1372,25 +1397,21 @@
             playSound('email');
             showToast('وصلتك رسالة جديدة في صندوق الوارد (Inbox) تحتوي على كود التحقق! 📩', 'gold');
 
-            // Automatically open the Inbox Modal after a brief dramatic pause so user sees the email
             setTimeout(() => {
                 openInboxModal();
             }, 650);
         }
 
-        // Copy Verify Code directly from Inbox & Auto-Fill
         function copyVerifyCodeFromInbox() {
             if (!pendingRegistration) return;
             const code = pendingRegistration.code;
 
-            // Copy to clipboard
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(code).catch(() => {});
             } else {
                 fallbackCopyText(code);
             }
 
-            // Auto-fill into verification input for convenience
             const input = document.getElementById('verify-code-input');
             if (input) {
                 input.value = code;
@@ -1401,7 +1422,6 @@
             closeInboxModal();
         }
 
-        // STEP 2: Verify Code & Complete Account Creation
         function handleVerifyCodeSubmit(e) {
             e.preventDefault();
             if (!pendingRegistration) return;
@@ -1414,6 +1434,7 @@
                     username: pendingRegistration.username,
                     email: pendingRegistration.email,
                     password: pendingRegistration.password,
+                    role: 'user',
                     verified: true,
                     joinedAt: new Date().toISOString()
                 };
@@ -1422,14 +1443,13 @@
                 saveUsersDB(users);
                 setActiveUser(newUser);
 
-                // Reset pending state
                 pendingRegistration = null;
                 document.getElementById('verify-code-input').value = '';
                 document.getElementById('register-form').reset();
                 document.getElementById('inbox-badge').classList.add('hidden');
 
                 playSound('success');
-                showToast(`أهلاً بك يا ${newUser.username}! تم تفعيل حسابك وتسجيل الدخول بنجاح 🎉`, 'success');
+                showToast(`أهلاً بك يا ${newUser.username}! تم حفظ حسابك وتفعيل الجلسة لمدة 24 ساعة 🎉`, 'success');
                 closeAuthModal();
             } else {
                 playSound('click');
@@ -1437,20 +1457,23 @@
             }
         }
 
-        // STEP 3: Real Login Verification against localStorage
         function handleLoginSubmit(e) {
             e.preventDefault();
             const email = document.getElementById('login-email').value.trim().toLowerCase();
             const password = document.getElementById('login-password').value;
 
             const users = getUsersDB();
-            const matchedUser = users.find(u => u.email === email && u.password === password);
+            const matchedUser = users.find(u => u.email.toLowerCase() === email && u.password === password);
 
             if (matchedUser) {
                 setActiveUser(matchedUser);
                 document.getElementById('login-form').reset();
                 playSound('success');
-                showToast(`مرحباً بعودتك يا ${matchedUser.username}! تم تسجيل الدخول بنجاح 🚀`, 'success');
+                if (matchedUser.role === 'admin') {
+                    showToast('مرحباً بعودتك يا قائد OMAREXCUB! تم تفعيل صلاحيات الأدمن 👑', 'gold');
+                } else {
+                    showToast(`مرحباً بعودتك يا ${matchedUser.username}! تم تسجيل الدخول لمدة 24 ساعة 🚀`, 'success');
+                }
                 closeAuthModal();
             } else {
                 playSound('click');
@@ -1466,7 +1489,6 @@
             closeAuthModal();
         }
 
-        // Inbox Modal Controls
         function openInboxModal() {
             const modal = document.getElementById('inbox-modal');
             modal.classList.remove('hidden');
@@ -1481,7 +1503,253 @@
         }
 
         /* =========================================================
-           6. ANIMATED COSMIC PARTICLE CANVAS BACKGROUND
+           6. ADMIN EXCLUSIVE NEWS MANAGEMENT SYSTEM (CRUD + IMAGE)
+           ========================================================= */
+        const DEFAULT_NEWS_ITEMS = [
+            {
+                id: 'news-default-1',
+                title: 'تجهيزات خارقة للموسم السادس في ZenithSMP',
+                tag: 'سلسلة ZenithSMP ⚔️',
+                badge: 'ZenithSMP S6',
+                content: 'بعد الأحداث الغامضة في المواسم السابقة، "الغريب" يعود بقوة لم يسبق لها مثيل. ترقبوا الحلقة الأولى قريباً على القناة!',
+                image: ''
+            },
+            {
+                id: 'news-default-2',
+                title: 'سجل حسابك الآن في المنصة واحصل على بطاقة العضو',
+                tag: 'تحديث السيرفر 🚀',
+                badge: 'OMAREX Hub',
+                content: 'أنشئ حسابك مجاناً في OMAREX Hub عبر نظام التحقق الفوري بالبريد الإلكتروني لتكون جاهزاً للفعاليات والبطولات القادمة.',
+                image: ''
+            }
+        ];
+
+        function getNewsList() {
+            try {
+                const stored = localStorage.getItem(STORAGE_NEWS_KEY);
+                if (!stored) {
+                    localStorage.setItem(STORAGE_NEWS_KEY, JSON.stringify(DEFAULT_NEWS_ITEMS));
+                    return DEFAULT_NEWS_ITEMS;
+                }
+                return JSON.parse(stored);
+            } catch {
+                return DEFAULT_NEWS_ITEMS;
+            }
+        }
+
+        function saveNewsList(list) {
+            try {
+                localStorage.setItem(STORAGE_NEWS_KEY, JSON.stringify(list));
+            } catch (e) {
+                showToast('مساحة التخزين ممتلئة، حاول استخدام صورة أصغر حجماً!', 'error');
+            }
+        }
+
+        function renderDynamicNews() {
+            const grid = document.getElementById('dynamic-news-grid');
+            if (!grid) return;
+
+            const newsList = getNewsList();
+            const isAdmin = isCurrentUserAdmin();
+
+            if (newsList.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-8 text-slate-400 text-sm">لا توجد أخبار إضافية حالياً.</div>`;
+                return;
+            }
+
+            grid.innerHTML = newsList.map(item => `
+                <div class="cyber-glass cyber-glass-hover rounded-2xl overflow-hidden flex flex-col justify-between border border-white/10">
+                    <div>
+                        ${item.image ? `
+                            <div class="w-full h-52 overflow-hidden border-b border-white/10 relative">
+                                <img src="${item.image}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                            </div>
+                        ` : ''}
+                        <div class="p-6 space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="px-3 py-1 rounded-lg bg-cyber-purple/20 text-cyber-cyan border border-cyber-purple/40 text-xs font-bold">
+                                    ${escapeHtml(item.tag)}
+                                </span>
+                                <span class="text-xs text-slate-400 font-semibold">${escapeHtml(item.badge)}</span>
+                            </div>
+                            <h4 class="font-changa font-bold text-xl text-white leading-snug">${escapeHtml(item.title)}</h4>
+                            <p class="text-slate-300 text-sm leading-relaxed whitespace-pre-line">${escapeHtml(item.content)}</p>
+                        </div>
+                    </div>
+
+                    ${isAdmin ? `
+                        <div class="px-6 py-3.5 bg-cyber-dark/80 border-t border-cyber-gold/30 flex items-center justify-between gap-2">
+                            <span class="text-[11px] text-cyber-gold font-bold"><i class="fa-solid fa-crown ml-1"></i> تحكم الأدمن</span>
+                            <div class="flex items-center gap-2">
+                                <button onclick="openNewsEditorModal('${item.id}'); playSound('click')" class="px-3.5 py-1.5 rounded-lg bg-cyber-cyan/20 hover:bg-cyber-cyan hover:text-cyber-dark text-cyber-cyan font-bold text-xs transition-all cursor-pointer">
+                                    <i class="fa-solid fa-pen ml-1"></i> تعديل
+                                </button>
+                                <button onclick="deleteNewsItem('${item.id}')" class="px-3.5 py-1.5 rounded-lg bg-cyber-crimson/20 hover:bg-cyber-crimson text-cyber-crimson hover:text-white font-bold text-xs transition-all cursor-pointer">
+                                    <i class="fa-solid fa-trash ml-1"></i> حذف
+                                </button>
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function openNewsEditorModal(editId = '') {
+            if (!isCurrentUserAdmin()) {
+                showToast('عذراً! هذه الميزة حصرية لحساب الأدمن فقط.', 'error');
+                return;
+            }
+
+            const modal = document.getElementById('news-editor-modal');
+            const titleHeader = document.getElementById('news-editor-title');
+            const saveBtnText = document.getElementById('news-save-btn-text');
+
+            document.getElementById('edit-news-id').value = editId;
+            document.getElementById('news-image-file').value = '';
+
+            if (editId) {
+                const item = getNewsList().find(n => n.id === editId);
+                if (!item) return;
+                titleHeader.textContent = 'تعديل الخبر';
+                saveBtnText.textContent = 'حفظ التعديلات';
+                document.getElementById('news-input-title').value = item.title;
+                document.getElementById('news-input-tag').value = item.tag;
+                document.getElementById('news-input-badge').value = item.badge;
+                document.getElementById('news-input-content').value = item.content;
+
+                if (item.image) {
+                    currentUploadedImageBase64 = item.image;
+                    document.getElementById('news-image-preview').src = item.image;
+                    document.getElementById('news-image-preview-box').classList.remove('hidden');
+                } else {
+                    clearNewsImagePreview();
+                }
+            } else {
+                titleHeader.textContent = 'إضافة خبر جديد';
+                saveBtnText.textContent = 'نشر الخبر الآن';
+                document.getElementById('news-input-title').value = '';
+                document.getElementById('news-input-tag').value = 'خبر عاجل 🔥';
+                document.getElementById('news-input-badge').value = 'جديد • حصري';
+                document.getElementById('news-input-content').value = '';
+                clearNewsImagePreview();
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeNewsEditorModal() {
+            const modal = document.getElementById('news-editor-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Handle & Compress Uploaded Image to Base64 so localStorage saves smoothly
+        function handleNewsImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const tempCanvas = document.createElement('canvas');
+                    const maxWidth = 800;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > maxWidth) {
+                        height = Math.round((height * maxWidth) / width);
+                        width = maxWidth;
+                    }
+
+                    tempCanvas.width = width;
+                    tempCanvas.height = height;
+                    const tCtx = tempCanvas.getContext('2d');
+                    tCtx.drawImage(img, 0, 0, width, height);
+
+                    currentUploadedImageBase64 = tempCanvas.toDataURL('image/jpeg', 0.8);
+                    document.getElementById('news-image-preview').src = currentUploadedImageBase64;
+                    document.getElementById('news-image-preview-box').classList.remove('hidden');
+                    playSound('copy');
+                    showToast('تم تجهيز الصورة بنجاح! 🖼️', 'success');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearNewsImagePreview() {
+            currentUploadedImageBase64 = '';
+            document.getElementById('news-image-file').value = '';
+            document.getElementById('news-image-preview').src = '';
+            document.getElementById('news-image-preview-box').classList.add('hidden');
+        }
+
+        function handleSaveNewsSubmit(e) {
+            e.preventDefault();
+            if (!isCurrentUserAdmin()) return;
+
+            const editId = document.getElementById('edit-news-id').value;
+            const title = document.getElementById('news-input-title').value.trim();
+            const tag = document.getElementById('news-input-tag').value;
+            const badge = document.getElementById('news-input-badge').value.trim() || 'جديد';
+            const content = document.getElementById('news-input-content').value.trim();
+
+            let list = getNewsList();
+
+            if (editId) {
+                const idx = list.findIndex(n => n.id === editId);
+                if (idx !== -1) {
+                    list[idx] = {
+                        ...list[idx],
+                        title,
+                        tag,
+                        badge,
+                        content,
+                        image: currentUploadedImageBase64
+                    };
+                }
+                showToast('تم تعديل الخبر وحفظ التغييرات بنجاح ✅', 'success');
+            } else {
+                const newEntry = {
+                    id: 'news-' + Date.now(),
+                    title,
+                    tag,
+                    badge,
+                    content,
+                    image: currentUploadedImageBase64
+                };
+                list.unshift(newEntry);
+                showToast('تم نشر الخبر الجديد في الصفحة الرئيسية بنجاح 🎉', 'success');
+            }
+
+            saveNewsList(list);
+            renderDynamicNews();
+            playSound('success');
+            closeNewsEditorModal();
+        }
+
+        function deleteNewsItem(newsId) {
+            if (!isCurrentUserAdmin()) return;
+            let list = getNewsList().filter(n => n.id !== newsId);
+            saveNewsList(list);
+            renderDynamicNews();
+            playSound('click');
+            showToast('تم حذف الخبر بنجاح 🗑️', 'info');
+        }
+
+        /* =========================================================
+           7. ANIMATED COSMIC PARTICLE CANVAS BACKGROUND
            ========================================================= */
         const canvas = document.getElementById('cosmic-canvas');
         const ctx = canvas.getContext('2d');
@@ -1553,9 +1821,11 @@
         }
 
         window.onload = function () {
+            getUsersDB(); // Initialize DB with exclusive Admin account
             initParticles();
             animateParticles();
             updateAuthUI();
+            renderDynamicNews();
         };
     </script>
 </body>
