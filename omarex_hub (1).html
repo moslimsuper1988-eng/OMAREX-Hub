@@ -1,0 +1,2940 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMAREX Hub | المنصة الرسمية لقناة OMAREXCUB وسيرفر OMAREX NETWORK</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cairo, Tajawal, Changa -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Changa:wght@600;700;800&family=Tajawal:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                        changa: ['Changa', 'sans-serif'],
+                        tajawal: ['Tajawal', 'sans-serif'],
+                    },
+                    colors: {
+                        cyber: {
+                            dark: '#06070d',
+                            card: '#0d101d',
+                            border: '#1e243d',
+                            purple: '#9d4edd',
+                            violet: '#7b2cbf',
+                            cyan: '#00f5d4',
+                            gold: '#ffbe0b',
+                            crimson: '#ff0055'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow-border': 'glowBorder 3s linear infinite',
+                        'shimmer': 'shimmer 2.5s infinite linear',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-14px)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #06070d;
+            color: #f8fafc;
+            font-family: 'Cairo', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #06070d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #9d4edd, #00f5d4);
+            border-radius: 9999px;
+        }
+
+        /* Epic Neon Text Effects */
+        .text-glow-purple {
+            text-shadow: 0 0 15px rgba(157, 78, 221, 0.8), 0 0 35px rgba(157, 78, 221, 0.5);
+        }
+        .text-glow-cyan {
+            text-shadow: 0 0 15px rgba(0, 245, 212, 0.8), 0 0 35px rgba(0, 245, 212, 0.4);
+        }
+        .text-glow-gold {
+            text-shadow: 0 0 18px rgba(255, 190, 11, 0.85), 0 0 40px rgba(255, 100, 0, 0.5);
+        }
+
+        /* Glassmorphism Cards */
+        .cyber-glass {
+            background: rgba(13, 16, 29, 0.72);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(157, 78, 221, 0.25);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .cyber-glass-hover {
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .cyber-glass-hover:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(0, 245, 212, 0.6);
+            box-shadow: 0 20px 50px -12px rgba(157, 78, 221, 0.35), 0 0 25px rgba(0, 245, 212, 0.2);
+        }
+
+        /* Epic Title Gradient */
+        .zenith-gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #ffbe0b 35%, #ff0055 70%, #9d4edd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 22px rgba(255, 0, 85, 0.45));
+        }
+
+        /* Animated Grid Overlay */
+        .cyber-grid-bg {
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(157, 78, 221, 0.06) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 245, 212, 0.06) 1px, transparent 1px);
+        }
+
+        /* Page Transitions */
+        .page-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .page-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: pageFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes pageFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px) scale(0.99);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Neon Button */
+        .btn-epic {
+            background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 50%, #ff0055 100%);
+            background-size: 200% auto;
+            transition: 0.4s;
+            box-shadow: 0 0 20px rgba(157, 78, 221, 0.5);
+        }
+        .btn-epic:hover {
+            background-position: right center;
+            box-shadow: 0 0 32px rgba(255, 0, 85, 0.75);
+            transform: translateY(-2px);
+        }
+
+        .btn-cyan {
+            background: linear-gradient(135deg, #00b4d8 0%, #00f5d4 100%);
+            color: #06070d;
+            box-shadow: 0 0 20px rgba(0, 245, 212, 0.4);
+            transition: 0.3s;
+        }
+        .btn-cyan:hover {
+            box-shadow: 0 0 32px rgba(0, 245, 212, 0.8);
+            transform: translateY(-2px);
+        }
+
+        /* Chains Overlay for Bedwars Coming Soon */
+        .locked-pattern {
+            background: repeating-linear-gradient(
+                -45deg,
+                rgba(6, 7, 13, 0.75),
+                rgba(6, 7, 13, 0.75) 14px,
+                rgba(255, 0, 85, 0.12) 14px,
+                rgba(255, 0, 85, 0.12) 28px
+            );
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative cyber-grid-bg selection:bg-cyber-purple selection:text-white">
+
+    <!-- Interactive Cosmic Particle Canvas -->
+    <canvas id="cosmic-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
+
+    <!-- Ambient Radial Spotlights -->
+    <div class="fixed top-[-15%] right-[-10%] w-[500px] h-[500px] bg-cyber-purple/20 rounded-full blur-[140px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-15%] left-[-10%] w-[500px] h-[500px] bg-cyber-cyan/15 rounded-full blur-[140px] pointer-events-none z-0"></div>
+
+    <!-- Custom Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="sticky top-0 z-40 cyber-glass border-b border-cyber-purple/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Brand Logo -->
+                <div onclick="navigateTo('home'); playSound('click')" class="flex items-center gap-3 cursor-pointer group">
+                    <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-cyber-purple via-cyber-crimson to-cyber-gold p-[2px] shadow-lg shadow-cyber-purple/40 group-hover:scale-105 transition-transform">
+                        <div class="w-full h-full bg-cyber-dark rounded-[14px] flex items-center justify-center relative overflow-hidden">
+                            <!-- Custom Cube SVG Icon -->
+                            <svg class="w-7 h-7 text-cyber-cyan group-hover:rotate-12 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="font-changa font-extrabold text-2xl sm:text-3xl tracking-wider bg-gradient-to-l from-cyber-cyan via-white to-cyber-purple bg-clip-text text-transparent">
+                            OMAREX <span class="text-cyber-gold">Hub</span>
+                        </span>
+                        <p class="text-[11px] text-slate-400 font-semibold tracking-wide -mt-1">المنصة الرسمية لـ OMAREXCUB</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center gap-2 bg-cyber-dark/70 p-1.5 rounded-2xl border border-white/10">
+                    <button onclick="navigateTo('home'); playSound('click')" id="nav-home" class="nav-btn active px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2 bg-cyber-purple/30 text-cyber-cyan border border-cyber-cyan/40 shadow-inner">
+                        <i class="fa-solid fa-house-chimney"></i>
+                        <span>الرئيسية (Home)</span>
+                    </button>
+                    <button onclick="navigateTo('server'); playSound('click')" id="nav-server" class="nav-btn px-5 py-2.5 rounded-xl font-bold text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-server"></i>
+                        <span>السيرفر (Server)</span>
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    </button>
+                    <button onclick="navigateTo('shop'); playSound('click')" id="nav-shop" class="nav-btn px-5 py-2.5 rounded-xl font-bold text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-store text-cyber-gold"></i>
+                        <span>المتجر (100+ عرض)</span>
+                        <span class="px-1.5 py-0.5 rounded bg-cyber-gold/20 text-cyber-gold text-[10px] font-black">100</span>
+                    </button>
+                    <button onclick="navigateTo('chat'); playSound('click')" id="nav-chat" class="nav-btn px-5 py-2.5 rounded-xl font-bold text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-comments text-cyber-cyan"></i>
+                        <span>الشات المباشر</span>
+                        <span class="w-2 h-2 rounded-full bg-cyber-crimson animate-ping"></span>
+                    </button>
+                    <button onclick="navigateTo('socials'); playSound('click')" id="nav-socials" class="nav-btn px-5 py-2.5 rounded-xl font-bold text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-share-nodes"></i>
+                        <span>التواصل الاجتماعي</span>
+                    </button>
+                </nav>
+
+                <!-- Right Controls: Sound Toggle, Simulated Inbox Button, Auth Button -->
+                <div class="flex items-center gap-2.5 sm:gap-3">
+                    <!-- User Points Pill (Click to go to Shop) -->
+                    <button onclick="navigateTo('shop'); playSound('click')" title="رصيد نقاطك - اضغط لفتح المتجر" class="px-3.5 py-2 rounded-xl cyber-glass border border-cyber-gold/40 flex items-center gap-2 text-cyber-gold hover:border-cyber-gold transition-all cursor-pointer">
+                        <i class="fa-solid fa-coins animate-pulse"></i>
+                        <span id="header-points-display" class="font-mono font-black text-sm">0</span>
+                    </button>
+
+                    <!-- Sound FX Toggle -->
+                    <button onclick="toggleMute()" id="sound-toggle-btn" title="تفعيل/كتم المؤثرات الصوتية" class="w-10 h-10 rounded-xl cyber-glass flex items-center justify-center text-cyber-cyan hover:border-cyber-cyan transition-all">
+                        <i id="sound-icon" class="fa-solid fa-volume-high"></i>
+                    </button>
+
+                    <!-- OMAREX Mail Inbox Quick Trigger -->
+                    <button onclick="openInboxModal(); playSound('modal')" title="صندوق الوارد - OMAREX Mail" class="relative w-10 h-10 rounded-xl cyber-glass flex items-center justify-center text-cyber-gold hover:border-cyber-gold transition-all">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+                        <span id="inbox-badge" class="hidden absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-cyber-crimson text-white text-[11px] font-extrabold flex items-center justify-center animate-bounce shadow-lg">1</span>
+                    </button>
+
+                    <!-- Auth / User Profile Button -->
+                    <button onclick="handleAuthHeaderClick(); playSound('modal')" id="header-auth-btn" class="btn-epic px-4 sm:px-5 py-2.5 rounded-xl font-bold text-sm text-white flex items-center gap-2 shadow-lg">
+                        <i id="header-auth-icon" class="fa-solid fa-user-astronaut"></i>
+                        <span id="header-auth-text">تسجيل الدخول</span>
+                        <span id="header-admin-badge" class="hidden px-2 py-0.5 rounded-md bg-cyber-gold text-cyber-dark text-[10px] font-black tracking-wider uppercase shadow">ADMIN</span>
+                    </button>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-xl cyber-glass flex items-center justify-center text-white">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Dropdown Navigation -->
+            <div id="mobile-menu" class="hidden md:hidden pb-4 pt-2 border-t border-white/10 flex flex-col gap-2">
+                <button onclick="navigateTo('home'); toggleMobileMenu(); playSound('click')" class="mobile-nav-btn w-full text-right px-4 py-3 rounded-xl font-bold text-sm bg-cyber-purple/25 text-cyber-cyan flex items-center gap-3">
+                    <i class="fa-solid fa-house-chimney"></i> الرئيسية (Home)
+                </button>
+                <button onclick="navigateTo('server'); toggleMobileMenu(); playSound('click')" class="mobile-nav-btn w-full text-right px-4 py-3 rounded-xl font-bold text-sm text-slate-300 hover:bg-white/5 flex items-center gap-3">
+                    <i class="fa-solid fa-server text-emerald-400"></i> السيرفر (Server)
+                </button>
+                <button onclick="navigateTo('shop'); toggleMobileMenu(); playSound('click')" class="mobile-nav-btn w-full text-right px-4 py-3 rounded-xl font-bold text-sm text-slate-300 hover:bg-white/5 flex items-center gap-3">
+                    <i class="fa-solid fa-store text-cyber-gold"></i> المتجر الضخم (100 عنصر)
+                </button>
+                <button onclick="navigateTo('chat'); toggleMobileMenu(); playSound('click')" class="mobile-nav-btn w-full text-right px-4 py-3 rounded-xl font-bold text-sm text-slate-300 hover:bg-white/5 flex items-center gap-3">
+                    <i class="fa-solid fa-comments text-cyber-cyan"></i> الدردشة الحية المباشرة (Live Chat)
+                </button>
+                <button onclick="navigateTo('socials'); toggleMobileMenu(); playSound('click')" class="mobile-nav-btn w-full text-right px-4 py-3 rounded-xl font-bold text-sm text-slate-300 hover:bg-white/5 flex items-center gap-3">
+                    <i class="fa-solid fa-share-nodes text-cyber-purple"></i> مواقع التواصل الاجتماعي
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN CONTENT AREA ================= -->
+    <main class="flex-grow relative z-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+
+        <!-- ========================================================= -->
+        <!-- PAGE 1: HOME (الرئيسية)                                   -->
+        <!-- ========================================================= -->
+        <section id="page-home" class="page-section active space-y-16">
+            
+            <!-- EPIC HERO SECTION: ZENITHSMP SEASON 6 -->
+            <div class="relative rounded-3xl cyber-glass p-6 sm:p-12 lg:p-16 overflow-hidden border-2 border-cyber-purple/40 shadow-2xl">
+                <!-- Background Glowing Orbs & Sword/Lightning SVG Decor -->
+                <div class="absolute -top-24 -left-24 w-96 h-96 bg-cyber-crimson/25 rounded-full blur-[100px] pointer-events-none"></div>
+                <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-cyber-gold/20 rounded-full blur-[100px] pointer-events-none"></div>
+                
+                <!-- Decorative Netherite Sword / Lightning Emblem on Side -->
+                <div class="hidden lg:flex absolute left-10 top-1/2 -translate-y-1/2 opacity-20 pointer-events-none animate-float">
+                    <svg class="w-72 h-72 text-cyber-gold" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                </div>
+
+                <div class="relative z-10 max-w-4xl mx-auto text-center space-y-6">
+                    <!-- Top Series Tag -->
+                    <div class="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-cyber-crimson/20 border border-cyber-crimson/50 text-cyber-gold font-extrabold text-xs sm:text-sm tracking-wider shadow-lg">
+                        <i class="fa-solid fa-fire-flame-curved text-cyber-crimson animate-pulse"></i>
+                        <span>سلسلة OMAREXCUB الأسطورية تعود من جديد</span>
+                        <i class="fa-solid fa-bolt text-cyber-gold"></i>
+                    </div>
+
+                    <!-- MASSIVE HERO TITLE -->
+                    <h1 class="font-changa font-black text-4xl sm:text-6xl lg:text-7xl leading-tight tracking-tight">
+                        <span class="block text-white drop-shadow-lg mb-2">الجزء السادس من سلسلتي</span>
+                        <span class="block zenith-gradient-text text-5xl sm:text-7xl lg:text-8xl py-2">
+                            سيرفر ZenithSMP
+                        </span>
+                        <span class="block text-2xl sm:text-4xl lg:text-5xl text-cyber-cyan text-glow-cyan mt-3 font-extrabold">
+                            الغريب رجع... بس رجع أقوى! ⚡🔥
+                        </span>
+                    </h1>
+
+                    <!-- EPIC COMING SOON BADGE -->
+                    <div class="pt-4 flex flex-col items-center justify-center gap-5">
+                        <div class="relative group">
+                            <div class="absolute -inset-1 bg-gradient-to-r from-cyber-gold via-cyber-crimson to-cyber-purple rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-500 animate-pulse"></div>
+                            <div class="relative px-10 py-4 bg-cyber-dark rounded-2xl border border-cyber-gold/60 flex items-center gap-4">
+                                <span class="w-3.5 h-3.5 rounded-full bg-cyber-gold animate-ping"></span>
+                                <span class="font-changa font-black text-3xl sm:text-5xl tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-cyber-gold via-white to-cyber-cyan">
+                                    COMING SOON
+                                </span>
+                                <span class="w-3.5 h-3.5 rounded-full bg-cyber-crimson animate-ping"></span>
+                            </div>
+                        </div>
+
+                        <p class="text-slate-300 text-base sm:text-lg max-w-2xl leading-relaxed font-medium">
+                            تحالفات جديدة، أسرار غامضة، ومعارك طاحنة بأقوى تجهيزات النذرايت! استعدوا لأضخم موسم في تاريخ <span class="text-cyber-gold font-bold">ZenithSMP</span> على قناة <span class="text-cyber-cyan font-bold">OMAREXCUB</span>.
+                        </p>
+
+                        <!-- Action Buttons -->
+                        <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+                            <button onclick="navigateTo('server'); playSound('click')" class="btn-cyan px-8 py-4 rounded-2xl font-extrabold text-base sm:text-lg flex items-center gap-3">
+                                <i class="fa-solid fa-gamepad text-xl"></i>
+                                <span>ادخل سيرفر OMAREX NETWORK الآن</span>
+                            </button>
+                            <button onclick="navigateTo('socials'); playSound('click')" class="cyber-glass hover:border-cyber-purple px-7 py-4 rounded-2xl font-bold text-base text-white flex items-center gap-3 transition-all">
+                                <i class="fa-brands fa-youtube text-red-500 text-xl"></i>
+                                <span>تابع القناة ليصلك الإشعار</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEWS SECTION (الأخبار) -->
+            <div class="space-y-8">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-2xl bg-cyber-purple/20 border border-cyber-purple/50 flex items-center justify-center text-cyber-cyan text-xl">
+                            <i class="fa-solid fa-newspaper"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-changa font-extrabold text-2xl sm:text-3xl text-white">آخر الأخبار والإعلانات</h2>
+                            <p class="text-slate-400 text-sm">كل ما هو جديد حول السيرفر والقناة</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <!-- ADMIN EXCLUSIVE: ADD NEWS BUTTON -->
+                        <button id="admin-add-news-btn" onclick="openNewsEditorModal(); playSound('modal')" class="hidden px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyber-gold via-amber-500 to-cyber-crimson text-cyber-dark font-black text-sm shadow-lg shadow-cyber-gold/30 hover:scale-105 transition-all flex items-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-plus-circle text-base"></i>
+                            <span>إضافة خبر جديد (Admin)</span>
+                        </button>
+                        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 text-xs font-bold w-fit">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            تحديثات حصرية ومباشرة
+                        </span>
+                    </div>
+                </div>
+
+                <!-- FEATURED BREAKING NEWS: OMAREX NETWORK LAUNCH -->
+                <div class="cyber-glass cyber-glass-hover rounded-3xl overflow-hidden border-2 border-cyber-cyan/50 relative">
+                    <div class="grid grid-cols-1 lg:grid-cols-12">
+                        <!-- Left Visual Banner -->
+                        <div class="lg:col-span-5 bg-gradient-to-br from-cyber-violet/40 via-cyber-dark to-cyber-cyan/25 p-8 flex flex-col items-center justify-center text-center relative overflow-hidden border-b lg:border-b-0 lg:border-l border-white/10">
+                            <div class="absolute inset-0 cyber-grid-bg opacity-50"></div>
+                            <div class="relative z-10 w-24 h-24 rounded-3xl bg-cyber-dark/90 border-2 border-cyber-cyan flex items-center justify-center shadow-2xl shadow-cyber-cyan/30 mb-4 animate-float">
+                                <i class="fa-solid fa-crown text-5xl text-cyber-gold"></i>
+                            </div>
+                            <span class="relative z-10 px-4 py-1 rounded-full bg-cyber-crimson text-white font-extrabold text-xs tracking-widest uppercase shadow-lg mb-2">
+                                خبر عاجل وحصري 🔥
+                            </span>
+                            <h3 class="relative z-10 font-changa font-black text-2xl sm:text-3xl text-white">OMAREX NETWORK</h3>
+                            <p class="relative z-10 text-cyber-cyan font-mono text-sm mt-1">omarexnetwork.play-mc.fun</p>
+                        </div>
+
+                        <!-- Right News Content -->
+                        <div class="lg:col-span-7 p-6 sm:p-10 flex flex-col justify-between space-y-6">
+                            <div class="space-y-4">
+                                <div class="flex flex-wrap items-center gap-3 text-xs font-bold">
+                                    <span class="px-3 py-1 rounded-lg bg-cyber-cyan/20 text-cyber-cyan border border-cyber-cyan/30">
+                                        <i class="fa-solid fa-rocket ml-1"></i> افتتاح رسمي
+                                    </span>
+                                    <span class="text-slate-400">
+                                        <i class="fa-regular fa-calendar ml-1"></i> متاح الآن لجميع اللاعبين
+                                    </span>
+                                </div>
+
+                                <h3 class="font-changa font-extrabold text-2xl sm:text-4xl text-white leading-snug">
+                                    افتتاح سيرفر <span class="text-cyber-gold text-glow-gold">OMAREX NETWORK</span> الرسمي! 🎉
+                                </h3>
+
+                                <p class="text-slate-300 text-base leading-relaxed">
+                                    يسعدنا الإعلان رسمياً عن افتتاح شبكة وسيرفر <strong class="text-white">OMAREX NETWORK</strong>! السيرفر مصمم بأعلى جودة وأداء خارق بدون لاق، ويضم أطواراً أسطورية مثل <span class="text-cyber-cyan font-bold">Sky PVP</span> و <span class="text-emerald-400 font-bold">Survival SMP</span>، مع تجهيزات خاصة لطور <span class="text-cyber-crimson font-bold">BedWars</span> القادم قريباً! انسخ الـ IP الآن وابدأ مغامرتك مع المجتمع.
+                                </p>
+                            </div>
+
+                            <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/10">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyber-purple to-cyber-cyan flex items-center justify-center font-black text-cyber-dark">
+                                        OX
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-bold text-white">إدارة OMAREXCUB</p>
+                                        <p class="text-xs text-slate-400">المؤسس وصانع المحتوى</p>
+                                    </div>
+                                </div>
+
+                                <button onclick="navigateTo('server'); playSound('click')" class="btn-epic px-6 py-3 rounded-xl font-bold text-sm text-white flex items-center gap-2">
+                                    <span>عرض تفاصيل السيرفر والـ IP</span>
+                                    <i class="fa-solid fa-arrow-left"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic News Grid (Managed by Admin & Persisted in localStorage) -->
+                <div id="dynamic-news-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- PAGE 2: SERVER (السيرفر)                                  -->
+        <!-- ========================================================= -->
+        <section id="page-server" class="page-section space-y-14">
+            
+            <!-- Server Header & IP Copy Card -->
+            <div class="cyber-glass rounded-3xl p-8 sm:p-12 border-2 border-cyber-cyan/40 text-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-b from-cyber-cyan/10 via-transparent to-cyber-purple/10 pointer-events-none"></div>
+                
+                <div class="relative z-10 max-w-3xl mx-auto space-y-6">
+                    <!-- Online Status Pill -->
+                    <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 font-bold text-sm">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span>السيرفر شغال الآن (ONLINE) • Java & Bedrock</span>
+                    </div>
+
+                    <h1 class="font-changa font-black text-4xl sm:text-6xl text-white">
+                        سيرفر <span class="text-cyber-gold text-glow-gold">OMAREX NETWORK</span>
+                    </h1>
+                    <p class="text-slate-300 text-base sm:text-lg">
+                        انسخ عنوان السيرفر (IP) بالأسفل، افتح ماين كرافت، وانضم إلينا في أقوى التحديات والمعارك!
+                    </p>
+
+                    <!-- IP BOX + REAL COPY BUTTON -->
+                    <div class="max-w-xl mx-auto mt-6 p-2 rounded-2xl bg-cyber-dark/90 border-2 border-cyber-purple/60 shadow-2xl shadow-cyber-purple/25 flex flex-col sm:flex-row items-center justify-between gap-3">
+                        <div class="flex items-center gap-3 px-4 py-2 w-full sm:w-auto justify-center sm:justify-start">
+                            <i class="fa-solid fa-server text-cyber-cyan text-xl"></i>
+                            <span id="server-ip-text" dir="ltr" class="font-mono font-black text-lg sm:text-2xl text-white tracking-wider select-all">
+                                omarexnetwork.play-mc.fun
+                            </span>
+                        </div>
+
+                        <button onclick="copyServerIP()" id="copy-ip-btn" class="btn-cyan w-full sm:w-auto px-7 py-3.5 rounded-xl font-black text-base flex items-center justify-center gap-2.5 shrink-0 cursor-pointer">
+                            <i id="copy-ip-icon" class="fa-solid fa-copy"></i>
+                            <span id="copy-ip-label">نسخ (Copy)</span>
+                        </button>
+                    </div>
+
+                    <!-- Server Quick Stats -->
+                    <div class="grid grid-cols-3 gap-4 max-w-lg mx-auto pt-4">
+                        <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
+                            <p class="text-xs text-slate-400">الإصدار</p>
+                            <p class="font-bold text-cyber-cyan text-sm sm:text-base">1.8 - 1.21+</p>
+                        </div>
+                        <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
+                            <p class="text-xs text-slate-400">الحماية</p>
+                            <p class="font-bold text-emerald-400 text-sm sm:text-base">Anti-Cheat 100%</p>
+                        </div>
+                        <div class="p-3 rounded-2xl bg-white/5 border border-white/10">
+                            <p class="text-xs text-slate-400">البينج</p>
+                            <p class="font-bold text-cyber-gold text-sm sm:text-base">سريع ومستقر</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GAME MODES SECTION (ألعاب السيرفر) -->
+            <div class="space-y-8">
+                <div class="text-center space-y-2">
+                    <h2 class="font-changa font-black text-3xl sm:text-4xl text-white">
+                        ألعاب وأطوار <span class="text-cyber-cyan text-glow-cyan">السيرفر</span>
+                    </h2>
+                    <p class="text-slate-400 text-sm sm:text-base">اختر طورك المفضل وابدأ رحلة السيطرة والاحتراف</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    
+                    <!-- GAME 1: SKY PVP -->
+                    <div class="cyber-glass cyber-glass-hover rounded-3xl overflow-hidden flex flex-col justify-between border border-cyber-cyan/40">
+                        <div>
+                            <div class="h-44 bg-gradient-to-br from-sky-600/40 via-cyber-dark to-cyber-cyan/30 p-6 flex flex-col items-center justify-center relative border-b border-white/10">
+                                <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-extrabold">
+                                    متاح الآن • LIVE
+                                </span>
+                                <div class="w-16 h-16 rounded-2xl bg-cyber-dark/80 border border-cyber-cyan flex items-center justify-center text-3xl text-cyber-cyan shadow-lg mb-2">
+                                    <i class="fa-solid fa-khanda"></i>
+                                </div>
+                                <h3 class="font-changa font-black text-2xl text-white">Sky PVP</h3>
+                            </div>
+                            <div class="p-6 space-y-3">
+                                <p class="text-slate-300 text-sm leading-relaxed">
+                                    قتال جوي حماسـي فوق الجزر المعلقة! اجمع الموارد، طور أسلحتك ودروعك، وأسقط خصومك في الفراغ لتتصدر قائمة الأقوياء.
+                                </p>
+                                <div class="flex flex-wrap gap-2 pt-2">
+                                    <span class="px-2.5 py-1 rounded-lg bg-white/5 text-xs text-cyber-cyan font-bold">كيتات متوازنة</span>
+                                    <span class="px-2.5 py-1 rounded-lg bg-white/5 text-xs text-cyber-cyan font-bold">ساحات احترافية</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0">
+                            <button onclick="copyServerIP()" class="w-full py-3 rounded-xl bg-cyber-cyan/15 hover:bg-cyber-cyan text-cyber-cyan hover:text-cyber-dark border border-cyber-cyan/40 font-extrabold text-sm transition-all cursor-pointer">
+                                انسخ الـ IP وادخل القتال ⚔️
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- GAME 2: SURVIVAL SMP -->
+                    <div class="cyber-glass cyber-glass-hover rounded-3xl overflow-hidden flex flex-col justify-between border border-emerald-500/40">
+                        <div>
+                            <div class="h-44 bg-gradient-to-br from-emerald-600/40 via-cyber-dark to-cyber-gold/25 p-6 flex flex-col items-center justify-center relative border-b border-white/10">
+                                <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-extrabold">
+                                    متاح الآن • LIVE
+                                </span>
+                                <div class="w-16 h-16 rounded-2xl bg-cyber-dark/80 border border-emerald-400 flex items-center justify-center text-3xl text-emerald-400 shadow-lg mb-2">
+                                    <i class="fa-solid fa-tree"></i>
+                                </div>
+                                <h3 class="font-changa font-black text-2xl text-white">Survival SMP</h3>
+                            </div>
+                            <div class="p-6 space-y-3">
+                                <p class="text-slate-300 text-sm leading-relaxed">
+                                    عالم سرفايفل متكامل بنظام حماية الأراضي (Claims)، اقتصاد متوازن، متاجر اللاعبين، وتحالفات لبناء إمبراطوريتك الخاصة.
+                                </p>
+                                <div class="flex flex-wrap gap-2 pt-2">
+                                    <span class="px-2.5 py-1 rounded-lg bg-white/5 text-xs text-emerald-400 font-bold">حماية كاملة</span>
+                                    <span class="px-2.5 py-1 rounded-lg bg-white/5 text-xs text-emerald-400 font-bold">اقتصاد ومتاجر</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0">
+                            <button onclick="copyServerIP()" class="w-full py-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500 text-emerald-400 hover:text-cyber-dark border border-emerald-500/40 font-extrabold text-sm transition-all cursor-pointer">
+                                ابدأ رحلة البقاء الآن 🌲
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- GAME 3: BEDWARS COMING SOON -->
+                    <div class="cyber-glass rounded-3xl overflow-hidden flex flex-col justify-between border-2 border-cyber-crimson/50 relative">
+                        <div class="locked-pattern">
+                            <div class="h-44 bg-gradient-to-br from-cyber-crimson/35 via-cyber-dark to-cyber-purple/30 p-6 flex flex-col items-center justify-center relative border-b border-white/10">
+                                <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-cyber-crimson text-white text-xs font-black tracking-wider animate-pulse">
+                                    COMING SOON 🔒
+                                </span>
+                                <div class="w-16 h-16 rounded-2xl bg-cyber-dark/90 border border-cyber-crimson flex items-center justify-center text-3xl text-cyber-crimson shadow-lg mb-2">
+                                    <i class="fa-solid fa-bed"></i>
+                                </div>
+                                <h3 class="font-changa font-black text-2xl text-white">BedWars</h3>
+                            </div>
+                            <div class="p-6 space-y-3">
+                                <p class="text-slate-300 text-sm leading-relaxed">
+                                    احمِ سريرك ودمر أسرّة الفرق المنافسة! نعمل حالياً على تطوير خرائط حصرية ونظام متجر سريع لتجربة حرب الأسرّة الأسطورية.
+                                </p>
+                                <div class="flex flex-wrap gap-2 pt-2">
+                                    <span class="px-2.5 py-1 rounded-lg bg-cyber-crimson/20 text-xs text-cyber-crimson font-bold">قيد التطوير المكثف</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0">
+                            <div class="w-full py-3 rounded-xl bg-cyber-crimson/20 border border-cyber-crimson/40 text-center text-cyber-gold font-black text-sm tracking-widest uppercase">
+                                BEDWARS COMING SOON
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- PAGE 3: SOCIALS (مواقع التواصل الاجتماعي)                 -->
+        <!-- ========================================================= -->
+        <section id="page-socials" class="page-section space-y-12">
+            <div class="text-center max-w-2xl mx-auto space-y-3">
+                <span class="px-4 py-1.5 rounded-full bg-cyber-purple/20 border border-cyber-purple/50 text-cyber-cyan text-xs font-extrabold">
+                    تواصل مع المجتمع الرسمي
+                </span>
+                <h1 class="font-changa font-black text-4xl sm:text-5xl text-white">
+                    مواقع التواصل <span class="text-cyber-purple text-glow-purple">الاجتماعي</span>
+                </h1>
+                <p class="text-slate-300 text-base">
+                    اشترك في القناة الرسمية وانضم إلى سيرفر الديسكورد الخاص بنا لتكون جزءاً من العائلة!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                
+                <!-- YOUTUBE CHANNEL CARD -->
+                <div class="cyber-glass cyber-glass-hover rounded-3xl p-8 border-2 border-red-500/40 flex flex-col justify-between space-y-6 relative overflow-hidden">
+                    <div class="absolute -top-16 -left-16 w-48 h-48 bg-red-600/20 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="space-y-4 relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-red-600/20 border border-red-500/50 flex items-center justify-center text-red-500 text-3xl shadow-lg">
+                            <i class="fa-brands fa-youtube"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-extrabold text-red-400 uppercase tracking-wider">القناة الرسمية على يوتيوب</span>
+                            <h2 class="font-changa font-black text-3xl text-white mt-1">OMAREXCUB</h2>
+                        </div>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            تابع حلقات سلسلة <strong class="text-cyber-gold">ZenithSMP</strong>، التحديات الأسطورية، ومغامرات ماين كرافت الحماسية بأعلى جودة ومونتاج خرافي!
+                        </p>
+                    </div>
+                    <a href="https://www.youtube.com/@OMAR_EXCUB" target="_blank" rel="noopener noreferrer" onclick="playSound('click')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-black text-base flex items-center justify-center gap-3 shadow-lg shadow-red-600/30 transition-all">
+                        <i class="fa-brands fa-youtube text-xl"></i>
+                        <span>زيارة قناة OMAREXCUB والاشتراك</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+                    </a>
+                </div>
+
+                <!-- DISCORD SERVER CARD: DZ Freinds -->
+                <div class="cyber-glass cyber-glass-hover rounded-3xl p-8 border-2 border-indigo-500/40 flex flex-col justify-between space-y-6 relative overflow-hidden">
+                    <div class="absolute -top-16 -left-16 w-48 h-48 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="space-y-4 relative z-10">
+                        <div class="w-16 h-16 rounded-2xl bg-indigo-600/20 border border-indigo-500/50 flex items-center justify-center text-indigo-400 text-3xl shadow-lg">
+                            <i class="fa-brands fa-discord"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-extrabold text-indigo-400 uppercase tracking-wider">سيرفر الديسكورد الرسمي</span>
+                            <h2 class="font-changa font-black text-3xl text-white mt-1">DZ Freinds</h2>
+                        </div>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            انضم إلى مجتمع <strong class="text-indigo-300">DZ Freinds</strong> للدردشة الصوتية، المشاركة في الفعاليات، التواصل مع الإدارة، ومعرفة مواعيد الحلقات والتحديثات أولاً بأول!
+                        </p>
+                    </div>
+                    <a href="https://discord.gg/HtuKtqjhM" target="_blank" rel="noopener noreferrer" onclick="playSound('click')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-black text-base flex items-center justify-center gap-3 shadow-lg shadow-indigo-600/30 transition-all">
+                        <i class="fa-brands fa-discord text-xl"></i>
+                        <span>انضم إلى سيرفر DZ Freinds</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- PAGE 4: SHOP & EARN POINTS (المتجر وجمع النقاط)            -->
+        <!-- ========================================================= -->
+        <section id="page-shop" class="page-section space-y-12">
+            
+            <!-- Shop Header & User Wallet Banner -->
+            <div class="cyber-glass rounded-3xl p-6 sm:p-10 border-2 border-cyber-gold/50 relative overflow-hidden">
+                <div class="absolute -top-20 -left-20 w-72 h-72 bg-cyber-gold/20 rounded-full blur-[90px] pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+                    <div class="space-y-2 text-center lg:text-right">
+                        <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-cyber-gold/20 border border-cyber-gold/50 text-cyber-gold text-xs font-black">
+                            <i class="fa-solid fa-gem"></i>
+                            <span>متجر الرتب والتطويرات الأسطورية</span>
+                        </div>
+                        <h1 class="font-changa font-black text-3xl sm:text-5xl text-white">
+                            متجر <span class="text-cyber-gold text-glow-gold">OMAREX SHOP</span> 🛒
+                        </h1>
+                        <p class="text-slate-300 text-sm sm:text-base max-w-xl">
+                            اجمع النقاط مجاناً عبر مشاهدة فيديوهات القناة، إنجاز المهام، ولعب الألعاب داخل الموقع، ثم استبدل نقاطك بأكواد رتب وتطويرات أسلحة خرافية!
+                        </p>
+                    </div>
+
+                    <!-- Wallet & Inventory Box -->
+                    <div class="flex flex-col sm:flex-row items-center gap-4 shrink-0">
+                        <div class="px-7 py-4 rounded-2xl bg-cyber-dark/90 border-2 border-cyber-gold/60 text-center shadow-xl">
+                            <span class="text-xs text-slate-400 font-bold block">رصيدك الحالي</span>
+                            <div class="flex items-center justify-center gap-2 mt-1">
+                                <i class="fa-solid fa-coins text-cyber-gold text-2xl"></i>
+                                <span id="shop-balance-display" class="font-mono font-black text-3xl text-white">0</span>
+                                <span class="text-xs text-cyber-gold font-extrabold">نقطة</span>
+                            </div>
+                        </div>
+                        <button onclick="openMyCodesModal(); playSound('modal')" class="btn-cyan px-6 py-5 rounded-2xl font-black text-sm flex items-center gap-2.5 shadow-lg cursor-pointer">
+                            <i class="fa-solid fa-ticket text-lg"></i>
+                            <span>أكوادي المشتراة (<span id="my-codes-count">0</span>)</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shop Sub-Navigation Tabs -->
+            <div class="flex flex-wrap items-center justify-center gap-3">
+                <button onclick="switchShopTab('rewards'); playSound('click')" id="shop-tab-rewards" class="shop-tab-btn px-6 py-3 rounded-2xl font-black text-sm bg-gradient-to-r from-cyber-gold to-amber-500 text-cyber-dark shadow-lg flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-crown"></i>
+                    <span>المتجر (100 عنصر أسطوري)</span>
+                </button>
+                <button onclick="switchShopTab('earn'); playSound('click')" id="shop-tab-earn" class="shop-tab-btn px-6 py-3 rounded-2xl font-bold text-sm cyber-glass text-slate-200 hover:border-cyber-cyan flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-video text-red-500"></i>
+                    <span>مشاهدة الفيديوهات والمهام (+نقاط)</span>
+                </button>
+                <button onclick="switchShopTab('games'); playSound('click')" id="shop-tab-games" class="shop-tab-btn px-6 py-3 rounded-2xl font-bold text-sm cyber-glass text-slate-200 hover:border-cyber-purple flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-gamepad text-cyber-cyan"></i>
+                    <span>ألعاب جمع النقاط (Mini-Games)</span>
+                </button>
+            </div>
+
+            <!-- ================= SUB-VIEW 1: REWARDS STORE (100 LEGENDARY ITEMS) ================= -->
+            <div id="shop-view-rewards" class="space-y-8">
+                
+                <!-- Search & Category Filter Bar for the 100 Shop Items -->
+                <div class="cyber-glass rounded-3xl p-5 border border-cyber-gold/40 space-y-4">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-2xl bg-cyber-gold/20 border border-cyber-gold flex items-center justify-center text-cyber-gold text-xl">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                            </div>
+                            <div>
+                                <h2 class="font-changa font-black text-xl sm:text-2xl text-white">كتالوج المتجر الضخم (<span id="shop-items-counter" class="text-cyber-gold">100</span> عنصر أسطوري)</h2>
+                                <p class="text-xs text-slate-400">اختر من بين 100 رتبة، سلاح، درع، صندوق، ومؤثر خاص في السيرفر</p>
+                            </div>
+                        </div>
+
+                        <!-- Search Input -->
+                        <div class="relative w-full md:w-72">
+                            <i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                            <input type="text" id="shop-search-input" oninput="renderMegaShopCatalog()" placeholder="ابحث عن رتبة أو سلاح..." class="w-full pr-10 pl-4 py-2.5 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-gold focus:outline-none text-white text-xs">
+                        </div>
+                    </div>
+
+                    <!-- Category Filter Buttons -->
+                    <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-white/10">
+                        <button onclick="filterShopCategory('all')" id="cat-btn-all" class="shop-cat-btn px-4 py-2 rounded-xl font-black text-xs bg-cyber-gold text-cyber-dark cursor-pointer">الكل (100)</button>
+                        <button onclick="filterShopCategory('ranks')" id="cat-btn-ranks" class="shop-cat-btn px-4 py-2 rounded-xl font-bold text-xs bg-white/5 text-slate-300 hover:bg-white/10 cursor-pointer">👑 الرتب الملكية (15)</button>
+                        <button onclick="filterShopCategory('weapons')" id="cat-btn-weapons" class="shop-cat-btn px-4 py-2 rounded-xl font-bold text-xs bg-white/5 text-slate-300 hover:bg-white/10 cursor-pointer">⚔️ الأسلحة والتطويرات (30)</button>
+                        <button onclick="filterShopCategory('armor')" id="cat-btn-armor" class="shop-cat-btn px-4 py-2 rounded-xl font-bold text-xs bg-white/5 text-slate-300 hover:bg-white/10 cursor-pointer">🛡️ الدروع والأدوات (20)</button>
+                        <button onclick="filterShopCategory('crates')" id="cat-btn-crates" class="shop-cat-btn px-4 py-2 rounded-xl font-bold text-xs bg-white/5 text-slate-300 hover:bg-white/10 cursor-pointer">🎁 الصناديق والمفاتيح (20)</button>
+                        <button onclick="filterShopCategory('cosmetics')" id="cat-btn-cosmetics" class="shop-cat-btn px-4 py-2 rounded-xl font-bold text-xs bg-white/5 text-slate-300 hover:bg-white/10 cursor-pointer">✨ المؤثرات والحيوانات (15)</button>
+                    </div>
+                </div>
+
+                <!-- Dynamic 100-Item Catalog Grid -->
+                <div id="mega-shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+            </div>
+
+            <!-- ================= SUB-VIEW 2: WATCH VIDEOS & TASKS ================= -->
+            <div id="shop-view-earn" class="hidden space-y-10">
+                
+                <!-- WATCH VIDEOS SECTION -->
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-brands fa-youtube text-red-500 text-2xl"></i>
+                            <h2 class="font-changa font-black text-2xl text-white">شاهد فيديوهات OMAREXCUB واربح نقاطاً</h2>
+                        </div>
+                        <span class="text-xs text-slate-400">شاهد الفيديو لمدة 10 ثوانٍ لاستلام المكافأة</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Video 1 -->
+                        <div class="cyber-glass rounded-3xl p-6 border border-red-500/30 flex flex-col justify-between space-y-4">
+                            <div class="space-y-3">
+                                <div class="h-32 rounded-2xl bg-gradient-to-br from-red-600/30 via-cyber-dark to-cyber-purple/30 flex items-center justify-center relative border border-white/10">
+                                    <i class="fa-solid fa-circle-play text-5xl text-white/90"></i>
+                                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-cyber-gold text-cyber-dark font-black text-xs">+60 نقطة</span>
+                                </div>
+                                <h3 class="font-bold text-base text-white">تجهيزات النذرايت الأسطورية في ZenithSMP 🔥</h3>
+                                <p class="text-xs text-slate-400">شاهد أحدث مغامرات السلسلة على قناة OMAREXCUB</p>
+                            </div>
+                            <button id="vid-btn-1" onclick="startWatchVideoTask('vid1', 'تجهيزات النذرايت الأسطورية', 60)" class="w-full py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
+                                <i class="fa-solid fa-play"></i>
+                                <span>مشاهدة الفيديو وربح 60 نقطة</span>
+                            </button>
+                        </div>
+
+                        <!-- Video 2 -->
+                        <div class="cyber-glass rounded-3xl p-6 border border-red-500/30 flex flex-col justify-between space-y-4">
+                            <div class="space-y-3">
+                                <div class="h-32 rounded-2xl bg-gradient-to-br from-cyber-purple/40 via-cyber-dark to-red-600/30 flex items-center justify-center relative border border-white/10">
+                                    <i class="fa-solid fa-circle-play text-5xl text-white/90"></i>
+                                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-cyber-gold text-cyber-dark font-black text-xs">+75 نقطة</span>
+                                </div>
+                                <h3 class="font-bold text-base text-white">إعلان الموسم السادس من ZenithSMP - الغريب رجع! ⚡</h3>
+                                <p class="text-xs text-slate-400">اكتشف أسرار الموسم السادس القادم بقوة</p>
+                            </div>
+                            <button id="vid-btn-2" onclick="startWatchVideoTask('vid2', 'إعلان الموسم السادس من ZenithSMP', 75)" class="w-full py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
+                                <i class="fa-solid fa-play"></i>
+                                <span>مشاهدة الفيديو وربح 75 نقطة</span>
+                            </button>
+                        </div>
+
+                        <!-- Video 3 -->
+                        <div class="cyber-glass rounded-3xl p-6 border border-red-500/30 flex flex-col justify-between space-y-4">
+                            <div class="space-y-3">
+                                <div class="h-32 rounded-2xl bg-gradient-to-br from-cyber-cyan/30 via-cyber-dark to-red-600/30 flex items-center justify-center relative border border-white/10">
+                                    <i class="fa-solid fa-circle-play text-5xl text-white/90"></i>
+                                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-cyber-gold text-cyber-dark font-black text-xs">+50 نقطة</span>
+                                </div>
+                                <h3 class="font-bold text-base text-white">استعراض سيرفر OMAREX NETWORK الرسمي 🎮</h3>
+                                <p class="text-xs text-slate-400">تعرف على أطوار Sky PVP و Survival SMP</p>
+                            </div>
+                            <button id="vid-btn-3" onclick="startWatchVideoTask('vid3', 'استعراض سيرفر OMAREX NETWORK', 50)" class="w-full py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
+                                <i class="fa-solid fa-play"></i>
+                                <span>مشاهدة الفيديو وربح 50 نقطة</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DAILY MISSIONS & TASKS SECTION -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3 border-b border-white/10 pb-3">
+                        <i class="fa-solid fa-list-check text-cyber-cyan text-2xl"></i>
+                        <h2 class="font-changa font-black text-2xl text-white">المهام السريعة (Quests & Tasks)</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Task 1 -->
+                        <div class="cyber-glass rounded-2xl p-5 border border-white/10 flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-12 h-12 rounded-xl bg-red-600/20 text-red-500 flex items-center justify-center text-xl shrink-0">
+                                    <i class="fa-brands fa-youtube"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">اشترك في قناة OMAREXCUB</h4>
+                                    <span class="text-xs text-cyber-gold font-extrabold">+100 نقطة مكافأة</span>
+                                </div>
+                            </div>
+                            <button id="task-btn-yt" onclick="completeQuickTask('task_yt', 100, 'https://www.youtube.com/@OMAR_EXCUB')" class="px-4 py-2.5 rounded-xl btn-cyan font-black text-xs shrink-0 cursor-pointer">
+                                تنفيذ المهمة
+                            </button>
+                        </div>
+
+                        <!-- Task 2 -->
+                        <div class="cyber-glass rounded-2xl p-5 border border-white/10 flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-12 h-12 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center text-xl shrink-0">
+                                    <i class="fa-brands fa-discord"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">انضم إلى سيرفر DZ Freinds</h4>
+                                    <span class="text-xs text-cyber-gold font-extrabold">+100 نقطة مكافأة</span>
+                                </div>
+                            </div>
+                            <button id="task-btn-dc" onclick="completeQuickTask('task_dc', 100, 'https://discord.gg/HtuKtqjhM')" class="px-4 py-2.5 rounded-xl btn-cyan font-black text-xs shrink-0 cursor-pointer">
+                                تنفيذ المهمة
+                            </button>
+                        </div>
+
+                        <!-- Task 3 -->
+                        <div class="cyber-glass rounded-2xl p-5 border border-white/10 flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl shrink-0">
+                                    <i class="fa-solid fa-server"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">انسخ IP سيرفر OMAREX NETWORK</h4>
+                                    <span class="text-xs text-cyber-gold font-extrabold">+50 نقطة مكافأة</span>
+                                </div>
+                            </div>
+                            <button id="task-btn-ip" onclick="copyServerIP(); completeQuickTask('task_ip', 50, null)" class="px-4 py-2.5 rounded-xl btn-cyan font-black text-xs shrink-0 cursor-pointer">
+                                نسخ وربح
+                            </button>
+                        </div>
+
+                        <!-- Task 4 -->
+                        <div class="cyber-glass rounded-2xl p-5 border border-white/10 flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-12 h-12 rounded-xl bg-cyber-gold/20 text-cyber-gold flex items-center justify-center text-xl shrink-0">
+                                    <i class="fa-solid fa-calendar-check"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">مكافأة الدخول اليومي للمنصة</h4>
+                                    <span class="text-xs text-cyber-gold font-extrabold">+80 نقطة مجانية</span>
+                                </div>
+                            </div>
+                            <button id="task-btn-daily" onclick="completeQuickTask('task_daily', 80, null)" class="px-4 py-2.5 rounded-xl btn-epic text-white font-black text-xs shrink-0 cursor-pointer">
+                                استلام المكافأة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= SUB-VIEW 3: MINI-GAMES TO EARN POINTS ================= -->
+            <div id="shop-view-games" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- MINI-GAME 1: NETHERITE CUBE CLICKER -->
+                <div class="cyber-glass rounded-3xl p-6 sm:p-8 border-2 border-cyber-purple/50 flex flex-col justify-between text-center space-y-6">
+                    <div class="space-y-2">
+                        <span class="px-3 py-1 rounded-full bg-cyber-purple/20 text-cyber-cyan text-xs font-extrabold">لعبة السرعة • 15 ثانية</span>
+                        <h3 class="font-changa font-black text-2xl text-white">تحدي تكسير مكعب النذرايت ⛏️</h3>
+                        <p class="text-xs text-slate-300">اضغط بأقصى سرعة على المكعب المتوهج خلال 15 ثانية! كل ضغطة تمنحك نقطتين!</p>
+                    </div>
+
+                    <div class="flex items-center justify-around p-3 rounded-2xl bg-cyber-dark/80 border border-white/10">
+                        <div>
+                            <span class="text-[11px] text-slate-400 block">الوقت المتبقي</span>
+                            <span id="clicker-timer" class="font-mono font-black text-2xl text-cyber-crimson">15s</span>
+                        </div>
+                        <div>
+                            <span class="text-[11px] text-slate-400 block">الضربات</span>
+                            <span id="clicker-score" class="font-mono font-black text-2xl text-cyber-cyan">0</span>
+                        </div>
+                    </div>
+
+                    <div class="py-4 flex justify-center">
+                        <button id="netherite-cube-btn" onclick="hitNetheriteCube()" class="w-36 h-36 rounded-3xl bg-gradient-to-br from-cyber-purple via-cyber-crimson to-cyber-gold p-1 shadow-2xl shadow-cyber-purple/40 active:scale-90 transition-transform cursor-pointer">
+                            <div class="w-full h-full bg-cyber-dark rounded-[22px] flex flex-col items-center justify-center gap-2">
+                                <i class="fa-solid fa-cube text-5xl text-cyber-cyan"></i>
+                                <span id="cube-btn-label" class="text-xs font-black text-white">اضغط للبدء!</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <p id="clicker-status-msg" class="text-xs text-cyber-gold font-bold">جاهز للتحدي؟ اضغط على المكعب لبدء العداد!</p>
+                </div>
+
+                <!-- MINI-GAME 2: ZENITH MEMORY MATCH -->
+                <div class="cyber-glass rounded-3xl p-6 sm:p-8 border-2 border-cyber-cyan/50 flex flex-col justify-between text-center space-y-6">
+                    <div class="space-y-2">
+                        <span class="px-3 py-1 rounded-full bg-cyber-cyan/20 text-cyber-cyan text-xs font-extrabold">لعبة الذكاء • +100 نقطة</span>
+                        <h3 class="font-changa font-black text-2xl text-white">تحدي ذاكرة ZenithSMP 🧠</h3>
+                        <p class="text-xs text-slate-300">طابق جميع الرموز المتشابهة للفوز بـ <strong class="text-cyber-gold">100 نقطة</strong> فوراً!</p>
+                    </div>
+
+                    <div id="memory-game-grid" class="grid grid-cols-4 gap-3 max-w-xs mx-auto w-full"></div>
+
+                    <div class="flex items-center justify-between pt-2">
+                        <span class="text-xs text-slate-400">المحاولات: <strong id="memory-moves" class="text-white">0</strong></span>
+                        <button onclick="initMemoryGame(); playSound('click')" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs cursor-pointer">
+                            <i class="fa-solid fa-rotate-right ml-1"></i> إعادة اللعبة
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- PAGE 5: REAL-TIME GLOBAL LIVE CHAT (الدردشة الحية المباشرة) -->
+        <!-- ========================================================= -->
+        <section id="page-chat" class="page-section space-y-6">
+            <div class="cyber-glass rounded-3xl border-2 border-cyber-cyan/50 overflow-hidden shadow-2xl flex flex-col h-[78vh] min-h-[540px]">
+                
+                <!-- Chat Header -->
+                <div class="p-5 bg-gradient-to-l from-cyber-purple/30 via-cyber-dark to-cyber-cyan/25 border-b border-white/10 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-2xl bg-cyber-cyan/20 border border-cyber-cyan flex items-center justify-center text-cyber-cyan text-2xl relative">
+                            <i class="fa-solid fa-comments"></i>
+                            <span class="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-400 animate-ping"></span>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h1 class="font-changa font-black text-xl sm:text-2xl text-white">الدردشة الحية العالمية (OMAREX Live Chat)</h1>
+                                <span id="live-chat-status-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[11px] font-black">متصل مباشر ⚡</span>
+                            </div>
+                            <p class="text-xs text-slate-300">أرسل رسالتك هنا وستظهر فوراً في نفس اللحظة على جميع الأجهزة والمتصفحات حول العالم!</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <span id="chat-sender-preview" class="px-3.5 py-1.5 rounded-xl bg-cyber-dark/80 border border-white/10 text-xs font-bold text-cyber-gold">
+                            تتحدث باسم: زائر
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Messages Stream Area -->
+                <div id="live-chat-messages" class="flex-grow overflow-y-auto p-5 sm:p-6 space-y-4 bg-cyber-dark/50">
+                    <div class="text-center py-10 text-slate-400 text-sm">
+                        <i class="fa-solid fa-circle-notch fa-spin text-2xl text-cyber-cyan mb-2 block"></i>
+                        جاري الاتصال بغرفة الدردشة العالمية...
+                    </div>
+                </div>
+
+                <!-- Chat Input Bar -->
+                <form onsubmit="sendLiveChatMessage(event)" class="p-4 bg-cyber-dark/95 border-t border-white/10 flex items-center gap-3">
+                    <input type="text" id="live-chat-input" required maxlength="300" autocomplete="off" placeholder="اكتب رسالتك هنا لتصل لجميع الأجهزة فوراً..." class="flex-grow px-4 py-3.5 rounded-2xl bg-white/5 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm">
+                    <button type="submit" class="btn-cyan px-6 py-3.5 rounded-2xl font-black text-sm flex items-center gap-2 shrink-0 cursor-pointer">
+                        <span>إرسال</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="relative z-10 cyber-glass border-t border-white/10 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-right">
+            <div class="flex items-center gap-3">
+                <span class="font-changa font-black text-xl text-white">OMAREX <span class="text-cyber-gold">Hub</span></span>
+                <span class="text-slate-500">|</span>
+                <span class="text-xs text-slate-400">جميع الحقوق محفوظة لـ OMAREXCUB © 2026</span>
+            </div>
+            <div class="flex items-center gap-4 text-sm">
+                <a href="https://www.youtube.com/@OMAR_EXCUB" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1.5 font-bold">
+                    <i class="fa-brands fa-youtube"></i> YouTube
+                </a>
+                <a href="https://discord.gg/HtuKtqjhM" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-indigo-400 transition-colors flex items-center gap-1.5 font-bold">
+                    <i class="fa-brands fa-discord"></i> DZ Freinds
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================================= -->
+    <!-- MODAL 1: AUTHENTICATION (LOGIN / REGISTER / PROFILE)      -->
+    <!-- ========================================================= -->
+    <div id="auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="cyber-glass w-full max-w-md rounded-3xl border-2 border-cyber-purple/50 shadow-2xl overflow-hidden animate-[pageFadeIn_0.3s_ease]">
+            
+            <!-- Modal Header -->
+            <div class="p-5 bg-gradient-to-l from-cyber-purple/25 via-cyber-dark to-cyber-cyan/20 border-b border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-shield-halved text-cyber-cyan text-xl"></i>
+                    <h3 class="font-changa font-black text-xl text-white">حساب OMAREX Hub</h3>
+                </div>
+                <button onclick="closeAuthModal(); playSound('click')" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-cyber-crimson/20 hover:text-cyber-crimson text-slate-400 flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- GUEST VIEW (Login / Register / Verify Code) -->
+            <div id="auth-guest-view" class="p-6 space-y-5">
+                
+                <!-- Switch Tabs -->
+                <div id="auth-tabs" class="grid grid-cols-2 gap-2 p-1.5 rounded-xl bg-cyber-dark/80 border border-white/10">
+                    <button type="button" id="tab-login-btn" onclick="switchAuthTab('login'); playSound('click')" class="py-2.5 rounded-lg font-bold text-sm bg-cyber-purple text-white shadow transition-all">
+                        تسجيل الدخول
+                    </button>
+                    <button type="button" id="tab-register-btn" onclick="switchAuthTab('register'); playSound('click')" class="py-2.5 rounded-lg font-bold text-sm text-slate-400 hover:text-white transition-all">
+                        إنشاء حساب جديد
+                    </button>
+                </div>
+
+                <!-- LOGIN FORM -->
+                <form id="login-form" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">البريد الإلكتروني (Email)</label>
+                        <input type="email" id="login-email" required dir="ltr" placeholder="name@example.com" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">كلمة المرور (Password)</label>
+                        <input type="password" id="login-password" required dir="ltr" placeholder="••••••••" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm">
+                    </div>
+                    <button type="submit" class="btn-epic w-full py-3.5 rounded-xl font-black text-white text-sm shadow-lg">
+                        دخول إلى المنصة 🚀
+                    </button>
+                </form>
+
+                <!-- REGISTER FORM -->
+                <form id="register-form" onsubmit="handleRegisterSubmit(event)" class="hidden space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">اسم المستخدم (Username)</label>
+                        <input type="text" id="reg-username" required minlength="3" placeholder="مثال: OMAR_GAMER" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">البريد الإلكتروني (Email)</label>
+                        <input type="email" id="reg-email" required dir="ltr" placeholder="name@example.com" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">كلمة المرور (Password)</label>
+                        <input type="password" id="reg-password" required minlength="4" dir="ltr" placeholder="اختر كلمة مرور قوية" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-cyan focus:outline-none text-white text-sm">
+                    </div>
+                    <button type="submit" class="btn-cyan w-full py-3.5 rounded-xl font-black text-sm shadow-lg">
+                        إرسال كود التحقق إلى الـ Inbox 📩
+                    </button>
+                </form>
+
+                <!-- VERIFY CODE STEP -->
+                <form id="verify-step-box" onsubmit="handleVerifyCodeSubmit(event)" class="hidden space-y-4 text-center">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-cyber-gold/20 border border-cyber-gold flex items-center justify-center text-cyber-gold text-2xl animate-bounce">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-changa font-bold text-lg text-white">أدخل كود التحقق (Verify Code)</h4>
+                        <p class="text-xs text-slate-300 mt-1">
+                            تم إرسال الكود إلى <span id="verify-target-email" class="text-cyber-cyan font-mono"></span> داخل صندوق الوارد!
+                        </p>
+                    </div>
+                    <input type="text" id="verify-code-input" required maxlength="6" dir="ltr" placeholder="000000" class="w-full text-center font-mono font-black text-2xl tracking-[0.4em] px-4 py-3.5 rounded-xl bg-cyber-dark border-2 border-cyber-gold focus:outline-none text-cyber-gold">
+                    <div class="flex gap-2">
+                        <button type="submit" class="btn-epic flex-grow py-3 rounded-xl font-black text-white text-sm">
+                            تأكيد وتفعيل الحساب ✅
+                        </button>
+                        <button type="button" onclick="openInboxModal()" class="px-4 py-3 rounded-xl cyber-glass border border-cyber-gold/50 text-cyber-gold font-bold text-xs">
+                            فتح Inbox
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- LOGGED-IN USER PROFILE VIEW -->
+            <div id="auth-profile-view" class="hidden p-6 text-center space-y-5">
+                <div class="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-br from-cyber-purple via-cyber-crimson to-cyber-gold p-[2px] shadow-xl">
+                    <div class="w-full h-full bg-cyber-dark rounded-[22px] flex items-center justify-center font-changa font-black text-3xl text-cyber-cyan" id="profile-avatar-initials">
+                        OX
+                    </div>
+                </div>
+
+                <div>
+                    <span id="profile-role-badge" class="px-3 py-1 rounded-full bg-cyber-gold/20 border border-cyber-gold/40 text-cyber-gold text-xs font-extrabold">
+                        عضو موثق في OMAREX Hub ⭐
+                    </span>
+                    <h3 id="profile-username" class="font-changa font-black text-3xl text-white mt-2">Username</h3>
+                    <p id="profile-email" class="font-mono text-xs text-slate-400 mt-1" dir="ltr">email@example.com</p>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-white/5 border border-white/10 grid grid-cols-2 gap-3 text-right">
+                    <div>
+                        <p class="text-[11px] text-slate-400">حالة الحساب</p>
+                        <p class="text-sm font-bold text-emerald-400">مُفعّل وموثق ✅</p>
+                    </div>
+                    <div>
+                        <p class="text-[11px] text-slate-400">حالة الجلسة</p>
+                        <p id="profile-session-remaining" class="text-sm font-bold text-cyber-cyan">محفوظة دائماً 🔒</p>
+                    </div>
+                </div>
+
+                <!-- Admin Quick Action inside Profile -->
+                <button id="profile-admin-panel-btn" onclick="closeAuthModal(); openNewsEditorModal(); playSound('modal')" class="hidden w-full py-3 rounded-xl bg-gradient-to-r from-cyber-gold to-amber-500 text-cyber-dark font-black text-sm flex items-center justify-center gap-2 shadow-lg">
+                    <i class="fa-solid fa-pen-to-square"></i> إدارة ونشر الأخبار (لوحة الأدمن)
+                </button>
+
+                <div class="flex flex-col gap-3 pt-2">
+                    <button onclick="openInboxModal(); playSound('modal')" class="w-full py-3 rounded-xl cyber-glass hover:border-cyber-gold text-cyber-gold font-bold text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-envelope-open-text"></i> عرض رسائل صندوق الوارد (Inbox)
+                    </button>
+                    <button onclick="logoutUser()" class="w-full py-3 rounded-xl bg-cyber-crimson/20 hover:bg-cyber-crimson text-cyber-crimson hover:text-white border border-cyber-crimson/40 font-bold text-sm transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- MODAL 2: SIMULATED OMAREX MAIL INBOX (VERIFY CODE)        -->
+    <!-- ========================================================= -->
+    <div id="inbox-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+        <div class="cyber-glass w-full max-w-lg rounded-3xl border-2 border-cyber-gold/50 shadow-2xl overflow-hidden animate-[pageFadeIn_0.3s_ease]">
+            
+            <div class="p-5 bg-gradient-to-l from-cyber-gold/20 via-cyber-dark to-cyber-purple/20 border-b border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-cyber-gold/20 border border-cyber-gold flex items-center justify-center text-cyber-gold">
+                        <i class="fa-solid fa-inbox"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-changa font-black text-lg text-white">صندوق الوارد (OMAREX Inbox)</h3>
+                        <p class="text-xs text-slate-400">نظام رسائل التحقق الفوري</p>
+                    </div>
+                </div>
+                <button onclick="closeInboxModal(); playSound('click')" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-cyber-crimson/20 hover:text-cyber-crimson text-slate-400 flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-6">
+                <!-- Empty Inbox State -->
+                <div id="inbox-empty-state" class="text-center py-8 space-y-3">
+                    <i class="fa-regular fa-envelope-open text-4xl text-slate-500"></i>
+                    <p class="text-slate-300 font-bold text-sm">لا توجد رسائل تحقق جديدة حالياً</p>
+                    <p class="text-xs text-slate-400">عند إنشاء حساب جديد، سيصلك كود التحقق هنا فوراً!</p>
+                </div>
+
+                <!-- Verification Email Card -->
+                <div id="inbox-email-card" class="hidden rounded-2xl bg-cyber-dark/90 border border-cyber-cyan/40 p-5 space-y-4">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-full bg-cyber-purple/30 flex items-center justify-center text-cyber-cyan font-black text-xs">OX</div>
+                            <div>
+                                <p class="text-xs font-extrabold text-white">OMAREX Hub Security</p>
+                                <p class="text-[11px] text-slate-400 font-mono" dir="ltr">noreply@omarexcub.com</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">الآن</span>
+                    </div>
+
+                    <div class="space-y-2 text-sm">
+                        <p class="text-xs text-slate-400">إلى: <span id="email-to-display" class="text-cyber-cyan font-mono"></span></p>
+                        <p class="text-white font-bold">مرحباً <span id="email-user-display" class="text-cyber-gold"></span>! 👋</p>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            شكراً لتسجيلك في منصة <strong class="text-white">OMAREX Hub</strong>. استخدم كود التحقق التالي لتفعيل حسابك:
+                        </p>
+                    </div>
+
+                    <!-- Highlighted Verify Code Box -->
+                    <div class="p-4 rounded-xl bg-gradient-to-r from-cyber-purple/20 via-cyber-dark to-cyber-cyan/20 border-2 border-dashed border-cyber-gold text-center space-y-3">
+                        <span class="text-[11px] text-slate-400 uppercase tracking-widest block">Verify Code</span>
+                        <div id="email-code-display" dir="ltr" class="font-mono font-black text-3xl sm:text-4xl tracking-[0.35em] text-cyber-gold text-glow-gold select-all">
+                            123456
+                        </div>
+                        <button type="button" onclick="copyVerifyCodeFromInbox()" class="btn-cyan w-full py-2.5 rounded-xl font-black text-xs flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-copy"></i>
+                            <span>نسخ الكود وإلصاقه تلقائياً</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- MODAL 3: ADMIN EXCLUSIVE NEWS EDITOR (ADD / EDIT + IMAGE) -->
+    <!-- ========================================================= -->
+    <div id="news-editor-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+        <div class="cyber-glass w-full max-w-lg rounded-3xl border-2 border-cyber-gold/60 shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-[pageFadeIn_0.3s_ease]">
+            
+            <!-- Modal Header -->
+            <div class="p-5 bg-gradient-to-l from-cyber-gold/25 via-cyber-dark to-cyber-crimson/25 border-b border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-cyber-gold text-cyber-dark flex items-center justify-center text-lg font-black shadow">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div>
+                        <h3 id="news-editor-title" class="font-changa font-black text-xl text-white">إضافة خبر جديد</h3>
+                        <p class="text-xs text-cyber-gold font-bold">لوحة تحكم الأدمن الحصرية - OMAREXCUB</p>
+                    </div>
+                </div>
+                <button onclick="closeNewsEditorModal(); playSound('click')" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-cyber-crimson/20 hover:text-cyber-crimson text-slate-400 flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- News Editor Form -->
+            <form onsubmit="handleSaveNewsSubmit(event)" class="p-6 overflow-y-auto space-y-4">
+                <input type="hidden" id="edit-news-id" value="">
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">عنوان الخبر *</label>
+                    <input type="text" id="news-input-title" required placeholder="مثال: موعد نزول الحلقة الأولى من ZenithSMP S6!" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-gold focus:outline-none text-white text-sm">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">تصنيف الخبر (Tag)</label>
+                        <select id="news-input-tag" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-gold focus:outline-none text-white text-sm">
+                            <option value="خبر عاجل 🔥">خبر عاجل 🔥</option>
+                            <option value="سلسلة ZenithSMP ⚔️">سلسلة ZenithSMP ⚔️</option>
+                            <option value="تحديث السيرفر 🚀">تحديث السيرفر 🚀</option>
+                            <option value="فعالية وبطولة 🏆">فعالية وبطولة 🏆</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1.5">تاريخ / شارة النشر</label>
+                        <input type="text" id="news-input-badge" value="جديد • حصري" class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-gold focus:outline-none text-white text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1.5">تفاصيل ومحتوى الخبر *</label>
+                    <textarea id="news-input-content" required rows="4" placeholder="اكتب تفاصيل الخبر الأسطوري هنا..." class="w-full px-4 py-3 rounded-xl bg-cyber-dark/90 border border-white/15 focus:border-cyber-gold focus:outline-none text-white text-sm leading-relaxed"></textarea>
+                </div>
+
+                <!-- Image Upload Section -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-300">صورة الخبر (رفع من جهازك)</label>
+                    <label for="news-image-file" class="flex flex-col items-center justify-center w-full p-4 rounded-2xl border-2 border-dashed border-cyber-cyan/50 bg-cyber-dark/70 hover:bg-cyber-cyan/10 cursor-pointer transition-all text-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up text-2xl text-cyber-cyan"></i>
+                        <span class="text-xs font-bold text-white">اضغط هنا لاختيار صورة من جهازك (PNG, JPG, WEBP)</span>
+                        <span class="text-[11px] text-slate-400">يتم ضغط الصورة وحفظها تلقائياً في الموقع</span>
+                        <input type="file" id="news-image-file" accept="image/*" onchange="handleNewsImageUpload(event)" class="hidden">
+                    </label>
+
+                    <!-- Live Image Preview -->
+                    <div id="news-image-preview-box" class="hidden relative rounded-2xl overflow-hidden border border-cyber-gold/50 mt-2">
+                        <img id="news-image-preview" src="" alt="معاينة الصورة" class="w-full h-44 object-cover">
+                        <button type="button" onclick="clearNewsImagePreview()" class="absolute top-2 left-2 px-3 py-1 rounded-lg bg-cyber-crimson text-white text-xs font-bold shadow">
+                            <i class="fa-solid fa-trash ml-1"></i> إزالة الصورة
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 pt-3 border-t border-white/10">
+                    <button type="submit" class="btn-epic flex-grow py-3.5 rounded-xl font-black text-white text-sm shadow-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span id="news-save-btn-text">نشر الخبر الآن</span>
+                    </button>
+                    <button type="button" onclick="closeNewsEditorModal()" class="px-5 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-bold text-sm">
+                        إلغاء
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- MODAL 4: MY PURCHASED CODES & REWARD MODAL                -->
+    <!-- ========================================================= -->
+    <div id="codes-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+        <div class="cyber-glass w-full max-w-lg rounded-3xl border-2 border-cyber-cyan/60 shadow-2xl overflow-hidden flex flex-col max-h-[88vh] animate-[pageFadeIn_0.3s_ease]">
+            <div class="p-5 bg-gradient-to-l from-cyber-cyan/20 via-cyber-dark to-cyber-purple/20 border-b border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-cyber-cyan/20 border border-cyber-cyan flex items-center justify-center text-cyber-cyan">
+                        <i class="fa-solid fa-ticket"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-changa font-black text-lg text-white">أكواد الرتب والتطويرات الخاصة بك</h3>
+                        <p class="text-xs text-slate-400">استخدم هذه الأكواد داخل السيرفر أو الديسكورد لتفعيل رتبتك</p>
+                    </div>
+                </div>
+                <button onclick="closeMyCodesModal(); playSound('click')" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-cyber-crimson/20 hover:text-cyber-crimson text-slate-400 flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div id="my-codes-list" class="p-6 overflow-y-auto space-y-3"></div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- MODAL 5: VIDEO WATCH TIMER MODAL                          -->
+    <!-- ========================================================= -->
+    <div id="video-watch-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+        <div class="cyber-glass w-full max-w-md rounded-3xl border-2 border-red-500/60 shadow-2xl p-6 text-center space-y-5 animate-[pageFadeIn_0.3s_ease]">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-red-600/20 border border-red-500 flex items-center justify-center text-red-500 text-3xl animate-pulse">
+                <i class="fa-brands fa-youtube"></i>
+            </div>
+            <div>
+                <h3 id="watch-modal-title" class="font-changa font-black text-xl text-white">جاري مشاهدة الفيديو...</h3>
+                <p class="text-xs text-slate-300 mt-1">انتظر انتهاء العداد لاستلام نقاطك تلقائياً!</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-cyber-dark border border-white/10">
+                <span id="watch-countdown-text" class="font-mono font-black text-4xl text-cyber-gold">10</span>
+                <span class="text-xs text-slate-400 block mt-1">ثانية متبقية</span>
+            </div>
+            <a href="https://www.youtube.com/@OMAR_EXCUB" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs text-cyber-cyan hover:underline font-bold">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> افتح الفيديو في يوتيوب أثناء الانتظار
+            </a>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        /* =========================================================
+           1. WEB AUDIO SOUND EFFECTS SYNTHESIZER (NO EXTERNAL URLS)
+           ========================================================= */
+        let audioCtx = null;
+        let isMuted = false;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSound(type) {
+            if (isMuted) return;
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(520, now);
+                    osc.frequency.exponentialRampToValueAtTime(280, now + 0.08);
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'copy') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(587.33, now);
+                    osc.frequency.setValueAtTime(880, now + 0.09);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                } else if (type === 'modal') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(340, now);
+                    osc.frequency.exponentialRampToValueAtTime(640, now + 0.14);
+                    gain.gain.setValueAtTime(0.09, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+                    osc.start(now);
+                    osc.stop(now + 0.14);
+                } else if (type === 'email') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(659.25, now);
+                    osc.frequency.setValueAtTime(830.61, now + 0.1);
+                    osc.frequency.setValueAtTime(987.77, now + 0.2);
+                    gain.gain.setValueAtTime(0.14, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                    osc.start(now);
+                    osc.stop(now + 0.45);
+                } else if (type === 'success') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.1);
+                    osc.frequency.setValueAtTime(783.99, now + 0.2);
+                    osc.frequency.setValueAtTime(1046.50, now + 0.3);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+                    osc.start(now);
+                    osc.stop(now + 0.55);
+                }
+            } catch (e) {
+                // Ignore audio errors if blocked by browser policy
+            }
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('sound-icon');
+            if (isMuted) {
+                icon.className = 'fa-solid fa-volume-xmark text-slate-500';
+                showToast('تم كتم المؤثرات الصوتية', 'info');
+            } else {
+                icon.className = 'fa-solid fa-volume-high';
+                playSound('click');
+                showToast('تم تفعيل المؤثرات الصوتية 🔊', 'success');
+            }
+        }
+
+        /* =========================================================
+           2. TOAST NOTIFICATION SYSTEM
+           ========================================================= */
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let borderClass = 'border-cyber-cyan/60';
+            let iconHtml = '<i class="fa-solid fa-circle-check text-cyber-cyan text-lg"></i>';
+
+            if (type === 'error') {
+                borderClass = 'border-cyber-crimson/70';
+                iconHtml = '<i class="fa-solid fa-circle-exclamation text-cyber-crimson text-lg"></i>';
+            } else if (type === 'gold') {
+                borderClass = 'border-cyber-gold/70';
+                iconHtml = '<i class="fa-solid fa-envelope-open-text text-cyber-gold text-lg"></i>';
+            } else if (type === 'info') {
+                borderClass = 'border-cyber-purple/60';
+                iconHtml = '<i class="fa-solid fa-circle-info text-cyber-purple text-lg"></i>';
+            }
+
+            toast.className = `pointer-events-auto cyber-glass border-2 ${borderClass} px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-bold text-white transform transition-all duration-300 translate-y-4 opacity-0`;
+            toast.innerHTML = `${iconHtml}<span>${message}</span>`;
+
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-4', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        /* =========================================================
+           3. MULTI-PAGE NAVIGATION LOGIC
+           ========================================================= */
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+
+            const target = document.getElementById(`page-${pageId}`);
+            if (target) {
+                target.classList.add('active');
+            }
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.className = 'nav-btn px-5 py-2.5 rounded-xl font-bold text-sm text-slate-300 hover:text-white hover:bg-white/5 transition-all flex items-center gap-2';
+            });
+            const activeBtn = document.getElementById(`nav-${pageId}`);
+            if (activeBtn) {
+                activeBtn.className = 'nav-btn active px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2 bg-cyber-purple/30 text-cyber-cyan border border-cyber-cyan/40 shadow-inner';
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        /* =========================================================
+           4. REAL WORKING SERVER IP COPY FUNCTION
+           ========================================================= */
+        function copyServerIP() {
+            const ipText = 'omarexnetwork.play-mc.fun';
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(ipText).then(() => {
+                    triggerCopySuccessFeedback();
+                }).catch(() => {
+                    fallbackCopyText(ipText);
+                });
+            } else {
+                fallbackCopyText(ipText);
+            }
+        }
+
+        function fallbackCopyText(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                triggerCopySuccessFeedback();
+            } catch (err) {
+                showToast('حدث خطأ أثناء النسخ، انسخ العنوان يدوياً', 'error');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function triggerCopySuccessFeedback() {
+            playSound('copy');
+            showToast('تم نسخ IP السيرفر بنجاح: omarexnetwork.play-mc.fun ✅', 'success');
+
+            const btn = document.getElementById('copy-ip-btn');
+            const label = document.getElementById('copy-ip-label');
+            const icon = document.getElementById('copy-ip-icon');
+
+            if (btn && label && icon) {
+                label.textContent = 'تم النسخ!';
+                icon.className = 'fa-solid fa-check';
+                btn.classList.add('ring-4', 'ring-emerald-400/50');
+
+                setTimeout(() => {
+                    label.textContent = 'نسخ (Copy)';
+                    icon.className = 'fa-solid fa-copy';
+                    btn.classList.remove('ring-4', 'ring-emerald-400/50');
+                }, 2200);
+            }
+        }
+
+        /* =========================================================
+           5. AUTHENTICATION, PERMANENT SESSION & EXCLUSIVE ADMIN SYSTEM
+           ========================================================= */
+        const STORAGE_USERS_KEY = 'omarex_hub_users_db';
+        const STORAGE_SESSION_KEY = 'omarex_hub_active_session';
+        const STORAGE_NEWS_KEY = 'omarex_hub_custom_news';
+
+        const ADMIN_ACCOUNT = {
+            username: 'OMAREXCUB',
+            email: 'admin@omarexcub.com',
+            password: 'OMAR_ADMIN_2026',
+            role: 'admin',
+            verified: true
+        };
+
+        let pendingRegistration = null;
+        let currentUploadedImageBase64 = '';
+
+        function getUsersDB() {
+            let users = [];
+            try {
+                users = JSON.parse(localStorage.getItem(STORAGE_USERS_KEY)) || [];
+            } catch {
+                users = [];
+            }
+            const adminIdx = users.findIndex(u => u.email.toLowerCase() === ADMIN_ACCOUNT.email);
+            if (adminIdx === -1) {
+                users.unshift(ADMIN_ACCOUNT);
+                saveUsersDB(users);
+            }
+            return users;
+        }
+
+        function saveUsersDB(users) {
+            localStorage.setItem(STORAGE_USERS_KEY, JSON.stringify(users));
+        }
+
+        function getActiveUser() {
+            try {
+                const raw = localStorage.getItem(STORAGE_SESSION_KEY);
+                if (!raw) return null;
+                const session = JSON.parse(raw);
+                // Support both structured session object and direct user object permanently
+                if (session && session.user) {
+                    return session.user;
+                }
+                if (session && session.email) {
+                    return session;
+                }
+                return null;
+            } catch {
+                return null;
+            }
+        }
+
+        function getSessionRemainingText() {
+            return 'محفوظة دائماً (تلقائي) 🔒';
+        }
+
+        function setActiveUser(user) {
+            if (user) {
+                const sessionPayload = {
+                    user: user,
+                    loginAt: Date.now(),
+                    persistent: true
+                };
+                localStorage.setItem(STORAGE_SESSION_KEY, JSON.stringify(sessionPayload));
+            } else {
+                localStorage.removeItem(STORAGE_SESSION_KEY);
+            }
+            updateAuthUI();
+            renderDynamicNews();
+            updateShopUI();
+            updateChatSenderPreview();
+        }
+
+        function isCurrentUserAdmin() {
+            const user = getActiveUser();
+            return user && user.role === 'admin' && user.email.toLowerCase() === ADMIN_ACCOUNT.email;
+        }
+
+        function updateAuthUI() {
+            const user = getActiveUser();
+            const isAdmin = isCurrentUserAdmin();
+
+            const headerBtnText = document.getElementById('header-auth-text');
+            const headerAdminBadge = document.getElementById('header-admin-badge');
+            const headerAuthIcon = document.getElementById('header-auth-icon');
+
+            const guestView = document.getElementById('auth-guest-view');
+            const profileView = document.getElementById('auth-profile-view');
+
+            const adminAddNewsBtn = document.getElementById('admin-add-news-btn');
+            const profileAdminPanelBtn = document.getElementById('profile-admin-panel-btn');
+            const profileRoleBadge = document.getElementById('profile-role-badge');
+
+            if (user) {
+                headerBtnText.textContent = user.username;
+                guestView.classList.add('hidden');
+                profileView.classList.remove('hidden');
+
+                document.getElementById('profile-username').textContent = user.username;
+                document.getElementById('profile-email').textContent = user.email;
+                document.getElementById('profile-avatar-initials').textContent = user.username.slice(0, 2).toUpperCase();
+                document.getElementById('profile-session-remaining').textContent = getSessionRemainingText();
+
+                if (isAdmin) {
+                    headerAdminBadge.classList.remove('hidden');
+                    headerAuthIcon.className = 'fa-solid fa-crown text-cyber-gold';
+                    adminAddNewsBtn.classList.remove('hidden');
+                    profileAdminPanelBtn.classList.remove('hidden');
+                    profileRoleBadge.textContent = 'المالك والأدمن الرسمي (ADMIN) 👑';
+                    profileRoleBadge.className = 'px-3 py-1 rounded-full bg-cyber-crimson/25 border border-cyber-gold text-cyber-gold text-xs font-black';
+                } else {
+                    headerAdminBadge.classList.add('hidden');
+                    headerAuthIcon.className = 'fa-solid fa-user-astronaut';
+                    adminAddNewsBtn.classList.add('hidden');
+                    profileAdminPanelBtn.classList.add('hidden');
+                    profileRoleBadge.textContent = 'عضو موثق في OMAREX Hub ⭐';
+                    profileRoleBadge.className = 'px-3 py-1 rounded-full bg-cyber-gold/20 border border-cyber-gold/40 text-cyber-gold text-xs font-extrabold';
+                }
+            } else {
+                headerBtnText.textContent = 'تسجيل الدخول';
+                headerAdminBadge.classList.add('hidden');
+                headerAuthIcon.className = 'fa-solid fa-user-astronaut';
+                guestView.classList.remove('hidden');
+                profileView.classList.add('hidden');
+                adminAddNewsBtn.classList.add('hidden');
+                profileAdminPanelBtn.classList.add('hidden');
+            }
+        }
+
+        function handleAuthHeaderClick() {
+            const modal = document.getElementById('auth-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            updateAuthUI();
+        }
+
+        function closeAuthModal() {
+            const modal = document.getElementById('auth-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function switchAuthTab(tab) {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const verifyBox = document.getElementById('verify-step-box');
+            const tabsBar = document.getElementById('auth-tabs');
+
+            const loginBtn = document.getElementById('tab-login-btn');
+            const regBtn = document.getElementById('tab-register-btn');
+
+            verifyBox.classList.add('hidden');
+            tabsBar.classList.remove('hidden');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                loginBtn.className = 'py-2.5 rounded-lg font-bold text-sm bg-cyber-purple text-white shadow transition-all';
+                regBtn.className = 'py-2.5 rounded-lg font-bold text-sm text-slate-400 hover:text-white transition-all';
+            } else {
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+                regBtn.className = 'py-2.5 rounded-lg font-bold text-sm bg-cyber-purple text-white shadow transition-all';
+                loginBtn.className = 'py-2.5 rounded-lg font-bold text-sm text-slate-400 hover:text-white transition-all';
+            }
+        }
+
+        function handleRegisterSubmit(e) {
+            e.preventDefault();
+            const username = document.getElementById('reg-username').value.trim();
+            const email = document.getElementById('reg-email').value.trim().toLowerCase();
+            const password = document.getElementById('reg-password').value;
+
+            if (email === ADMIN_ACCOUNT.email) {
+                playSound('click');
+                showToast('هذا البريد محجوز لإدارة الموقع فقط!', 'error');
+                return;
+            }
+
+            const users = getUsersDB();
+            if (users.some(u => u.email.toLowerCase() === email)) {
+                playSound('click');
+                showToast('هذا البريد الإلكتروني مسجل مسبقاً! قم بتسجيل الدخول.', 'error');
+                switchAuthTab('login');
+                document.getElementById('login-email').value = email;
+                return;
+            }
+
+            const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+            pendingRegistration = { username, email, password, code: verifyCode };
+
+            document.getElementById('inbox-empty-state').classList.add('hidden');
+            document.getElementById('inbox-email-card').classList.remove('hidden');
+            document.getElementById('email-to-display').textContent = email;
+            document.getElementById('email-user-display').textContent = username;
+            document.getElementById('email-code-display').textContent = verifyCode;
+
+            const badge = document.getElementById('inbox-badge');
+            badge.classList.remove('hidden');
+
+            document.getElementById('register-form').classList.add('hidden');
+            document.getElementById('auth-tabs').classList.add('hidden');
+            document.getElementById('verify-step-box').classList.remove('hidden');
+            document.getElementById('verify-target-email').textContent = email;
+
+            playSound('email');
+            showToast('وصلتك رسالة جديدة في صندوق الوارد (Inbox) تحتوي على كود التحقق! 📩', 'gold');
+
+            setTimeout(() => {
+                openInboxModal();
+            }, 650);
+        }
+
+        function copyVerifyCodeFromInbox() {
+            if (!pendingRegistration) return;
+            const code = pendingRegistration.code;
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(code).catch(() => {});
+            } else {
+                fallbackCopyText(code);
+            }
+
+            const input = document.getElementById('verify-code-input');
+            if (input) {
+                input.value = code;
+            }
+
+            playSound('copy');
+            showToast(`تم نسخ الكود (${code}) وإلصاقه في خانة التحقق! ✨`, 'success');
+            closeInboxModal();
+        }
+
+        function handleVerifyCodeSubmit(e) {
+            e.preventDefault();
+            if (!pendingRegistration) return;
+
+            const enteredCode = document.getElementById('verify-code-input').value.trim();
+
+            if (enteredCode === pendingRegistration.code) {
+                const users = getUsersDB();
+                const newUser = {
+                    username: pendingRegistration.username,
+                    email: pendingRegistration.email,
+                    password: pendingRegistration.password,
+                    role: 'user',
+                    verified: true,
+                    joinedAt: new Date().toISOString()
+                };
+
+                users.push(newUser);
+                saveUsersDB(users);
+                setActiveUser(newUser);
+
+                pendingRegistration = null;
+                document.getElementById('verify-code-input').value = '';
+                document.getElementById('register-form').reset();
+                document.getElementById('inbox-badge').classList.add('hidden');
+
+                playSound('success');
+                showToast(`أهلاً بك يا ${newUser.username}! تم حفظ حسابك وتفعيل الدخول الدائم 🎉`, 'success');
+                closeAuthModal();
+            } else {
+                playSound('click');
+                showToast('كود التحقق غير صحيح! افتح صندوق الوارد (Inbox) وتأكد من الكود.', 'error');
+            }
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim().toLowerCase();
+            const password = document.getElementById('login-password').value;
+
+            const users = getUsersDB();
+            const matchedUser = users.find(u => u.email.toLowerCase() === email && u.password === password);
+
+            if (matchedUser) {
+                setActiveUser(matchedUser);
+                document.getElementById('login-form').reset();
+                playSound('success');
+                if (matchedUser.role === 'admin') {
+                    showToast('مرحباً بعودتك يا قائد OMAREXCUB! تم حفظ تسجيل الدخول وصلاحيات الأدمن 👑', 'gold');
+                } else {
+                    showToast(`مرحباً بعودتك يا ${matchedUser.username}! سيبقى حسابك مسجلاً دائماً 🚀`, 'success');
+                }
+                closeAuthModal();
+            } else {
+                playSound('click');
+                showToast('البريد الإلكتروني أو كلمة المرور غير صحيحة!', 'error');
+            }
+        }
+
+        function logoutUser() {
+            setActiveUser(null);
+            switchAuthTab('login');
+            playSound('click');
+            showToast('تم تسجيل الخروج من حسابك بنجاح', 'info');
+            closeAuthModal();
+        }
+
+        function openInboxModal() {
+            const modal = document.getElementById('inbox-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.getElementById('inbox-badge').classList.add('hidden');
+        }
+
+        function closeInboxModal() {
+            const modal = document.getElementById('inbox-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        /* =========================================================
+           6. ADMIN EXCLUSIVE NEWS MANAGEMENT SYSTEM (CRUD + IMAGE)
+           ========================================================= */
+        const DEFAULT_NEWS_ITEMS = [
+            {
+                id: 'news-default-1',
+                title: 'تجهيزات خارقة للموسم السادس في ZenithSMP',
+                tag: 'سلسلة ZenithSMP ⚔️',
+                badge: 'ZenithSMP S6',
+                content: 'بعد الأحداث الغامضة في المواسم السابقة، "الغريب" يعود بقوة لم يسبق لها مثيل. ترقبوا الحلقة الأولى قريباً على القناة!',
+                image: ''
+            },
+            {
+                id: 'news-default-2',
+                title: 'سجل حسابك الآن في المنصة واحصل على بطاقة العضو',
+                tag: 'تحديث السيرفر 🚀',
+                badge: 'OMAREX Hub',
+                content: 'أنشئ حسابك مجاناً في OMAREX Hub عبر نظام التحقق الفوري بالبريد الإلكتروني لتكون جاهزاً للفعاليات والبطولات القادمة.',
+                image: ''
+            }
+        ];
+
+        function getNewsList() {
+            try {
+                const stored = localStorage.getItem(STORAGE_NEWS_KEY);
+                if (!stored) {
+                    localStorage.setItem(STORAGE_NEWS_KEY, JSON.stringify(DEFAULT_NEWS_ITEMS));
+                    return DEFAULT_NEWS_ITEMS;
+                }
+                return JSON.parse(stored);
+            } catch {
+                return DEFAULT_NEWS_ITEMS;
+            }
+        }
+
+        function saveNewsList(list) {
+            try {
+                localStorage.setItem(STORAGE_NEWS_KEY, JSON.stringify(list));
+            } catch (e) {
+                showToast('مساحة التخزين ممتلئة، حاول استخدام صورة أصغر حجماً!', 'error');
+            }
+        }
+
+        function renderDynamicNews() {
+            const grid = document.getElementById('dynamic-news-grid');
+            if (!grid) return;
+
+            const newsList = getNewsList();
+            const isAdmin = isCurrentUserAdmin();
+
+            if (newsList.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-8 text-slate-400 text-sm">لا توجد أخبار إضافية حالياً.</div>`;
+                return;
+            }
+
+            grid.innerHTML = newsList.map(item => `
+                <div class="cyber-glass cyber-glass-hover rounded-2xl overflow-hidden flex flex-col justify-between border border-white/10">
+                    <div>
+                        ${item.image ? `
+                            <div class="w-full h-52 overflow-hidden border-b border-white/10 relative">
+                                <img src="${item.image}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                            </div>
+                        ` : ''}
+                        <div class="p-6 space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="px-3 py-1 rounded-lg bg-cyber-purple/20 text-cyber-cyan border border-cyber-purple/40 text-xs font-bold">
+                                    ${escapeHtml(item.tag)}
+                                </span>
+                                <span class="text-xs text-slate-400 font-semibold">${escapeHtml(item.badge)}</span>
+                            </div>
+                            <h4 class="font-changa font-bold text-xl text-white leading-snug">${escapeHtml(item.title)}</h4>
+                            <p class="text-slate-300 text-sm leading-relaxed whitespace-pre-line">${escapeHtml(item.content)}</p>
+                        </div>
+                    </div>
+
+                    ${isAdmin ? `
+                        <div class="px-6 py-3.5 bg-cyber-dark/80 border-t border-cyber-gold/30 flex items-center justify-between gap-2">
+                            <span class="text-[11px] text-cyber-gold font-bold"><i class="fa-solid fa-crown ml-1"></i> تحكم الأدمن</span>
+                            <div class="flex items-center gap-2">
+                                <button onclick="openNewsEditorModal('${item.id}'); playSound('click')" class="px-3.5 py-1.5 rounded-lg bg-cyber-cyan/20 hover:bg-cyber-cyan hover:text-cyber-dark text-cyber-cyan font-bold text-xs transition-all cursor-pointer">
+                                    <i class="fa-solid fa-pen ml-1"></i> تعديل
+                                </button>
+                                <button onclick="deleteNewsItem('${item.id}')" class="px-3.5 py-1.5 rounded-lg bg-cyber-crimson/20 hover:bg-cyber-crimson text-cyber-crimson hover:text-white font-bold text-xs transition-all cursor-pointer">
+                                    <i class="fa-solid fa-trash ml-1"></i> حذف
+                                </button>
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function openNewsEditorModal(editId = '') {
+            if (!isCurrentUserAdmin()) {
+                showToast('عذراً! هذه الميزة حصرية لحساب الأدمن فقط.', 'error');
+                return;
+            }
+
+            const modal = document.getElementById('news-editor-modal');
+            const titleHeader = document.getElementById('news-editor-title');
+            const saveBtnText = document.getElementById('news-save-btn-text');
+
+            document.getElementById('edit-news-id').value = editId;
+            document.getElementById('news-image-file').value = '';
+
+            if (editId) {
+                const item = getNewsList().find(n => n.id === editId);
+                if (!item) return;
+                titleHeader.textContent = 'تعديل الخبر';
+                saveBtnText.textContent = 'حفظ التعديلات';
+                document.getElementById('news-input-title').value = item.title;
+                document.getElementById('news-input-tag').value = item.tag;
+                document.getElementById('news-input-badge').value = item.badge;
+                document.getElementById('news-input-content').value = item.content;
+
+                if (item.image) {
+                    currentUploadedImageBase64 = item.image;
+                    document.getElementById('news-image-preview').src = item.image;
+                    document.getElementById('news-image-preview-box').classList.remove('hidden');
+                } else {
+                    clearNewsImagePreview();
+                }
+            } else {
+                titleHeader.textContent = 'إضافة خبر جديد';
+                saveBtnText.textContent = 'نشر الخبر الآن';
+                document.getElementById('news-input-title').value = '';
+                document.getElementById('news-input-tag').value = 'خبر عاجل 🔥';
+                document.getElementById('news-input-badge').value = 'جديد • حصري';
+                document.getElementById('news-input-content').value = '';
+                clearNewsImagePreview();
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeNewsEditorModal() {
+            const modal = document.getElementById('news-editor-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Handle & Compress Uploaded Image to Base64 so localStorage saves smoothly
+        function handleNewsImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const tempCanvas = document.createElement('canvas');
+                    const maxWidth = 800;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > maxWidth) {
+                        height = Math.round((height * maxWidth) / width);
+                        width = maxWidth;
+                    }
+
+                    tempCanvas.width = width;
+                    tempCanvas.height = height;
+                    const tCtx = tempCanvas.getContext('2d');
+                    tCtx.drawImage(img, 0, 0, width, height);
+
+                    currentUploadedImageBase64 = tempCanvas.toDataURL('image/jpeg', 0.8);
+                    document.getElementById('news-image-preview').src = currentUploadedImageBase64;
+                    document.getElementById('news-image-preview-box').classList.remove('hidden');
+                    playSound('copy');
+                    showToast('تم تجهيز الصورة بنجاح! 🖼️', 'success');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearNewsImagePreview() {
+            currentUploadedImageBase64 = '';
+            document.getElementById('news-image-file').value = '';
+            document.getElementById('news-image-preview').src = '';
+            document.getElementById('news-image-preview-box').classList.add('hidden');
+        }
+
+        function handleSaveNewsSubmit(e) {
+            e.preventDefault();
+            if (!isCurrentUserAdmin()) return;
+
+            const editId = document.getElementById('edit-news-id').value;
+            const title = document.getElementById('news-input-title').value.trim();
+            const tag = document.getElementById('news-input-tag').value;
+            const badge = document.getElementById('news-input-badge').value.trim() || 'جديد';
+            const content = document.getElementById('news-input-content').value.trim();
+
+            let list = getNewsList();
+
+            if (editId) {
+                const idx = list.findIndex(n => n.id === editId);
+                if (idx !== -1) {
+                    list[idx] = {
+                        ...list[idx],
+                        title,
+                        tag,
+                        badge,
+                        content,
+                        image: currentUploadedImageBase64
+                    };
+                }
+                showToast('تم تعديل الخبر وحفظ التغييرات بنجاح ✅', 'success');
+            } else {
+                const newEntry = {
+                    id: 'news-' + Date.now(),
+                    title,
+                    tag,
+                    badge,
+                    content,
+                    image: currentUploadedImageBase64
+                };
+                list.unshift(newEntry);
+                showToast('تم نشر الخبر الجديد في الصفحة الرئيسية بنجاح 🎉', 'success');
+            }
+
+            saveNewsList(list);
+            renderDynamicNews();
+            playSound('success');
+            closeNewsEditorModal();
+        }
+
+        function deleteNewsItem(newsId) {
+            if (!isCurrentUserAdmin()) return;
+            let list = getNewsList().filter(n => n.id !== newsId);
+            saveNewsList(list);
+            renderDynamicNews();
+            playSound('click');
+            showToast('تم حذف الخبر بنجاح 🗑️', 'info');
+        }
+
+        /* =========================================================
+           7. SHOP, POINTS, VIDEOS, TASKS & MINI-GAMES SYSTEM
+           ========================================================= */
+        const STORAGE_SHOP_KEY = 'omarex_hub_shop_wallet_v1';
+
+        function getShopState() {
+            const user = getActiveUser();
+            const ownerKey = user ? user.email.toLowerCase() : 'guest_player';
+            let allWallets = {};
+            try {
+                allWallets = JSON.parse(localStorage.getItem(STORAGE_SHOP_KEY)) || {};
+            } catch {
+                allWallets = {};
+            }
+            if (!allWallets[ownerKey]) {
+                allWallets[ownerKey] = {
+                    points: 120, // Welcome starter points
+                    completedTasks: [],
+                    purchasedCodes: []
+                };
+                localStorage.setItem(STORAGE_SHOP_KEY, JSON.stringify(allWallets));
+            }
+            return { allWallets, ownerKey, wallet: allWallets[ownerKey] };
+        }
+
+        function saveShopWallet(ownerKey, wallet) {
+            const { allWallets } = getShopState();
+            allWallets[ownerKey] = wallet;
+            localStorage.setItem(STORAGE_SHOP_KEY, JSON.stringify(allWallets));
+            updateShopUI();
+        }
+
+        function addUserPoints(amount, reasonText = '') {
+            const { ownerKey, wallet } = getShopState();
+            wallet.points += amount;
+            saveShopWallet(ownerKey, wallet);
+            playSound('success');
+            if (reasonText) {
+                showToast(`+${amount} نقطة! ${reasonText} 🪙`, 'gold');
+            }
+        }
+
+        function updateShopUI() {
+            const { wallet } = getShopState();
+            const headerPts = document.getElementById('header-points-display');
+            const shopPts = document.getElementById('shop-balance-display');
+            const codesCount = document.getElementById('my-codes-count');
+
+            if (headerPts) headerPts.textContent = wallet.points;
+            if (shopPts) shopPts.textContent = wallet.points;
+            if (codesCount) codesCount.textContent = wallet.purchasedCodes.length;
+
+            // Update completed task buttons
+            const taskMap = {
+                'task_yt': 'task-btn-yt',
+                'task_dc': 'task-btn-dc',
+                'task_ip': 'task-btn-ip',
+                'task_daily': 'task-btn-daily'
+            };
+            Object.entries(taskMap).forEach(([taskId, btnId]) => {
+                const btn = document.getElementById(btnId);
+                if (btn && wallet.completedTasks.includes(taskId)) {
+                    btn.textContent = 'تم الإنجاز ✅';
+                    btn.disabled = true;
+                    btn.className = 'px-4 py-2.5 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 font-bold text-xs shrink-0 cursor-not-allowed';
+                }
+            });
+        }
+
+        function switchShopTab(tab) {
+            ['rewards', 'earn', 'games'].forEach(t => {
+                const view = document.getElementById(`shop-view-${t}`);
+                const btn = document.getElementById(`shop-tab-${t}`);
+                if (view) view.classList.add('hidden');
+                if (btn) {
+                    btn.className = 'shop-tab-btn px-6 py-3 rounded-2xl font-bold text-sm cyber-glass text-slate-200 hover:border-cyber-cyan flex items-center gap-2 cursor-pointer';
+                }
+            });
+
+            const activeView = document.getElementById(`shop-view-${tab}`);
+            const activeBtn = document.getElementById(`shop-tab-${tab}`);
+            if (activeView) activeView.classList.remove('hidden');
+            if (activeBtn) {
+                activeBtn.className = 'shop-tab-btn px-6 py-3 rounded-2xl font-black text-sm bg-gradient-to-r from-cyber-gold to-amber-500 text-cyber-dark shadow-lg flex items-center gap-2 cursor-pointer';
+            }
+        }
+
+        function buyShopItem(itemId, itemName, cost, prefix) {
+            const { ownerKey, wallet } = getShopState();
+            if (wallet.points < cost) {
+                playSound('click');
+                showToast(`رصيدك غير كافٍ! تحتاج إلى ${cost} نقطة (لديك ${wallet.points}). اجمع نقاطاً من الفيديوهات والألعاب!`, 'error');
+                return;
+            }
+
+            wallet.points -= cost;
+            const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase();
+            const numPart = Math.floor(1000 + Math.random() * 9000);
+            const generatedCode = `OMAREX-${prefix}-${randomPart}${numPart}`;
+
+            wallet.purchasedCodes.unshift({
+                id: 'code-' + Date.now(),
+                name: itemName,
+                code: generatedCode,
+                cost: cost,
+                date: new Date().toLocaleDateString('ar-EG')
+            });
+
+            saveShopWallet(ownerKey, wallet);
+            playSound('success');
+            showToast(`مبروك! تم شراء ${itemName} واستخراج الكود الخاص بك 🎉`, 'success');
+            openMyCodesModal();
+        }
+
+        function openMyCodesModal() {
+            const modal = document.getElementById('codes-modal');
+            const listEl = document.getElementById('my-codes-list');
+            const { wallet } = getShopState();
+
+            if (wallet.purchasedCodes.length === 0) {
+                listEl.innerHTML = `
+                    <div class="text-center py-8 space-y-2">
+                        <i class="fa-solid fa-ticket text-4xl text-slate-500"></i>
+                        <p class="text-slate-300 font-bold text-sm">لم تقم بشراء أي كود بعد!</p>
+                        <p class="text-xs text-slate-400">اجمع النقاط من المتجر واشترِ رتبتك المفضلة.</p>
+                    </div>
+                `;
+            } else {
+                listEl.innerHTML = wallet.purchasedCodes.map(c => `
+                    <div class="p-4 rounded-2xl bg-cyber-dark/90 border border-cyber-gold/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <span class="text-xs font-black text-cyber-gold block">${escapeHtml(c.name)}</span>
+                            <span dir="ltr" class="font-mono font-black text-base text-cyber-cyan select-all">${escapeHtml(c.code)}</span>
+                        </div>
+                        <button onclick="copyPurchasedCode('${escapeHtml(c.code)}')" class="btn-cyan px-4 py-2 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 shrink-0 cursor-pointer">
+                            <i class="fa-solid fa-copy"></i> نسخ الكود
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeMyCodesModal() {
+            const modal = document.getElementById('codes-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function copyPurchasedCode(code) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(code).catch(() => fallbackCopyText(code));
+            } else {
+                fallbackCopyText(code);
+            }
+            playSound('copy');
+            showToast(`تم نسخ الكود: ${code} ✅`, 'success');
+        }
+
+        // Watch Video Timer Reward
+        let watchInterval = null;
+        function startWatchVideoTask(vidId, title, reward) {
+            const modal = document.getElementById('video-watch-modal');
+            const titleEl = document.getElementById('watch-modal-title');
+            const timerEl = document.getElementById('watch-countdown-text');
+
+            titleEl.textContent = `مشاهدة: ${title}`;
+            let secondsLeft = 10;
+            timerEl.textContent = secondsLeft;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            playSound('modal');
+
+            if (watchInterval) clearInterval(watchInterval);
+            watchInterval = setInterval(() => {
+                secondsLeft--;
+                timerEl.textContent = secondsLeft;
+                if (secondsLeft <= 0) {
+                    clearInterval(watchInterval);
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    addUserPoints(reward, `أكملت مشاهدة "${title}"`);
+                }
+            }, 1000);
+        }
+
+        // Quick Tasks Reward
+        function completeQuickTask(taskId, reward, externalUrl) {
+            const { ownerKey, wallet } = getShopState();
+            if (wallet.completedTasks.includes(taskId)) {
+                showToast('لقد أنجزت هذه المهمة مسبقاً!', 'info');
+                return;
+            }
+            if (externalUrl) {
+                window.open(externalUrl, '_blank', 'noopener,noreferrer');
+            }
+            wallet.completedTasks.push(taskId);
+            wallet.points += reward;
+            saveShopWallet(ownerKey, wallet);
+            playSound('success');
+            showToast(`تم إنجاز المهمة بنجاح! حصلت على +${reward} نقطة 🎉`, 'gold');
+        }
+
+        // Mini-Game 1: Netherite Cube Clicker
+        let clickerActive = false;
+        let clickerScore = 0;
+        let clickerTime = 15;
+        let clickerTimerInterval = null;
+
+        function hitNetheriteCube() {
+            if (!clickerActive) {
+                clickerActive = true;
+                clickerScore = 1;
+                clickerTime = 15;
+                document.getElementById('clicker-score').textContent = clickerScore;
+                document.getElementById('clicker-timer').textContent = clickerTime + 's';
+                document.getElementById('cube-btn-label').textContent = 'اضرب بسرعة!';
+                document.getElementById('clicker-status-msg').textContent = 'استمر بالضغط قبل انتهاء الوقت!';
+                playSound('click');
+
+                clickerTimerInterval = setInterval(() => {
+                    clickerTime--;
+                    document.getElementById('clicker-timer').textContent = clickerTime + 's';
+                    if (clickerTime <= 0) {
+                        clearInterval(clickerTimerInterval);
+                        clickerActive = false;
+                        const earned = clickerScore * 2;
+                        document.getElementById('cube-btn-label').textContent = 'العب مجدداً!';
+                        document.getElementById('clicker-status-msg').textContent = `انتهى الوقت! حققت ${clickerScore} ضربة وربحت ${earned} نقطة!`;
+                        addUserPoints(earned, `من تحدي مكعب النذرايت (${clickerScore} ضربة)`);
+                    }
+                }, 1000);
+            } else {
+                clickerScore++;
+                document.getElementById('clicker-score').textContent = clickerScore;
+                playSound('click');
+            }
+        }
+
+        // Mini-Game 2: ZenithSMP Memory Match
+        const MEMORY_ICONS = ['fa-crown', 'fa-bolt', 'fa-fire', 'fa-gem', 'fa-shield-halved', 'fa-dragon'];
+        let memoryCards = [];
+        let flippedIndices = [];
+        let matchedCount = 0;
+        let memoryMoves = 0;
+        let memoryLocked = false;
+
+        function initMemoryGame() {
+            const grid = document.getElementById('memory-game-grid');
+            if (!grid) return;
+            const deck = [...MEMORY_ICONS, ...MEMORY_ICONS].sort(() => Math.random() - 0.5);
+            memoryCards = deck;
+            flippedIndices = [];
+            matchedCount = 0;
+            memoryMoves = 0;
+            memoryLocked = false;
+            document.getElementById('memory-moves').textContent = '0';
+
+            grid.innerHTML = deck.map((icon, idx) => `
+                <button id="mem-card-${idx}" onclick="flipMemoryCard(${idx})" class="h-16 rounded-2xl bg-cyber-dark border-2 border-cyber-cyan/40 hover:border-cyber-gold flex items-center justify-center text-xl text-transparent transition-all cursor-pointer">
+                    <i class="fa-solid ${icon}"></i>
+                </button>
+            `).join('');
+        }
+
+        function flipMemoryCard(idx) {
+            if (memoryLocked || flippedIndices.includes(idx)) return;
+            const cardEl = document.getElementById(`mem-card-${idx}`);
+            if (!cardEl || cardEl.dataset.matched === 'true') return;
+
+            playSound('click');
+            cardEl.classList.remove('text-transparent', 'bg-cyber-dark');
+            cardEl.classList.add('text-cyber-gold', 'bg-cyber-purple/30', 'border-cyber-gold');
+            flippedIndices.push(idx);
+
+            if (flippedIndices.length === 2) {
+                memoryMoves++;
+                document.getElementById('memory-moves').textContent = memoryMoves;
+                memoryLocked = true;
+
+                const [first, second] = flippedIndices;
+                if (memoryCards[first] === memoryCards[second]) {
+                    document.getElementById(`mem-card-${first}`).dataset.matched = 'true';
+                    document.getElementById(`mem-card-${second}`).dataset.matched = 'true';
+                    matchedCount += 2;
+                    flippedIndices = [];
+                    memoryLocked = false;
+                    playSound('copy');
+
+                    if (matchedCount === memoryCards.length) {
+                        addUserPoints(100, 'أكملت تحدي ذاكرة ZenithSMP بنجاح!');
+                    }
+                } else {
+                    setTimeout(() => {
+                        [first, second].forEach(i => {
+                            const el = document.getElementById(`mem-card-${i}`);
+                            if (el) {
+                                el.classList.add('text-transparent', 'bg-cyber-dark');
+                                el.classList.remove('text-cyber-gold', 'bg-cyber-purple/30', 'border-cyber-gold');
+                            }
+                        });
+                        flippedIndices = [];
+                        memoryLocked = false;
+                    }, 700);
+                }
+            }
+        }
+
+        /* =========================================================
+           8. MEGA SHOP CATALOG (100 LEGENDARY ITEMS GENERATOR & UI)
+           ========================================================= */
+        let currentShopCategory = 'all';
+
+        function buildMegaShopCatalog() {
+            const items = [];
+
+            // 1. RANKS (15 Items)
+            const rankTemplates = [
+                { id: 'r1', name: 'رتبة VIP البرونزية', code: 'VIP1', price: 200, icon: 'fa-star', color: 'emerald', desc: 'بادج [VIP] + دخول السيرفر الممتلئ + كيت يومي' },
+                { id: 'r2', name: 'رتبة VIP+ الفضية', code: 'VIP2', price: 320, icon: 'fa-star-half-stroke', color: 'emerald', desc: 'مميزات VIP + لون اسم مميز + 2 Homes إضافية' },
+                { id: 'r3', name: 'رتبة SUPER MEMBER', code: 'SUPER', price: 500, icon: 'fa-gem', color: 'cyan', desc: 'طيران في اللوبي (/fly) + بادج [SUPER] سماوي' },
+                { id: 'r4', name: 'رتبة ULTRA LEGEND', code: 'ULTRA', price: 750, icon: 'fa-bolt', color: 'purple', desc: 'كيت النذرايت الأسبوعي + 5 أراضي حماية في SMP' },
+                { id: 'r5', name: 'رتبة MVP الأسطورية', code: 'MVP', price: 900, icon: 'fa-crown', color: 'gold', desc: 'أولوية قصوى + مؤثرات دخول + كيت MVP خارق' },
+                { id: 'r6', name: 'رتبة MVP++ الملكية', code: 'MVP2', price: 1100, icon: 'fa-chess-king', color: 'gold', desc: 'تغيير اللقب (/nick) + فتح جميع ساحات التدريب' },
+                { id: 'r7', name: 'رتبة MOD الإشرافية', code: 'MOD', price: 1200, icon: 'fa-shield-cat', color: 'crimson', desc: 'بادج [MOD] ملكي + صلاحيات تنظيم الفعاليات' },
+                { id: 'r8', name: 'رتبة SENIOR MOD', code: 'SMOD', price: 1500, icon: 'fa-shield-halved', color: 'crimson', desc: 'رتبة إشراف متقدمة + جميع الكيتات مفتوحة للأبد' },
+                { id: 'r9', name: 'رتبة ZENITH HERO', code: 'ZHERO', price: 650, icon: 'fa-fire', color: 'gold', desc: 'رتبة مستوحاة من سلسلة ZenithSMP الموسم السادس' },
+                { id: 'r10', name: 'رتبة DRAGON SLAYER', code: 'DRGN', price: 820, icon: 'fa-dragon', color: 'purple', desc: 'لقب قاتل التنين + مضاعف نقاط 1.5x داخل السيرفر' },
+                { id: 'r11', name: 'رتبة CYBER KNIGHT', code: 'CYBR', price: 450, icon: 'fa-robot', color: 'cyan', desc: 'درع سايبربانك تجميلي في اللوبي + بادج خاص' },
+                { id: 'r12', name: 'رتبة SKY MASTER', code: 'SKYM', price: 480, icon: 'fa-cloud-bolt', color: 'cyan', desc: 'رتبة مخصصة لملوك Sky PVP مع مؤثر برق عند القتل' },
+                { id: 'r13', name: 'رتبة SMP EMPEROR', code: 'SMPE', price: 700, icon: 'fa-landmark', color: 'emerald', desc: 'مساحة حماية عملاقة 100x100 في Survival SMP' },
+                { id: 'r14', name: 'رتبة BEDWARS PRO', code: 'BWPRO', price: 550, icon: 'fa-bed', color: 'crimson', desc: 'حجز مبكر لجميع مميزات BedWars عند الافتتاح' },
+                { id: 'r15', name: 'رتبة OMAREX SUPPORTER', code: 'OXSUP', price: 380, icon: 'fa-heart', color: 'crimson', desc: 'داعم رسمي لقناة OMAREXCUB مع شارة قلب متوهج' }
+            ];
+            rankTemplates.forEach(r => items.push({ ...r, category: 'ranks', tag: 'رتبة رسمية' }));
+
+            // 2. WEAPONS & ENCHANTMENTS (30 Items)
+            const weaponNames = [
+                'سيف النذرايت Sharpness V + Fire II', 'سيف الغريب الأسطوري (Zenith Blade)', 'قوس البرق Power V + Infinity',
+                'فأس التدمير Sharpness V + Efficiency V', 'تطوير Fire Aspect II المشتعل', 'تطوير Knockback II القاذف',
+                'تطوير Looting III لمضاعفة الغنائم', 'تطوير Sweeping Edge III الهجومي', 'رمح بوسيدون Loyalty III + Channeling',
+                'قوس النشاب Multishot + Quick Charge III', 'سيف التنين القرمزي (Crimson Katana)', 'مطرقة الرعد (Thor Hammer)',
+                'سيف الظلال الخفي (Shadow Dagger)', 'تطوير Smite V ضد الوحوش', 'تطوير Bane of Arthropods V',
+                'قوس Flame + Punch II الناري', 'سيف مصاص الدماء (Life Steal Sword)', 'نصل الجليد المجمّد (Frost Blade)',
+                'سيف الكريستال السماوي', 'تطوير Sharpness VI الخارق', 'رمح Riptide III للطيران في المطر',
+                'سيف الساموراي الذهبي', 'فأس الفايكنج المزدوج', 'قوس القناص الملكي', 'سيف النيزك الملتهب',
+                'تطوير Unbreaking III للأسلحة', 'تطوير Mending لإصلاح السلاح بالخبرة', 'نصل الفوضى البنفسجي',
+                'سيف البطل الخالد', 'حزمة تطويرات PvP الكاملة'
+            ];
+            weaponNames.forEach((name, idx) => {
+                items.push({
+                    id: `w_${idx + 1}`,
+                    name,
+                    code: `WPN${idx + 1}`,
+                    price: 120 + (idx % 10) * 35,
+                    icon: idx % 3 === 0 ? 'fa-khanda' : (idx % 3 === 1 ? 'fa-wand-sparkles' : 'fa-bolt'),
+                    color: idx % 2 === 0 ? 'purple' : 'crimson',
+                    category: 'weapons',
+                    tag: 'سلاح / تطوير',
+                    desc: 'كود تفعيل فوري يمنحك هذا السلاح أو التطوير الأسطوري في السيرفر'
+                });
+            });
+
+            // 3. ARMOR & TOOLS (20 Items)
+            const armorNames = [
+                'طقم دروع نذرايت Protection IV كامل', 'خوذة التنفس تحت الماء Respiration III', 'حذاء Feather Falling IV ضد السقوط',
+                'حذاء المشي على الماء Depth Strider III', 'حذاء الجليد Frost Walker II', 'درع الأشواك Thorns III القاتل',
+                'أجنحة الإليترا Elytra + Unbreaking III', 'معول النذرايت Fortune III + Efficiency V', 'معول Silk Touch لاستخراج البلوكات',
+                'مجرفة النذرايت الخارقة Efficiency V', 'درع التيتانيوم المضاد للانفجار', 'طقم دروع الغريب البنفسجي',
+                'خوذة الرؤية الليلية الدائمة', 'درع الصمود الأبدي Mending الكامل', 'حذاء السرعة الخارقة Soul Speed III',
+                'درع الحماية من النار Fire Protection IV', 'طقم أدوات البناء الأسطوري', 'توتم الخلود Totem of Undying (x5)',
+                'تفاحة ذهبية مطورة Enchanted Golden Apple (x8)', 'درع الفارس الملكي الذهبي'
+            ];
+            armorNames.forEach((name, idx) => {
+                items.push({
+                    id: `a_${idx + 1}`,
+                    name,
+                    code: `ARM${idx + 1}`,
+                    price: 140 + (idx % 8) * 40,
+                    icon: 'fa-shield-halved',
+                    color: idx % 2 === 0 ? 'cyan' : 'emerald',
+                    category: 'armor',
+                    tag: 'دروع وأدوات',
+                    desc: 'تجهيزات دفاعية وأدوات احترافية للبقاء والقتال في Sky PVP و SMP'
+                });
+            });
+
+            // 4. CRATES & KEYS (20 Items)
+            const crateNames = [
+                'مفتاح صندوق ZenithSMP الأسطوري', 'مفتاح صندوق النذرايت النادر', 'حزمة 3 مفاتيح OMAREX الذهبية',
+                'صندوق الحظ الغامض (Mystery Box)', 'مفتاح صندوق الأسلحة الخارقة', 'صندوق الموارد العملاق (SMP)',
+                'حزمة 5 مفاتيح تصويت (Vote Keys)', 'صندوق التنين الملكي (Dragon Crate)', 'مفتاح صندوق Sky PVP الناري',
+                'صندوق البداية السريعة (Starter Mega)', 'حزمة 10,000 عملة داخل السيرفر', 'حزمة 50,000 عملة داخل السيرفر',
+                'مفتاح صندوق الموسم السادس السري', 'صندوق الكريستال المتوهج', 'بطاقة مضاعفة الخبرة (2x XP Booster)',
+                'صندوق الكنوز المفقودة', 'مفتاح صندوق الأبطال (Champions Key)', 'حزمة صواريخ الإليترا (x64 Fireworks)',
+                'صندوق البلوكات النادرة (Beacons & Spawners)', 'الصندوق الأسطوري الشامل (Omega Crate)'
+            ];
+            crateNames.forEach((name, idx) => {
+                items.push({
+                    id: `c_${idx + 1}`,
+                    name,
+                    code: `CRT${idx + 1}`,
+                    price: 100 + (idx % 9) * 45,
+                    icon: 'fa-gift',
+                    color: 'gold',
+                    category: 'crates',
+                    tag: 'صناديق ومفاتيح',
+                    desc: 'افتح الصندوق في السيرفر واحصل على جوائز عشوائية نادرة وقيمة'
+                });
+            });
+
+            // 5. COSMETICS & PETS (15 Items)
+            const cosmeticNames = [
+                'حيوان أليف: تنين صغير (Mini Dragon Pet)', 'حيوان أليف: ذئب النذرايت المشتعل', 'مؤثر المشي: خطوات النار (Flame Trail)',
+                'مؤثر المشي: برق السماء (Lightning Trail)', 'أجنحة الملائكة المتوهجة في اللوبي', 'أجنحة الشيطان القرمزية في اللوبي',
+                'مؤثر القتل: انفجار النجوم (Star Kill)', 'مؤثر القتل: ضربة البرق عند الفوز', 'تاج الذهب العائم فوق الرأس',
+                'هالة الطاقة السماوية (Cyber Aura)', 'حيوان أليف: بومة الحكمة الليلية', 'مؤثر السهم: قوس قزح المتلألئ',
+                'عباءة OMAREXCUB الحصرية (Cape)', 'تحول الغريب الغامض في اللوبي', 'حزمة الرقصات والتعبيرات (Emotes Pack)'
+            ];
+            cosmeticNames.forEach((name, idx) => {
+                items.push({
+                    id: `m_${idx + 1}`,
+                    name,
+                    code: `COS${idx + 1}`,
+                    price: 160 + (idx % 7) * 35,
+                    icon: 'fa-sparkles',
+                    color: idx % 2 === 0 ? 'purple' : 'cyan',
+                    category: 'cosmetics',
+                    tag: 'مؤثر / حيوان أليف',
+                    desc: 'تميز بمظهر أسطوري فريد أمام جميع اللاعبين داخل السيرفر'
+                });
+            });
+
+            return items; // Total: 15 + 30 + 20 + 20 + 15 = 100 Items!
+        }
+
+        const MEGA_SHOP_CATALOG = buildMegaShopCatalog();
+
+        function filterShopCategory(cat) {
+            currentShopCategory = cat;
+            playSound('click');
+            document.querySelectorAll('.shop-cat-btn').forEach(btn => {
+                btn.className = 'shop-cat-btn px-4 py-2 rounded-xl font-bold text-xs bg-white/5 text-slate-300 hover:bg-white/10 cursor-pointer';
+            });
+            const activeBtn = document.getElementById(`cat-btn-${cat}`);
+            if (activeBtn) {
+                activeBtn.className = 'shop-cat-btn px-4 py-2 rounded-xl font-black text-xs bg-cyber-gold text-cyber-dark cursor-pointer';
+            }
+            renderMegaShopCatalog();
+        }
+
+        function renderMegaShopCatalog() {
+            const grid = document.getElementById('mega-shop-grid');
+            const counterEl = document.getElementById('shop-items-counter');
+            if (!grid) return;
+
+            const searchTerm = (document.getElementById('shop-search-input')?.value || '').trim().toLowerCase();
+
+            const filtered = MEGA_SHOP_CATALOG.filter(item => {
+                const matchCat = currentShopCategory === 'all' || item.category === currentShopCategory;
+                const matchSearch = !searchTerm || item.name.toLowerCase().includes(searchTerm) || item.tag.toLowerCase().includes(searchTerm);
+                return matchCat && matchSearch;
+            });
+
+            if (counterEl) counterEl.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-10 text-slate-400 font-bold">لم يتم العثور على عناصر مطابقة لبحثك!</div>`;
+                return;
+            }
+
+            const colorStyles = {
+                emerald: { border: 'border-emerald-500/40', badge: 'bg-emerald-500/20 text-emerald-400', iconBg: 'bg-emerald-500/20 text-emerald-400 border-emerald-400', btn: 'bg-emerald-500 hover:bg-emerald-400 text-cyber-dark' },
+                cyan: { border: 'border-cyber-cyan/40', badge: 'bg-cyber-cyan/20 text-cyber-cyan', iconBg: 'bg-cyber-cyan/20 text-cyber-cyan border-cyber-cyan', btn: 'btn-cyan' },
+                purple: { border: 'border-cyber-purple/40', badge: 'bg-cyber-purple/20 text-cyber-purple', iconBg: 'bg-cyber-purple/20 text-cyber-purple border-cyber-purple', btn: 'bg-cyber-purple hover:bg-purple-500 text-white' },
+                gold: { border: 'border-cyber-gold/50', badge: 'bg-cyber-gold/20 text-cyber-gold', iconBg: 'bg-cyber-gold/20 text-cyber-gold border-cyber-gold', btn: 'bg-gradient-to-r from-cyber-gold to-amber-500 text-cyber-dark' },
+                crimson: { border: 'border-cyber-crimson/50', badge: 'bg-cyber-crimson/20 text-cyber-crimson', iconBg: 'bg-cyber-crimson/20 text-cyber-crimson border-cyber-crimson', btn: 'btn-epic text-white' }
+            };
+
+            grid.innerHTML = filtered.map((item, index) => {
+                const st = colorStyles[item.color] || colorStyles.cyan;
+                return `
+                    <div class="cyber-glass cyber-glass-hover rounded-2xl p-5 border ${st.border} flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="px-2.5 py-0.5 rounded-lg ${st.badge} text-[10px] font-black">#${index + 1} • ${item.tag}</span>
+                                <span class="font-mono font-black text-cyber-gold text-sm"><i class="fa-solid fa-coins ml-1"></i>${item.price}</span>
+                            </div>
+                            <div class="w-11 h-11 rounded-xl ${st.iconBg} border flex items-center justify-center text-lg">
+                                <i class="fa-solid ${item.icon}"></i>
+                            </div>
+                            <h3 class="font-changa font-bold text-base text-white leading-snug">${escapeHtml(item.name)}</h3>
+                            <p class="text-[11px] text-slate-300 leading-relaxed">${escapeHtml(item.desc)}</p>
+                        </div>
+                        <button onclick="buyShopItem('${item.id}', '${escapeHtml(item.name)}', ${item.price}, '${item.code}')" class="${st.btn} w-full py-2.5 rounded-xl font-black text-xs shadow transition-all cursor-pointer">
+                            شراء الكود (${item.price} نقطة) 🎟️
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        /* =========================================================
+           9. REAL-TIME CROSS-DEVICE GLOBAL LIVE CHAT (NTFY STREAM)
+           ========================================================= */
+        const LIVE_CHAT_CHANNEL = 'omarex_hub_global_live_chat_v2026';
+        const STORAGE_CHAT_CACHE = 'omarex_hub_chat_history_cache';
+        let renderedMessageIds = new Set();
+        let chatEventSource = null;
+
+        function getCachedChatMessages() {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_CHAT_CACHE)) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveCachedChatMessages(msgs) {
+            try {
+                localStorage.setItem(STORAGE_CHAT_CACHE, JSON.stringify(msgs.slice(-60)));
+            } catch {}
+        }
+
+        function getSenderIdentity() {
+            const user = getActiveUser();
+            const { wallet } = getShopState();
+            let rank = 'MEMBER';
+            let role = 'user';
+
+            if (user && user.role === 'admin') {
+                rank = 'ADMIN';
+                role = 'admin';
+            } else if (wallet && wallet.purchasedCodes) {
+                const codesStr = wallet.purchasedCodes.map(c => c.code).join(' ');
+                if (codesStr.includes('MOD')) rank = 'MOD';
+                else if (codesStr.includes('MVP')) rank = 'MVP';
+                else if (codesStr.includes('SUPER')) rank = 'SUPER';
+                else if (codesStr.includes('VIP')) rank = 'VIP';
+            }
+
+            if (user) {
+                return { name: user.username, rank, role };
+            }
+
+            let guestId = sessionStorage.getItem('omarex_guest_chat_name');
+            if (!guestId) {
+                guestId = 'لاعب_' + Math.floor(100 + Math.random() * 899);
+                sessionStorage.setItem('omarex_guest_chat_name', guestId);
+            }
+            return { name: guestId, rank: 'GUEST', role: 'guest' };
+        }
+
+        function updateChatSenderPreview() {
+            const preview = document.getElementById('chat-sender-preview');
+            if (!preview) return;
+            const id = getSenderIdentity();
+            preview.innerHTML = `تتحدث باسم: <span class="text-cyber-cyan">${escapeHtml(id.name)}</span> [${id.rank}]`;
+        }
+
+        function appendChatMessageToUI(msgObj, playIncomingSound = false) {
+            const container = document.getElementById('live-chat-messages');
+            if (!container || !msgObj || !msgObj.id) return;
+            if (renderedMessageIds.has(msgObj.id)) return;
+            renderedMessageIds.add(msgObj.id);
+
+            // Remove loading placeholder if present
+            if (renderedMessageIds.size === 1) {
+                container.innerHTML = '';
+            }
+
+            const myIdentity = getSenderIdentity();
+            const isMine = msgObj.sender === myIdentity.name;
+
+            let badgeHtml = `<span class="px-2 py-0.5 rounded bg-white/10 text-slate-300 text-[10px] font-bold">MEMBER</span>`;
+            if (msgObj.rank === 'ADMIN') {
+                badgeHtml = `<span class="px-2 py-0.5 rounded bg-cyber-gold text-cyber-dark text-[10px] font-black">👑 ADMIN</span>`;
+            } else if (msgObj.rank === 'MOD') {
+                badgeHtml = `<span class="px-2 py-0.5 rounded bg-cyber-crimson text-white text-[10px] font-black">🛡️ MOD</span>`;
+            } else if (msgObj.rank === 'SUPER' || msgObj.rank === 'MVP') {
+                badgeHtml = `<span class="px-2 py-0.5 rounded bg-cyber-cyan text-cyber-dark text-[10px] font-black">💎 ${msgObj.rank}</span>`;
+            } else if (msgObj.rank === 'VIP') {
+                badgeHtml = `<span class="px-2 py-0.5 rounded bg-emerald-500 text-cyber-dark text-[10px] font-black">⭐ VIP</span>`;
+            }
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `flex flex-col ${isMine ? 'items-start' : 'items-end'} animate-[pageFadeIn_0.25s_ease]`;
+            msgDiv.innerHTML = `
+                <div class="max-w-[85%] sm:max-w-[70%] rounded-2xl p-3.5 ${isMine ? 'bg-cyber-purple/30 border border-cyber-cyan/50' : 'bg-white/5 border border-white/10'} space-y-1.5 shadow-lg">
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            ${badgeHtml}
+                            <span class="font-bold text-xs ${msgObj.rank === 'ADMIN' ? 'text-cyber-gold' : 'text-cyber-cyan'}">${escapeHtml(msgObj.sender)}</span>
+                        </div>
+                        <span class="text-[10px] text-slate-400 font-mono">${escapeHtml(msgObj.time || '')}</span>
+                    </div>
+                    <p class="text-sm text-white leading-relaxed break-words">${escapeHtml(msgObj.text)}</p>
+                </div>
+            `;
+
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+
+            if (playIncomingSound && !isMine) {
+                playSound('click');
+            }
+        }
+
+        function initLiveChatStream() {
+            updateChatSenderPreview();
+            const container = document.getElementById('live-chat-messages');
+
+            // 1. Load cached messages immediately
+            const cached = getCachedChatMessages();
+            if (cached.length > 0 && container) {
+                container.innerHTML = '';
+                cached.forEach(m => appendChatMessageToUI(m, false));
+            } else if (container) {
+                container.innerHTML = '';
+                appendChatMessageToUI({
+                    id: 'welcome-msg-1',
+                    sender: 'OMAREXCUB',
+                    rank: 'ADMIN',
+                    time: 'الآن',
+                    text: 'أهلاً بالجميع في الدردشة الحية العالمية لمنصة OMAREX Hub! أرسل رسالتك من أي جهاز وستظهر للجميع فوراً 🔥⚡'
+                }, false);
+            }
+
+            // 2. Connect to Real-Time Cross-Device Pub/Sub Stream (ntfy.sh SSE + History)
+            try {
+                if (chatEventSource) chatEventSource.close();
+                chatEventSource = new EventSource(`https://ntfy.sh/${LIVE_CHAT_CHANNEL}/sse?since=12h`);
+
+                chatEventSource.onmessage = function(event) {
+                    try {
+                        const packet = JSON.parse(event.data);
+                        if (packet && packet.event === 'message' && packet.message) {
+                            const chatData = JSON.parse(packet.message);
+                            if (chatData && chatData.id && chatData.text) {
+                                appendChatMessageToUI(chatData, true);
+                                const updated = getCachedChatMessages();
+                                if (!updated.some(x => x.id === chatData.id)) {
+                                    updated.push(chatData);
+                                    saveCachedChatMessages(updated);
+                                }
+                            }
+                        }
+                    } catch (err) {}
+                };
+
+                chatEventSource.onerror = function() {
+                    const badge = document.getElementById('live-chat-status-badge');
+                    if (badge) {
+                        badge.textContent = 'إعادة الاتصال...';
+                        badge.className = 'px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-400 text-[11px] font-black';
+                    }
+                };
+
+                chatEventSource.onopen = function() {
+                    const badge = document.getElementById('live-chat-status-badge');
+                    if (badge) {
+                        badge.textContent = 'متصل مباشر ⚡';
+                        badge.className = 'px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[11px] font-black';
+                    }
+                };
+            } catch (e) {}
+        }
+
+        async function sendLiveChatMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('live-chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const identity = getSenderIdentity();
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+            const payload = {
+                id: 'msg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+                sender: identity.name,
+                rank: identity.rank,
+                time: timeStr,
+                text: text
+            };
+
+            input.value = '';
+            playSound('copy');
+
+            // Optimistically render immediately
+            appendChatMessageToUI(payload, false);
+            const cached = getCachedChatMessages();
+            cached.push(payload);
+            saveCachedChatMessages(cached);
+
+            // Broadcast to all devices worldwide in real time
+            try {
+                await fetch(`https://ntfy.sh/${LIVE_CHAT_CHANNEL}`, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+            } catch (err) {
+                showToast('تم إرسال الرسالة محلياً، تحقق من اتصال الإنترنت للمزامنة', 'info');
+            }
+        }
+
+        /* =========================================================
+           10. ANIMATED COSMIC PARTICLE CANVAS BACKGROUND
+           ========================================================= */
+        const canvas = document.getElementById('cosmic-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2.4 + 0.6;
+                this.speedX = (Math.random() - 0.5) * 0.6;
+                this.speedY = (Math.random() - 0.5) * 0.6 - 0.2; // Slight upward ember drift
+                const colors = ['#9d4edd', '#00f5d4', '#ffbe0b', '#ff0055'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.alpha = Math.random() * 0.6 + 0.2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.min(85, Math.floor((canvas.width * canvas.height) / 16000));
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let p of particles) {
+                p.update();
+                p.draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.onload = function () {
+            getUsersDB(); // Initialize DB with exclusive Admin account
+            initParticles();
+            animateParticles();
+            updateAuthUI();
+            renderDynamicNews();
+            updateShopUI();
+            renderMegaShopCatalog();
+            initMemoryGame();
+            initLiveChatStream();
+        };
+    </script>
+</body>
+</html>
