@@ -1992,8 +1992,10 @@
         }
 
         /* =========================================================
-           6. ADMIN EXCLUSIVE NEWS MANAGEMENT SYSTEM (CRUD + IMAGE)
+           6. GLOBAL CROSS-DEVICE NEWS MANAGEMENT SYSTEM (CRUD + IMAGE)
            ========================================================= */
+        const GLOBAL_SYNC_CHANNEL = 'omarex_hub_global_state_sync_v2026';
+
         const DEFAULT_NEWS_ITEMS = [
             {
                 id: 'news-default-1',
@@ -2026,12 +2028,49 @@
             }
         }
 
-        function saveNewsList(list) {
+        function saveNewsList(list, broadcast = true) {
             try {
                 localStorage.setItem(STORAGE_NEWS_KEY, JSON.stringify(list));
             } catch (e) {
                 showToast('مساحة التخزين ممتلئة، حاول استخدام صورة أصغر حجماً!', 'error');
             }
+            if (broadcast) {
+                broadcastGlobalStateUpdate('news_updated', list);
+            }
+        }
+
+        async function broadcastGlobalStateUpdate(type, payloadData) {
+            try {
+                await fetch(`https://ntfy.sh/${GLOBAL_SYNC_CHANNEL}`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        syncType: type,
+                        timestamp: Date.now(),
+                        data: payloadData
+                    })
+                });
+            } catch (e) {}
+        }
+
+        function initGlobalStateSync() {
+            try {
+                const syncSource = new EventSource(`https://ntfy.sh/${GLOBAL_SYNC_CHANNEL}/sse?since=24h`);
+                syncSource.onmessage = function(event) {
+                    try {
+                        const packet = JSON.parse(event.data);
+                        if (packet && packet.event === 'message' && packet.message) {
+                            const syncMsg = JSON.parse(packet.message);
+                            if (syncMsg.syncType === 'news_updated' && Array.isArray(syncMsg.data)) {
+                                localStorage.setItem(STORAGE_NEWS_KEY, JSON.stringify(syncMsg.data));
+                                renderDynamicNews();
+                            } else if (syncMsg.syncType === 'shop_updated' && Array.isArray(syncMsg.data)) {
+                                localStorage.setItem(STORAGE_MEGA_SHOP_ITEMS_KEY, JSON.stringify(syncMsg.data));
+                                renderMegaShopCatalog();
+                            }
+                        }
+                    } catch (err) {}
+                };
+            } catch (e) {}
         }
 
         function renderDynamicNews() {
@@ -2142,7 +2181,7 @@
             modal.classList.remove('flex');
         }
 
-        // Handle & Compress Uploaded Image to Base64 so localStorage saves smoothly
+        // Handle & Compress Uploaded Image to Base64 so sync & storage work smoothly
         function handleNewsImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -2152,7 +2191,7 @@
                 const img = new Image();
                 img.onload = function() {
                     const tempCanvas = document.createElement('canvas');
-                    const maxWidth = 800;
+                    const maxWidth = 520;
                     let width = img.width;
                     let height = img.height;
 
@@ -2166,11 +2205,11 @@
                     const tCtx = tempCanvas.getContext('2d');
                     tCtx.drawImage(img, 0, 0, width, height);
 
-                    currentUploadedImageBase64 = tempCanvas.toDataURL('image/jpeg', 0.8);
+                    currentUploadedImageBase64 = tempCanvas.toDataURL('image/jpeg', 0.65);
                     document.getElementById('news-image-preview').src = currentUploadedImageBase64;
                     document.getElementById('news-image-preview-box').classList.remove('hidden');
                     playSound('copy');
-                    showToast('تم تجهيز الصورة بنجاح! 🖼️', 'success');
+                    showToast('تم تجهيز الصورة للمزامنة الفورية مع جميع المستخدمين! 🖼️', 'success');
                 };
                 img.src = e.target.result;
             };
@@ -2208,7 +2247,7 @@
                         image: currentUploadedImageBase64
                     };
                 }
-                showToast('تم تعديل الخبر وحفظ التغييرات بنجاح ✅', 'success');
+                showToast('تم تعديل الخبر وحفظ التغييرات لجميع المستخدمين ✅', 'success');
             } else {
                 const newEntry = {
                     id: 'news-' + Date.now(),
@@ -2219,10 +2258,10 @@
                     image: currentUploadedImageBase64
                 };
                 list.unshift(newEntry);
-                showToast('تم نشر الخبر الجديد في الصفحة الرئيسية بنجاح 🎉', 'success');
+                showToast('تم نشر الخبر الجديد لجميع المستخدمين بنجاح 🎉', 'success');
             }
 
-            saveNewsList(list);
+            saveNewsList(list, true);
             renderDynamicNews();
             playSound('success');
             closeNewsEditorModal();
@@ -2231,10 +2270,10 @@
         function deleteNewsItem(newsId) {
             if (!isCurrentUserAdmin()) return;
             let list = getNewsList().filter(n => n.id !== newsId);
-            saveNewsList(list);
+            saveNewsList(list, true);
             renderDynamicNews();
             playSound('click');
-            showToast('تم حذف الخبر بنجاح 🗑️', 'info');
+            showToast('تم حذف الخبر لجميع المستخدمين 🗑️', 'info');
         }
 
         /* =========================================================
@@ -2253,7 +2292,7 @@
             }
             if (!allWallets[ownerKey]) {
                 allWallets[ownerKey] = {
-                    points: 120, // Welcome starter points
+                    points: 120,
                     completedTasks: [],
                     purchasedCodes: []
                 };
@@ -2289,7 +2328,6 @@
             if (shopPts) shopPts.textContent = wallet.points;
             if (codesCount) codesCount.textContent = wallet.purchasedCodes.length;
 
-            // Update completed task buttons
             const taskMap = {
                 'task_yt': 'task-btn-yt',
                 'task_dc': 'task-btn-dc',
@@ -2398,7 +2436,6 @@
             showToast(`تم نسخ الكود: ${code} ✅`, 'success');
         }
 
-        // Watch Video Timer Reward
         let watchInterval = null;
         function startWatchVideoTask(vidId, title, reward) {
             const modal = document.getElementById('video-watch-modal');
@@ -2426,7 +2463,6 @@
             }, 1000);
         }
 
-        // Quick Tasks Reward
         function completeQuickTask(taskId, reward, externalUrl) {
             const { ownerKey, wallet } = getShopState();
             if (wallet.completedTasks.includes(taskId)) {
@@ -2443,7 +2479,6 @@
             showToast(`تم إنجاز المهمة بنجاح! حصلت على +${reward} نقطة 🎉`, 'gold');
         }
 
-        // Mini-Game 1: Netherite Cube Clicker
         let clickerActive = false;
         let clickerScore = 0;
         let clickerTime = 15;
@@ -2479,7 +2514,6 @@
             }
         }
 
-        // Mini-Game 2: ZenithSMP Memory Match
         const MEMORY_ICONS = ['fa-crown', 'fa-bolt', 'fa-fire', 'fa-gem', 'fa-shield-halved', 'fa-dragon'];
         let memoryCards = [];
         let flippedIndices = [];
@@ -2546,334 +2580,6 @@
                     }, 700);
                 }
             }
-        }
-
-        /* =========================================================
-           8. MEGA SHOP CATALOG (100 LEGENDARY ITEMS GENERATOR & UI)
-           ========================================================= */
-        let currentShopCategory = 'all';
-
-        function buildMegaShopCatalog() {
-            const items = [];
-
-            // 1. RANKS (15 Items)
-            const rankTemplates = [
-                { id: 'r1', name: 'رتبة VIP البرونزية', code: 'VIP1', price: 200, icon: 'fa-star', color: 'emerald', desc: 'بادج [VIP] + دخول السيرفر الممتلئ + كيت يومي' },
-                { id: 'r2', name: 'رتبة VIP+ الفضية', code: 'VIP2', price: 320, icon: 'fa-star-half-stroke', color: 'emerald', desc: 'مميزات VIP + لون اسم مميز + 2 Homes إضافية' },
-                { id: 'r3', name: 'رتبة SUPER MEMBER', code: 'SUPER', price: 500, icon: 'fa-gem', color: 'cyan', desc: 'طيران في اللوبي (/fly) + بادج [SUPER] سماوي' },
-                { id: 'r4', name: 'رتبة ULTRA LEGEND', code: 'ULTRA', price: 750, icon: 'fa-bolt', color: 'purple', desc: 'كيت النذرايت الأسبوعي + 5 أراضي حماية في SMP' },
-                { id: 'r5', name: 'رتبة MVP الأسطورية', code: 'MVP', price: 900, icon: 'fa-crown', color: 'gold', desc: 'أولوية قصوى + مؤثرات دخول + كيت MVP خارق' },
-                { id: 'r6', name: 'رتبة MVP++ الملكية', code: 'MVP2', price: 1100, icon: 'fa-chess-king', color: 'gold', desc: 'تغيير اللقب (/nick) + فتح جميع ساحات التدريب' },
-                { id: 'r7', name: 'رتبة MOD الإشرافية', code: 'MOD', price: 1200, icon: 'fa-shield-cat', color: 'crimson', desc: 'بادج [MOD] ملكي + صلاحيات تنظيم الفعاليات' },
-                { id: 'r8', name: 'رتبة SENIOR MOD', code: 'SMOD', price: 1500, icon: 'fa-shield-halved', color: 'crimson', desc: 'رتبة إشراف متقدمة + جميع الكيتات مفتوحة للأبد' },
-                { id: 'r9', name: 'رتبة ZENITH HERO', code: 'ZHERO', price: 650, icon: 'fa-fire', color: 'gold', desc: 'رتبة مستوحاة من سلسلة ZenithSMP الموسم السادس' },
-                { id: 'r10', name: 'رتبة DRAGON SLAYER', code: 'DRGN', price: 820, icon: 'fa-dragon', color: 'purple', desc: 'لقب قاتل التنين + مضاعف نقاط 1.5x داخل السيرفر' },
-                { id: 'r11', name: 'رتبة CYBER KNIGHT', code: 'CYBR', price: 450, icon: 'fa-robot', color: 'cyan', desc: 'درع سايبربانك تجميلي في اللوبي + بادج خاص' },
-                { id: 'r12', name: 'رتبة SKY MASTER', code: 'SKYM', price: 480, icon: 'fa-cloud-bolt', color: 'cyan', desc: 'رتبة مخصصة لملوك Sky PVP مع مؤثر برق عند القتل' },
-                { id: 'r13', name: 'رتبة SMP EMPEROR', code: 'SMPE', price: 700, icon: 'fa-landmark', color: 'emerald', desc: 'مساحة حماية عملاقة 100x100 في Survival SMP' },
-                { id: 'r14', name: 'رتبة BEDWARS PRO', code: 'BWPRO', price: 550, icon: 'fa-bed', color: 'crimson', desc: 'حجز مبكر لجميع مميزات BedWars عند الافتتاح' },
-                { id: 'r15', name: 'رتبة OMAREX SUPPORTER', code: 'OXSUP', price: 380, icon: 'fa-heart', color: 'crimson', desc: 'داعم رسمي لقناة OMAREXCUB مع شارة قلب متوهج' }
-            ];
-            rankTemplates.forEach(r => items.push({ ...r, category: 'ranks', tag: 'رتبة رسمية' }));
-
-            // 2. WEAPONS & ENCHANTMENTS (30 Items)
-            const weaponNames = [
-                'سيف النذرايت Sharpness V + Fire II', 'سيف الغريب الأسطوري (Zenith Blade)', 'قوس البرق Power V + Infinity',
-                'فأس التدمير Sharpness V + Efficiency V', 'تطوير Fire Aspect II المشتعل', 'تطوير Knockback II القاذف',
-                'تطوير Looting III لمضاعفة الغنائم', 'تطوير Sweeping Edge III الهجومي', 'رمح بوسيدون Loyalty III + Channeling',
-                'قوس النشاب Multishot + Quick Charge III', 'سيف التنين القرمزي (Crimson Katana)', 'مطرقة الرعد (Thor Hammer)',
-                'سيف الظلال الخفي (Shadow Dagger)', 'تطوير Smite V ضد الوحوش', 'تطوير Bane of Arthropods V',
-                'قوس Flame + Punch II الناري', 'سيف مصاص الدماء (Life Steal Sword)', 'نصل الجليد المجمّد (Frost Blade)',
-                'سيف الكريستال السماوي', 'تطوير Sharpness VI الخارق', 'رمح Riptide III للطيران في المطر',
-                'سيف الساموراي الذهبي', 'فأس الفايكنج المزدوج', 'قوس القناص الملكي', 'سيف النيزك الملتهب',
-                'تطوير Unbreaking III للأسلحة', 'تطوير Mending لإصلاح السلاح بالخبرة', 'نصل الفوضى البنفسجي',
-                'سيف البطل الخالد', 'حزمة تطويرات PvP الكاملة'
-            ];
-            weaponNames.forEach((name, idx) => {
-                items.push({
-                    id: `w_${idx + 1}`,
-                    name,
-                    code: `WPN${idx + 1}`,
-                    price: 120 + (idx % 10) * 35,
-                    icon: idx % 3 === 0 ? 'fa-khanda' : (idx % 3 === 1 ? 'fa-wand-sparkles' : 'fa-bolt'),
-                    color: idx % 2 === 0 ? 'purple' : 'crimson',
-                    category: 'weapons',
-                    tag: 'سلاح / تطوير',
-                    desc: 'كود تفعيل فوري يمنحك هذا السلاح أو التطوير الأسطوري في السيرفر'
-                });
-            });
-
-            // 3. ARMOR & TOOLS (20 Items)
-            const armorNames = [
-                'طقم دروع نذرايت Protection IV كامل', 'خوذة التنفس تحت الماء Respiration III', 'حذاء Feather Falling IV ضد السقوط',
-                'حذاء المشي على الماء Depth Strider III', 'حذاء الجليد Frost Walker II', 'درع الأشواك Thorns III القاتل',
-                'أجنحة الإليترا Elytra + Unbreaking III', 'معول النذرايت Fortune III + Efficiency V', 'معول Silk Touch لاستخراج البلوكات',
-                'مجرفة النذرايت الخارقة Efficiency V', 'درع التيتانيوم المضاد للانفجار', 'طقم دروع الغريب البنفسجي',
-                'خوذة الرؤية الليلية الدائمة', 'درع الصمود الأبدي Mending الكامل', 'حذاء السرعة الخارقة Soul Speed III',
-                'درع الحماية من النار Fire Protection IV', 'طقم أدوات البناء الأسطوري', 'توتم الخلود Totem of Undying (x5)',
-                'تفاحة ذهبية مطورة Enchanted Golden Apple (x8)', 'درع الفارس الملكي الذهبي'
-            ];
-            armorNames.forEach((name, idx) => {
-                items.push({
-                    id: `a_${idx + 1}`,
-                    name,
-                    code: `ARM${idx + 1}`,
-                    price: 140 + (idx % 8) * 40,
-                    icon: 'fa-shield-halved',
-                    color: idx % 2 === 0 ? 'cyan' : 'emerald',
-                    category: 'armor',
-                    tag: 'دروع وأدوات',
-                    desc: 'تجهيزات دفاعية وأدوات احترافية للبقاء والقتال في Sky PVP و SMP'
-                });
-            });
-
-            // 4. CRATES & KEYS (20 Items)
-            const crateNames = [
-                'مفتاح صندوق ZenithSMP الأسطوري', 'مفتاح صندوق النذرايت النادر', 'حزمة 3 مفاتيح OMAREX الذهبية',
-                'صندوق الحظ الغامض (Mystery Box)', 'مفتاح صندوق الأسلحة الخارقة', 'صندوق الموارد العملاق (SMP)',
-                'حزمة 5 مفاتيح تصويت (Vote Keys)', 'صندوق التنين الملكي (Dragon Crate)', 'مفتاح صندوق Sky PVP الناري',
-                'صندوق البداية السريعة (Starter Mega)', 'حزمة 10,000 عملة داخل السيرفر', 'حزمة 50,000 عملة داخل السيرفر',
-                'مفتاح صندوق الموسم السادس السري', 'صندوق الكريستال المتوهج', 'بطاقة مضاعفة الخبرة (2x XP Booster)',
-                'صندوق الكنوز المفقودة', 'مفتاح صندوق الأبطال (Champions Key)', 'حزمة صواريخ الإليترا (x64 Fireworks)',
-                'صندوق البلوكات النادرة (Beacons & Spawners)', 'الصندوق الأسطوري الشامل (Omega Crate)'
-            ];
-            crateNames.forEach((name, idx) => {
-                items.push({
-                    id: `c_${idx + 1}`,
-                    name,
-                    code: `CRT${idx + 1}`,
-                    price: 100 + (idx % 9) * 45,
-                    icon: 'fa-gift',
-                    color: 'gold',
-                    category: 'crates',
-                    tag: 'صناديق ومفاتيح',
-                    desc: 'افتح الصندوق في السيرفر واحصل على جوائز عشوائية نادرة وقيمة'
-                });
-            });
-
-            // 5. COSMETICS & PETS (15 Items)
-            const cosmeticNames = [
-                'حيوان أليف: تنين صغير (Mini Dragon Pet)', 'حيوان أليف: ذئب النذرايت المشتعل', 'مؤثر المشي: خطوات النار (Flame Trail)',
-                'مؤثر المشي: برق السماء (Lightning Trail)', 'أجنحة الملائكة المتوهجة في اللوبي', 'أجنحة الشيطان القرمزية في اللوبي',
-                'مؤثر القتل: انفجار النجوم (Star Kill)', 'مؤثر القتل: ضربة البرق عند الفوز', 'تاج الذهب العائم فوق الرأس',
-                'هالة الطاقة السماوية (Cyber Aura)', 'حيوان أليف: بومة الحكمة الليلية', 'مؤثر السهم: قوس قزح المتلألئ',
-                'عباءة OMAREXCUB الحصرية (Cape)', 'تحول الغريب الغامض في اللوبي', 'حزمة الرقصات والتعبيرات (Emotes Pack)'
-            ];
-            cosmeticNames.forEach((name, idx) => {
-                items.push({
-                    id: `m_${idx + 1}`,
-                    name,
-                    code: `COS${idx + 1}`,
-                    price: 160 + (idx % 7) * 35,
-                    icon: 'fa-sparkles',
-                    color: idx % 2 === 0 ? 'purple' : 'cyan',
-                    category: 'cosmetics',
-                    tag: 'مؤثر / حيوان أليف',
-                    desc: 'تميز بمظهر أسطوري فريد أمام جميع اللاعبين داخل السيرفر'
-                });
-            });
-
-            return items; // Total: 15 + 30 + 20 + 20 + 15 = 100 Items!
-        }
-
-        const MEGA_SHOP_CATALOG = buildMegaShopCatalog();
-
-        function filterShopCategory(cat) {
-            currentShopCategory = cat;
-            playSound('click');
-            document.querySelectorAll('.shop-cat-btn').forEach(btn => {
-                btn.className = 'shop-cat-btn px-4 py-2 rounded-xl font-bold text-xs bg-white/5 text-slate-300 hover:bg-white/10 cursor-pointer';
-            });
-            const activeBtn = document.getElementById(`cat-btn-${cat}`);
-            if (activeBtn) {
-                activeBtn.className = 'shop-cat-btn px-4 py-2 rounded-xl font-black text-xs bg-cyber-gold text-cyber-dark cursor-pointer';
-            }
-            renderMegaShopCatalog();
-        }
-
-        function renderMegaShopCatalog() {
-            const grid = document.getElementById('mega-shop-grid');
-            const counterEl = document.getElementById('shop-items-counter');
-            if (!grid) return;
-
-            const searchTerm = (document.getElementById('shop-search-input')?.value || '').trim().toLowerCase();
-
-            const filtered = MEGA_SHOP_CATALOG.filter(item => {
-                const matchCat = currentShopCategory === 'all' || item.category === currentShopCategory;
-                const matchSearch = !searchTerm || item.name.toLowerCase().includes(searchTerm) || item.tag.toLowerCase().includes(searchTerm);
-                return matchCat && matchSearch;
-            });
-
-            if (counterEl) counterEl.textContent = filtered.length;
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-10 text-slate-400 font-bold">لم يتم العثور على عناصر مطابقة لبحثك!</div>`;
-                return;
-            }
-
-            const colorStyles = {
-                emerald: { border: 'border-emerald-500/40', badge: 'bg-emerald-500/20 text-emerald-400', iconBg: 'bg-emerald-500/20 text-emerald-400 border-emerald-400', btn: 'bg-emerald-500 hover:bg-emerald-400 text-cyber-dark' },
-                cyan: { border: 'border-cyber-cyan/40', badge: 'bg-cyber-cyan/20 text-cyber-cyan', iconBg: 'bg-cyber-cyan/20 text-cyber-cyan border-cyber-cyan', btn: 'btn-cyan' },
-                purple: { border: 'border-cyber-purple/40', badge: 'bg-cyber-purple/20 text-cyber-purple', iconBg: 'bg-cyber-purple/20 text-cyber-purple border-cyber-purple', btn: 'bg-cyber-purple hover:bg-purple-500 text-white' },
-                gold: { border: 'border-cyber-gold/50', badge: 'bg-cyber-gold/20 text-cyber-gold', iconBg: 'bg-cyber-gold/20 text-cyber-gold border-cyber-gold', btn: 'bg-gradient-to-r from-cyber-gold to-amber-500 text-cyber-dark' },
-                crimson: { border: 'border-cyber-crimson/50', badge: 'bg-cyber-crimson/20 text-cyber-crimson', iconBg: 'bg-cyber-crimson/20 text-cyber-crimson border-cyber-crimson', btn: 'btn-epic text-white' }
-            };
-
-            grid.innerHTML = filtered.map((item, index) => {
-                const st = colorStyles[item.color] || colorStyles.cyan;
-                return `
-                    <div class="cyber-glass cyber-glass-hover rounded-2xl p-5 border ${st.border} flex flex-col justify-between space-y-4">
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between gap-2">
-                                <span class="px-2.5 py-0.5 rounded-lg ${st.badge} text-[10px] font-black">#${index + 1} • ${item.tag}</span>
-                                <span class="font-mono font-black text-cyber-gold text-sm"><i class="fa-solid fa-coins ml-1"></i>${item.price}</span>
-                            </div>
-                            <div class="w-11 h-11 rounded-xl ${st.iconBg} border flex items-center justify-center text-lg">
-                                <i class="fa-solid ${item.icon}"></i>
-                            </div>
-                            <h3 class="font-changa font-bold text-base text-white leading-snug">${escapeHtml(item.name)}</h3>
-                            <p class="text-[11px] text-slate-300 leading-relaxed">${escapeHtml(item.desc)}</p>
-                        </div>
-                        <button onclick="buyShopItem('${item.id}', '${escapeHtml(item.name)}', ${item.price}, '${item.code}')" class="${st.btn} w-full py-2.5 rounded-xl font-black text-xs shadow transition-all cursor-pointer">
-                            شراء الكود (${item.price} نقطة) 🎟️
-                        </button>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        /* =========================================================
-           6. GLOBAL CROSS-DEVICE NEWS MANAGEMENT SYSTEM (CRUD + IMAGE)
-           ========================================================= */
-        const GLOBAL_SYNC_CHANNEL = 'omarex_hub_global_state_sync_v2026';
-
-        const DEFAULT_NEWS_ITEMS = [
-            {
-                id: 'news-default-1',
-                title: 'تجهيزات خارقة للموسم السادس في ZenithSMP',
-                tag: 'سلسلة ZenithSMP ⚔️',
-                badge: 'ZenithSMP S6',
-                content: 'بعد الأحداث الغامضة في المواسم السابقة، "الغريب" يعود بقوة لم يسبق لها مثيل. ترقبوا الحلقة الأولى قريباً على القناة!',
-                image: ''
-            },
-            {
-                id: 'news-default-2',
-                title: 'سجل حسابك الآن في المنصة واحصل على بطاقة العضو',
-                tag: 'تحديث السيرفر 🚀',
-                badge: 'OMAREX Hub',
-                content: 'أنشئ حسابك مجاناً في OMAREX Hub عبر نظام التحقق الفوري بالبريد الإلكتروني لتكون جاهزاً للفعاليات والبطولات القادمة.',
-                image: ''
-            }
-        ];
-
-        function getNewsList() {
-            try {
-                const stored = localStorage.getItem(STORAGE_NEWS_KEY);
-                if (!stored) {
-                    localStorage.setItem(STORAGE_NEWS_KEY, JSON.stringify(DEFAULT_NEWS_ITEMS));
-                    return DEFAULT_NEWS_ITEMS;
-                }
-                return JSON.parse(stored);
-            } catch {
-                return DEFAULT_NEWS_ITEMS;
-            }
-        }
-
-        function saveNewsList(list, broadcast = true) {
-            try {
-                localStorage.setItem(STORAGE_NEWS_KEY, JSON.stringify(list));
-            } catch (e) {
-                showToast('مساحة التخزين ممتلئة، حاول استخدام صورة أصغر حجماً!', 'error');
-            }
-            if (broadcast) {
-                broadcastGlobalStateUpdate('news_updated', list);
-            }
-        }
-
-        async function broadcastGlobalStateUpdate(type, payloadData) {
-            try {
-                await fetch(`https://ntfy.sh/${GLOBAL_SYNC_CHANNEL}`, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        syncType: type,
-                        timestamp: Date.now(),
-                        data: payloadData
-                    })
-                });
-            } catch (e) {}
-        }
-
-        function initGlobalStateSync() {
-            try {
-                const syncSource = new EventSource(`https://ntfy.sh/${GLOBAL_SYNC_CHANNEL}/sse?since=24h`);
-                syncSource.onmessage = function(event) {
-                    try {
-                        const packet = JSON.parse(event.data);
-                        if (packet && packet.event === 'message' && packet.message) {
-                            const syncMsg = JSON.parse(packet.message);
-                            if (syncMsg.syncType === 'news_updated' && Array.isArray(syncMsg.data)) {
-                                localStorage.setItem(STORAGE_NEWS_KEY, JSON.stringify(syncMsg.data));
-                                renderDynamicNews();
-                            } else if (syncMsg.syncType === 'shop_updated' && Array.isArray(syncMsg.data)) {
-                                localStorage.setItem(STORAGE_MEGA_SHOP_ITEMS_KEY, JSON.stringify(syncMsg.data));
-                                renderMegaShopCatalog();
-                            }
-                        }
-                    } catch (err) {}
-                };
-            } catch (e) {}
-        }
-
-        async function sendLiveChatMessage(e) {
-            e.preventDefault();
-            const input = document.getElementById('live-chat-input');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const identity = getSenderIdentity();
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-
-            const payload = {
-                id: 'msg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
-                    const tempCanvas = document.createElement('canvas');
-                    const maxWidth = 520;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > maxWidth) {
-                        height = Math.round((height * maxWidth) / width);
-                        width = maxWidth;
-                    }
-
-                    tempCanvas.width = width;
-                    tempCanvas.height = height;
-                    const tCtx = tempCanvas.getContext('2d');
-                    tCtx.drawImage(img, 0, 0, width, height);
-
-                    currentUploadedImageBase64 = tempCanvas.toDataURL('image/jpeg', 0.65);
-                    document.getElementById('news-image-preview').src = currentUploadedImageBase64;
-                    document.getElementById('news-image-preview-box').classList.remove('hidden');
-                    playSound('copy');
-                    showToast('تم تجهيز الصورة للمزامنة الفورية مع جميع المستخدمين! 🖼️', 'success');
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-            saveNewsList(list, true);
-            renderDynamicNews();
-            playSound('success');
-            closeNewsEditorModal();
-        }
-
-        function deleteNewsItem(newsId) {
-            if (!isCurrentUserAdmin()) return;
-            let list = getNewsList().filter(n => n.id !== newsId);
-            saveNewsList(list, true);
-            renderDynamicNews();
-            playSound('click');
-            showToast('تم حذف الخبر لجميع المستخدمين 🗑️', 'info');
         }
 
         /* =========================================================
@@ -3223,6 +2929,184 @@
                     </div>
                 `;
             }).join('');
+        }
+
+        /* =========================================================
+           9. REAL-TIME GLOBAL LIVE CHAT (CROSS-DEVICE STREAM)
+           ========================================================= */
+        const LIVE_CHAT_TOPIC = 'omarex_hub_global_live_chat_v2026';
+        const STORAGE_CHAT_HISTORY_KEY = 'omarex_hub_chat_history_v1';
+        let renderedMessageIds = new Set();
+
+        function getSenderIdentity() {
+            const user = getActiveUser();
+            if (user) {
+                const isAdmin = isCurrentUserAdmin();
+                const { wallet } = getShopState();
+                let rankLabel = 'عضو';
+                let badgeClass = 'bg-cyber-purple/25 text-cyber-cyan border-cyber-cyan/40';
+
+                if (isAdmin) {
+                    rankLabel = '👑 ADMIN';
+                    badgeClass = 'bg-cyber-gold text-cyber-dark border-cyber-gold font-black';
+                } else if (wallet.purchasedCodes.some(c => c.code.includes('-MOD-'))) {
+                    rankLabel = '🛡️ MOD';
+                    badgeClass = 'bg-cyber-crimson/25 text-cyber-crimson border-cyber-crimson/50';
+                } else if (wallet.purchasedCodes.some(c => c.code.includes('-SUPER-'))) {
+                    rankLabel = '💎 SUPER';
+                    badgeClass = 'bg-cyber-cyan/25 text-cyber-cyan border-cyber-cyan/50';
+                } else if (wallet.purchasedCodes.some(c => c.code.includes('-VIP'))) {
+                    rankLabel = '⭐ VIP';
+                    badgeClass = 'bg-emerald-500/25 text-emerald-400 border-emerald-500/50';
+                }
+
+                return {
+                    username: user.username,
+                    email: user.email,
+                    rankLabel,
+                    badgeClass
+                };
+            }
+            return {
+                username: 'زائر_' + (localStorage.getItem('omarex_guest_tag') || (() => {
+                    const tag = Math.floor(100 + Math.random() * 900);
+                    localStorage.setItem('omarex_guest_tag', tag);
+                    return tag;
+                })()),
+                email: 'guest',
+                rankLabel: 'زائر',
+                badgeClass: 'bg-white/10 text-slate-300 border-white/20'
+            };
+        }
+
+        function updateChatSenderPreview() {
+            const el = document.getElementById('chat-sender-preview');
+            if (!el) return;
+            const id = getSenderIdentity();
+            el.textContent = `تتحدث باسم: ${id.username} (${id.rankLabel})`;
+        }
+
+        function appendChatMessageToUI(msg) {
+            if (!msg || !msg.id || renderedMessageIds.has(msg.id)) return;
+            renderedMessageIds.add(msg.id);
+
+            const container = document.getElementById('live-chat-messages');
+            if (!container) return;
+
+            if (container.querySelector('.fa-circle-notch')) {
+                container.innerHTML = '';
+            }
+
+            const currentId = getSenderIdentity();
+            const isMine = msg.username === currentId.username;
+
+            const bubble = document.createElement('div');
+            bubble.className = `flex flex-col ${isMine ? 'items-start' : 'items-end'} animate-[pageFadeIn_0.25s_ease]`;
+            bubble.innerHTML = `
+                <div class="max-w-[85%] sm:max-w-[70%] rounded-2xl p-3.5 ${isMine ? 'bg-cyber-purple/30 border border-cyber-cyan/50' : 'bg-cyber-card border border-white/15'} shadow-md space-y-1">
+                    <div class="flex items-center gap-2 text-xs">
+                        <span class="font-extrabold text-white">${escapeHtml(msg.username)}</span>
+                        <span class="px-2 py-0.5 rounded-md border text-[10px] font-bold ${msg.badgeClass || 'bg-white/10 text-slate-300'}">${escapeHtml(msg.rankLabel || 'عضو')}</span>
+                        <span class="text-[10px] text-slate-400 font-mono mr-auto">${escapeHtml(msg.time || '')}</span>
+                    </div>
+                    <p class="text-sm text-slate-100 leading-relaxed break-words">${escapeHtml(msg.text)}</p>
+                </div>
+            `;
+
+            container.appendChild(bubble);
+            container.scrollTop = container.scrollHeight;
+
+            try {
+                const hist = JSON.parse(localStorage.getItem(STORAGE_CHAT_HISTORY_KEY)) || [];
+                if (!hist.some(m => m.id === msg.id)) {
+                    hist.push(msg);
+                    if (hist.length > 60) hist.shift();
+                    localStorage.setItem(STORAGE_CHAT_HISTORY_KEY, JSON.stringify(hist));
+                }
+            } catch {}
+        }
+
+        function initLiveChatStream() {
+            updateChatSenderPreview();
+            const container = document.getElementById('live-chat-messages');
+
+            try {
+                const cached = JSON.parse(localStorage.getItem(STORAGE_CHAT_HISTORY_KEY)) || [];
+                if (cached.length > 0 && container) {
+                    container.innerHTML = '';
+                    cached.forEach(m => appendChatMessageToUI(m));
+                }
+            } catch {}
+
+            try {
+                const evtSource = new EventSource(`https://ntfy.sh/${LIVE_CHAT_TOPIC}/sse?since=12h`);
+                evtSource.onopen = function() {
+                    const statusBadge = document.getElementById('live-chat-status-badge');
+                    if (statusBadge) {
+                        statusBadge.textContent = 'متصل مباشر ⚡';
+                        statusBadge.className = 'px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[11px] font-black';
+                    }
+                    if (container && container.querySelector('.fa-circle-notch')) {
+                        container.innerHTML = `<div class="text-center py-6 text-xs text-slate-400">مرحباً بك في الدردشة الحية العالمية لـ OMAREX Hub! ابدأ المحادثة الآن 👇</div>`;
+                    }
+                };
+
+                evtSource.onmessage = function(event) {
+                    try {
+                        const packet = JSON.parse(event.data);
+                        if (packet && packet.event === 'message' && packet.message) {
+                            const chatObj = JSON.parse(packet.message);
+                            appendChatMessageToUI(chatObj);
+                        }
+                    } catch (err) {}
+                };
+            } catch (e) {}
+        }
+
+        async function sendLiveChatMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('live-chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const identity = getSenderIdentity();
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+            const payload = {
+                id: 'msg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+                username: identity.username,
+                rankLabel: identity.rankLabel,
+                badgeClass: identity.badgeClass,
+                text: text,
+                time: timeStr
+            };
+
+            input.value = '';
+            appendChatMessageToUI(payload);
+            playSound('click');
+
+            try {
+                await fetch(`https://ntfy.sh/${LIVE_CHAT_TOPIC}`, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+            } catch (err) {
+                showToast('تم عرض الرسالة محلياً، تحقق من اتصال الإنترنت للمزامنة الفورية', 'info');
+            }
+        }
+
+        /* =========================================================
+           10. INTERACTIVE COSMIC PARTICLE CANVAS BACKGROUND
+           ========================================================= */
+        const canvas = document.getElementById('cosmic-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
